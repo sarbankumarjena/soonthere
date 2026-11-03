@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SoonThere · Discover what's happening next</title>
+  <meta name="description" content="Find gigs, talks, tastings and late nights in cities around the world. Browse the lineup, grab a pass and see you SoonThere.">
+  <meta name="theme-color" content="#f2ece1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SoonThere · Discover what's happening next">
+  <meta property="og:description" content="Find it. Book it. Be SoonThere.">
+  <meta property="og:image" content="assets/images/og-cover.jpg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap">
+  <script>
+    (function () {
+      var t;
+      try { t = JSON.parse(localStorage.getItem("soonthere:theme")); } catch (e) {}
+      document.documentElement.dataset.theme = t || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script type="module" src="js/pages/home.js"></script>
+</head>
+<body class="page-home">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="SoonThere home"><span>Soon</span><span>There</span><i class="logo-dot"></i></a>
+      <nav class="nav" aria-label="Main">
+        <div class="nav-links" id="nav-links">
+          <a href="index.html#lineup">Events</a>
+          <a href="index.html#how">How it works</a>
+          <a href="tickets.html">My tickets <span class="ticket-count"></span></a>
+        </div>
+        <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <g class="sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g>
+            <path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>
+          </svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path class="bar bar-1" d="M4 8h16"/><path class="bar bar-2" d="M4 16h16"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow hero__eyebrow">Season 26/27 · Worldwide</p>
+          <h1 class="hero__title" id="hero-title" data-stretch data-min="62" data-max="135" data-reach="240">
+            <span class="visually-hidden">Discover what's happening next.</span>
+            <span class="hero__line" aria-hidden="true"><span data-kinetic>Discover</span></span>
+            <span class="hero__line" aria-hidden="true"><span data-kinetic>what's</span> <span class="outline-text" data-kinetic>happening</span></span>
+            <span class="hero__line hero__line--accent" aria-hidden="true"><span data-kinetic>next.</span></span>
+          </h1>
+          <p class="hero__lede">Gigs, talks, tastings and late nights in cities around the world. Find the one, grab a pass, and we'll see you <strong>SoonThere</strong>.</p>
+          <div class="hero__actions">
+            <a class="btn btn-accent" href="#lineup" data-magnetic>Browse the lineup <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost" href="tickets.html">My tickets</a>
+          </div>
+          <dl class="hero__stats" id="hero-stats"></dl>
+        </div>
+
+        <div class="hero__art">
+          <figure class="hero__poster print">
+            <img src="assets/images/hero-960.webp" srcset="assets/images/hero-480.webp 480w, assets/images/hero-960.webp 960w" sizes="(max-width: 900px) 90vw, 520px" alt="A concert crowd making heart shapes with their hands under stage lights" width="960" height="640" fetchpriority="high">
+            <figcaption class="hero__caption mono">Live, loud &amp; nearby</figcaption>
+          </figure>
+          <a class="badge-spin hero__badge" href="#lineup" aria-label="Jump to the lineup">
+            <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+              <defs><path id="ring-path" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
+              <text><textPath href="#ring-path">Find it · Book it · Be SoonThere ·</textPath></text>
+            </svg>
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 8v9H8"/></svg>
+          </a>
+          <div class="next-up" id="next-up"></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="tapes" aria-hidden="true">
+      <div class="marquee tape tape--accent" data-direction="reverse"></div>
+      <div class="marquee tape tape--ink"></div>
+    </div>
+
+    <section class="section" id="featured" aria-labelledby="featured-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="eyebrow">01 · Headliners</p>
+            <h2 id="featured-title">Don't sleep on these.</h2>
+          </div>
+          <p>Three events we'd clear the calendar for. Spots are going quickly.</p>
+        </div>
+        <div class="featured-grid" id="featured-list"></div>
+      </div>
+    </section>
+
+    <section class="section lineup" id="lineup" aria-labelledby="lineup-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="eyebrow">02 · The lineup</p>
+            <h2 id="lineup-title">Everything coming up.</h2>
+          </div>
+          <p>Search by name, city or venue, or narrow it down by what you're into.</p>
+        </div>
+
+        <form class="filters" id="filters" role="search" data-reveal>
+          <div class="filters__row">
+            <div class="search-field">
+              <label class="visually-hidden" for="search">Search events</label>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+              <input type="search" id="search" name="q" placeholder="Search events, cities, venues" autocomplete="off" enterkeyhint="search">
+              <kbd aria-hidden="true">/</kbd>
+            </div>
+            <div class="select-field">
+              <label class="visually-hidden" for="sort">Sort by</label>
+              <select id="sort" name="sort">
+                <option value="soonest">Soonest first</option>
+                <option value="popular">Most popular</option>
+                <option value="price-asc">Price: low to high</option>
+                <option value="price-desc">Price: high to low</option>
+              </select>
+            </div>
+          </div>
+          <div class="filters__row">
+            <fieldset class="chip-group" id="category-filter">
+              <legend class="visually-hidden">Category</legend>
+            </fieldset>
+            <label class="switch">
+              <input type="checkbox" id="show-past" name="past">
+              <span class="switch__track" aria-hidden="true"></span>
+              Show past events
+            </label>
+          </div>
+        </form>
+
+        <p class="results-meta mono" id="results-meta" aria-live="polite"></p>
+        <div class="card-grid" id="event-grid"></div>
+      </div>
+    </section>
+
+    <section class="section how" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <div>
+            <p class="eyebrow">03 · How it works</p>
+            <h2 id="how-title">Three steps to the front row.</h2>
+          </div>
+        </div>
+        <ol class="steps" role="list">
+          <li class="step" data-reveal>
+            <span class="step__num" aria-hidden="true">01</span>
+            <h3>Find it.</h3>
+            <p>Browse the lineup, search for something specific or filter by the kind of night you're after.</p>
+          </li>
+          <li class="step" data-reveal style="--delay: 0.1s">
+            <span class="step__num" aria-hidden="true">02</span>
+            <h3>Book it.</h3>
+            <p>Pick your passes and fill in three quick details. No account, no fuss, done in under a minute.</p>
+          </li>
+          <li class="step" data-reveal style="--delay: 0.2s">
+            <span class="step__num" aria-hidden="true">03</span>
+            <h3>Be SoonThere.</h3>
+            <p>Your ticket is saved in My tickets. Show it at the door, or cancel any time if plans change.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-stretch-area>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="logo" href="index.html" aria-label="SoonThere home"><span>Soon</span><span>There</span><i class="logo-dot"></i></a>
+          <p class="footer-tagline">Find it. Book it. Be SoonThere.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <ul role="list">
+            <li><a href="index.html#lineup">All events</a></li>
+            <li><a href="index.html#featured">Headliners</a></li>
+            <li><a href="index.html#how">How it works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Your stuff</h3>
+          <ul role="list">
+            <li><a href="tickets.html">My tickets</a></li>
+            <li><a href="register.html">Register</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Project</h3>
+          <ul role="list">
+            <li><a href="https://github.com/sarbankumarjena/soonthere">Source on GitHub</a></li>
+            <li><a href="https://stocksnap.io">Photos from StockSnap</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-big" data-stretch data-accent-from="4" data-min="55" data-max="150">SoonThere.</p>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> SoonThere · Built by Sarban Kumar Jena</span>
+        <span>Demo project. Events are made up and no real tickets are sold.</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
