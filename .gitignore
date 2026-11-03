@@ -1,0 +1,19 @@
+# course material and personal notes
+instructions/
+
+# editor / tooling
+.claude/
+CLAUDE.md
+.vscode/
+.idea/
+*.code-workspace
+
+# deps and builds
+node_modules/
+dist/
+.vercel/
+
+# os junk
+.DS_Store
+Thumbs.db
+*.log
