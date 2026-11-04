@@ -263,11 +263,6 @@ ol[role="list"] {
   color: var(--accent-text);
 }
 
-.outline-text {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--ink);
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

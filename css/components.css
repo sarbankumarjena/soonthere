@@ -579,51 +579,6 @@
   }
 }
 
-/* spinning circular badge */
-
-.badge-spin {
-  position: relative;
-  width: 8.5rem;
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--on-accent);
-  text-decoration: none;
-  transition: transform 0.4s var(--ease-spring);
-}
-
-.badge-spin:hover {
-  transform: scale(1.08);
-}
-
-.badge-spin svg.ring {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  animation: spin 16s linear infinite;
-}
-
-.badge-spin text {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  fill: currentColor;
-}
-
-.badge-spin .arrow {
-  width: 2rem;
-  height: 2rem;
-  transition: transform 0.4s var(--ease-out);
-}
-
-.badge-spin:hover .arrow {
-  transform: rotate(45deg);
-}
-
 /* scroll reveal */
 
 .js [data-reveal] {

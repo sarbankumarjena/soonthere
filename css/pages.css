@@ -1819,20 +1819,19 @@
   z-index: 3;
   top: var(--space-s);
   left: var(--space-s);
-  padding: 0.25rem 0.6rem;
+  padding: 0.3rem 0.65rem;
   border-radius: 999px;
   background: var(--ink);
   color: var(--paper);
-  font-family: var(--font-poster);
+  font-family: var(--font-display);
   font-size: 0.85rem;
   font-weight: 800;
-  font-variation-settings: "wdth" 70;
+  letter-spacing: -0.03em;
 }
 
 .pass__brand b {
   color: var(--accent);
   font-weight: 800;
-  font-variation-settings: "wdth" 115;
 }
 
 .pass__main,
