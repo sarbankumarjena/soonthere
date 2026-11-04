@@ -186,9 +186,16 @@ function filmRoll(past) {
     <section class="tickets-block" aria-labelledby="film-title">
       <div class="tickets-block__head">
         <h2 id="film-title">Been there</h2>
-        <p>${past.length ? "Every night out you've booked, kept on one reel." : "Events you've been to will roll in here once they're over."}</p>
+        ${past.length > 0 && html`<p>Every night out you've booked, kept on one reel.</p>`}
       </div>
-      <div class="film"><ol class="film__strip" role="list">${frames}</ol></div>
+      <div class="film ${past.length ? "" : "is-empty"}">
+        <ol class="film__strip" role="list">${frames}</ol>
+        ${!past.length && html`
+          <div class="film__empty">
+            <p class="film__empty-title">Nothing on the reel yet.</p>
+            <p>You haven't been to anything with SoonThere so far. After an event you've booked has happened, it shows up here.</p>
+          </div>`}
+      </div>
     </section>`;
 }
 

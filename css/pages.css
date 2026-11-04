@@ -2985,3 +2985,36 @@
     flex-basis: 72vw;
   }
 }
+
+.film.is-empty {
+  position: relative;
+  overflow: hidden;
+}
+
+.film.is-empty .film__strip {
+  opacity: 0.55;
+}
+
+.film__empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: var(--space-l);
+  text-align: center;
+  color: #c3baab;
+  font-size: var(--step--1);
+}
+
+.film__empty-title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 700;
+  color: #f2ece1;
+}
+
+.film__empty p:last-child {
+  max-width: 42ch;
+}

@@ -221,6 +221,24 @@ function initStretchType() {
   });
 }
 
+// the plane in the logo flies an ellipse drawn around the name, sized to the logo
+function initLogo() {
+  $$(".logo").forEach((logo) => {
+    if (!$(".logo__plane", logo)) return;
+    const fit = () => {
+      const w = logo.offsetWidth;
+      const h = logo.offsetHeight;
+      const rx = w / 2;
+      const ry = h / 2;
+      // starts on the left and goes clockwise over the top
+      logo.style.setProperty("--orbit", `path("M 0 ${ry} A ${rx} ${ry} 0 1 1 ${w} ${ry} A ${rx} ${ry} 0 1 1 0 ${ry}")`);
+      logo.classList.add("has-orbit");
+    };
+    document.fonts.ready.then(fit);
+    new ResizeObserver(fit).observe(logo);
+  });
+}
+
 export function initMagnetic(root = document) {
   if (!canHover() || prefersReducedMotion()) return;
   $$("[data-magnetic]", root).forEach((el) => {
@@ -258,6 +276,7 @@ export function toast(message, { duration = 3200 } = {}) {
 }
 
 initTheme();
+initLogo();
 initHeader();
 initStretchType();
 initMagnetic();

@@ -69,48 +69,77 @@ body.menu-open .site-header::before {
 .logo {
   position: relative;
   display: inline-flex;
-  padding: 0 0.85em 0.32em 0;
+  align-items: center;
+  padding: 0.42em 0.7em;
   font-family: var(--font-display);
-  font-size: 1.55rem;
+  margin-left: -0.7em;
+  font-size: 1.4rem;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.035em;
   text-decoration: none;
 }
 
-.logo b {
-  font-weight: 800;
-  color: var(--accent);
+.logo.has-orbit .logo__plane {
+  opacity: 1;
 }
 
-/* a dashed take-off line under the name that ends in a paper plane */
-.logo__trail {
+.logo__word {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* "There" is printed on a ticket stub torn off along its left edge */
+.logo__ticket {
+  margin-left: 0.14em;
+  padding: 0.1em 0.32em 0.12em 0.42em;
+  background:
+    radial-gradient(circle, var(--paper) 0 0.05em, transparent 0.06em) 0.24em 0 / 0.1em 0.22em repeat-y,
+    var(--accent);
+  color: #171513;
+  border-radius: 0 0.16em 0.16em 0;
+  clip-path: polygon(100% 0, 100% 100%, 0.14em 100%, 0 90%, 0.14em 80%, 0 70%, 0.14em 60%, 0 50%, 0.14em 40%, 0 30%, 0.14em 20%, 0 10%, 0.14em 0%);
+  rotate: -3deg;
+  transition: rotate 0.4s var(--ease-spring);
+}
+
+.logo:hover .logo__ticket {
+  rotate: 2deg;
+}
+
+/* a dashed flight path around the name, with the plane flying it */
+.logo__orbit {
   position: absolute;
-  left: 0;
-  bottom: 0;
-  width: calc(100% - 0.5em);
-  height: 0.6em;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: visible;
+  pointer-events: none;
 }
 
-.logo__trail path {
+.logo__orbit ellipse {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.4;
-  stroke-dasharray: 2 3.2;
+  stroke-width: 1.2;
+  stroke-dasharray: 2 4;
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
-  opacity: 0.55;
+  opacity: 0.35;
 }
 
 .logo__plane {
   position: absolute;
-  right: 0;
-  bottom: 0.42em;
-  width: 0.72em;
-  height: 0.72em;
+  top: 0;
+  left: 0;
+  width: 0.62em;
+  height: 0.62em;
   overflow: visible;
-  transition: translate 0.5s var(--ease-spring), rotate 0.5s var(--ease-spring);
+  offset-path: var(--orbit, none);
+  offset-distance: 38%;
+  offset-rotate: auto 45deg;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .logo__wing {
@@ -124,23 +153,34 @@ body.menu-open .site-header::before {
   stroke-linejoin: round;
 }
 
-.logo:hover .logo__plane {
-  translate: 0.18em -0.16em;
-  rotate: -6deg;
+.site-footer .logo__fold,
+.site-footer .logo__ticket {
+  --paper: var(--ink);
 }
 
-.logo:hover .logo__trail path {
-  animation: trail 0.9s linear infinite;
-}
+@media (prefers-reduced-motion: no-preference) {
+  .logo.has-orbit .logo__plane {
+    animation: orbit 2.4s var(--ease-out) 0.4s backwards;
+  }
 
-@keyframes trail {
-  to {
-    stroke-dashoffset: -10.4;
+  .logo:hover .logo__plane {
+    animation: orbit-loop 2.6s linear infinite;
   }
 }
 
-.site-footer .logo__fold {
-  stroke: var(--ink);
+@keyframes orbit {
+  from {
+    offset-distance: -62%;
+  }
+}
+
+@keyframes orbit-loop {
+  from {
+    offset-distance: 38%;
+  }
+  to {
+    offset-distance: 138%;
+  }
 }
 
 .nav {
@@ -233,25 +273,106 @@ body.menu-open .site-header::before {
   height: 1.2rem;
 }
 
-.theme-toggle .sun,
-.theme-toggle .moon {
-  transform-origin: center;
-  transition: transform 0.5s var(--ease-out), opacity 0.3s ease;
+/* day/night switch: the sun slides over and turns into a moon, stars come out */
+.theme-toggle {
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  cursor: pointer;
 }
 
-.theme-toggle .moon {
+.theme-toggle__track {
+  position: relative;
+  display: block;
+  width: 3.7rem;
+  height: 2.1rem;
+  overflow: hidden;
+  border: var(--border);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f9e3b4, #f4c98c);
+  transition: background-color 0.5s ease;
+}
+
+/* stars, only visible at night */
+.theme-toggle__track::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 30%, #fff 0 1px, transparent 1.6px),
+    radial-gradient(circle at 40% 68%, #fff 0 0.8px, transparent 1.4px),
+    radial-gradient(circle at 14% 72%, #fff 0 0.7px, transparent 1.3px),
+    radial-gradient(circle at 34% 20%, #fff 0 0.6px, transparent 1.2px),
+    linear-gradient(180deg, #1c2238, #2b3358);
   opacity: 0;
-  transform: rotate(-90deg) scale(0.5);
+  transition: opacity 0.5s ease;
 }
 
-[data-theme="dark"] .theme-toggle .sun {
+.theme-toggle__knob {
+  position: absolute;
+  top: 50%;
+  left: 0.25rem;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 50%;
+  background: #ff8a2a;
+  box-shadow: 0 0 0 3px rgb(255 160 60 / 0.35), 0 0 12px 2px rgb(255 150 40 / 0.45);
+  translate: 0 -50%;
+  transition: translate 0.55s var(--ease-spring), background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* craters on the moon */
+.theme-toggle__knob::before,
+.theme-toggle__knob::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: #d9c690;
   opacity: 0;
-  transform: rotate(90deg) scale(0.5);
+  transition: opacity 0.4s ease;
 }
 
-[data-theme="dark"] .theme-toggle .moon {
+.theme-toggle__knob::before {
+  top: 0.3rem;
+  left: 0.35rem;
+  width: 0.38rem;
+  height: 0.38rem;
+}
+
+.theme-toggle__knob::after {
+  bottom: 0.3rem;
+  right: 0.32rem;
+  width: 0.26rem;
+  height: 0.26rem;
+}
+
+.theme-toggle:hover .theme-toggle__knob {
+  translate: 0.12rem -50%;
+}
+
+[data-theme="dark"] .theme-toggle__track::before {
   opacity: 1;
-  transform: none;
+}
+
+[data-theme="dark"] .theme-toggle__knob {
+  background: #f4e8c6;
+  box-shadow: 0 0 10px 1px rgb(244 232 198 / 0.35);
+  translate: 1.6rem -50%;
+}
+
+[data-theme="dark"] .theme-toggle:hover .theme-toggle__knob {
+  translate: 1.48rem -50%;
+}
+
+[data-theme="dark"] .theme-toggle__knob::before,
+[data-theme="dark"] .theme-toggle__knob::after {
+  opacity: 1;
+}
+
+.theme-toggle:focus-visible {
+  outline-offset: 4px;
 }
 
 .menu-toggle {
