@@ -2,7 +2,7 @@ import { toast } from "../app.js";
 import { $, $$, html, getParam } from "../lib/dom.js";
 import { icons } from "../lib/icons.js";
 import { pluralise } from "../lib/format.js";
-import { DEMO_ADMIN, currentUser, myBookings, signIn, signOut, signUp } from "../lib/auth.js";
+import { DEMO_ADMIN, DEMO_MEMBER, currentUser, myBookings, signIn, signOut, signUp } from "../lib/auth.js";
 import { checkEmail, checkName } from "../lib/validate.js";
 
 const panel = $("#account-panel");
@@ -47,9 +47,15 @@ function renderForms() {
     </form>
     ${!signup && html`
       <div class="account__demo">
-        <p><b>Trying the admin side?</b> Use the demo admin account.</p>
-        <p class="mono">${DEMO_ADMIN.email}<br>${DEMO_ADMIN.password}</p>
-        <button class="btn btn-small btn-ghost" type="button" data-demo>Fill it in for me</button>
+        <p><b>Just looking around?</b> Try one of the demo accounts.</p>
+        <div class="account__demo-row">
+          <div><p>Maya, a member with bookings</p><p class="mono">${DEMO_MEMBER.email}<br>${DEMO_MEMBER.password}</p></div>
+          <button class="btn btn-small btn-ghost" type="button" data-demo="member">Use Maya</button>
+        </div>
+        <div class="account__demo-row">
+          <div><p>The organiser, with admin access</p><p class="mono">${DEMO_ADMIN.email}<br>${DEMO_ADMIN.password}</p></div>
+          <button class="btn btn-small btn-ghost" type="button" data-demo="admin">Use admin</button>
+        </div>
       </div>`}
     <p class="account__note">Demo only: accounts are stored in this browser, not on a server, so they don't follow you to other devices.</p>`;
   $(`#${signup ? "name" : "email"}`).focus();
@@ -126,9 +132,11 @@ panel.addEventListener("click", (e) => {
     mode = tab.dataset.mode;
     renderForms();
   }
-  if (e.target.closest("[data-demo]")) {
-    $("#email").value = DEMO_ADMIN.email;
-    $("#password").value = DEMO_ADMIN.password;
+  const demo = e.target.closest("[data-demo]");
+  if (demo) {
+    const account = demo.dataset.demo === "admin" ? DEMO_ADMIN : DEMO_MEMBER;
+    $("#email").value = account.email;
+    $("#password").value = account.password;
     $('#account-form button[type="submit"]').focus();
   }
   if (e.target.closest("[data-signout]")) {

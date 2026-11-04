@@ -34,6 +34,12 @@ export function addRegistration(registration) {
   return ok;
 }
 
+export function addRegistrations(list) {
+  if (!list.length) return;
+  write(KEYS.registrations, [...getRegistrations(), ...list]);
+  notify();
+}
+
 export function updateRegistration(id, changes) {
   const list = getRegistrations().map((r) => (r.id === id ? { ...r, ...changes } : r));
   write(KEYS.registrations, list);

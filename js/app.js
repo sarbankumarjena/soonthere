@@ -1,6 +1,6 @@
 import { $, $$, canHover, prefersReducedMotion } from "./lib/dom.js";
 import { getTheme, setTheme } from "./lib/storage.js";
-import { currentUser, ensureDemoAdmin, myBookings } from "./lib/auth.js";
+import { currentUser, ensureDemoAccounts, myBookings } from "./lib/auth.js";
 
 document.documentElement.classList.add("js");
 
@@ -397,7 +397,7 @@ initYear();
 updateTicketCount();
 updateAccount();
 observeReveals();
-ensureDemoAdmin().catch(() => {});
+ensureDemoAccounts().catch(() => {});
 document.addEventListener("auth:change", () => {
   updateAccount();
   updateTicketCount();

@@ -3254,6 +3254,20 @@
   color: var(--ink);
 }
 
+.account__demo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s);
+  width: 100%;
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--line);
+}
+
+.account__demo-row .btn {
+  flex: none;
+}
+
 .account__note {
   font-size: 0.78rem;
   color: var(--ink-3);

@@ -13,9 +13,9 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 ## What it does
 
 ### Home
-- **Hero dial.** Upcoming events sit on the rim of a large wheel. On wide screens its hub sits in the hero's bottom-right corner and the cards sweep round it; on phones and tablets it runs along the bottom. The event under the pointer is shown in full (title, date, venue, price, a live countdown) and its photo fills the background. The dial turns on its own every few seconds, and you can also drag it, swipe it on a trackpad, use the arrow buttons or the arrow keys. It pauses while you're hovering or using the keyboard.
-- **Headliners.** Three featured events as large poster cards with live countdowns.
-- **The lineup.** Every upcoming event as a ticket-style card with its name, date, venue, image and a short description.
+- **Hero dial.** Upcoming events sit on the rim of a large wheel. On wide screens the words and the selected event sit on the left, the event's photo fills the stage, and a smaller dial docks in the bottom-right corner. On phones and tablets the dial runs full width under the headline. The event under the pointer is shown in full (title, date, venue, price, a live countdown) and its photo fills the background. The dial turns on its own every few seconds, and you can also drag it, swipe it on a trackpad, use the arrow buttons or the arrow keys. It pauses while you're hovering or using the keyboard.
+- **Headliners.** Three featured events as large poster cards with live countdowns. On phones they become a row you swipe through.
+- **The lineup.** Every upcoming event as a ticket-style card with its name, date, venue, image and a short description. On phones each card turns into a compact ticket row, so several fit on screen at once.
   - **Search.** Matches names, venues, cities, organisers and tags, and ignores accents, so "alcantara" finds "Alcântara".
   - **Category filters.** Each one shows a live count of matching events.
   - **Sorting.** By date, popularity or price. Prices are in local currencies, so they're roughly converted before comparing.
@@ -71,13 +71,18 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
   - **Members:** every account, with the option to make someone an admin.
 ![Admin area](docs/screenshots/admin.webp)
 
-- **Demo admin account:** `admin@soonthere.app` with the password `soonthere-admin`. The sign-in page offers to fill it in.
+- **Demo accounts.** The sign-in page can fill either one in for you.
+
+  | Account | Email | Password | What you'll see |
+  | --- | --- | --- | --- |
+  | Member | `maya@soonthere.app` | `soonthere-demo` | Five upcoming bookings on the timeline, dials and heatmap, and one past event on the "Been there" reel |
+  | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in Maya's booking `ST-K7M2QX`, then scanning it again |
 
 > There's no server behind the site, so accounts, bookings and lineup changes are stored in the browser (localStorage). They don't sync between devices, and this isn't real security: anyone with the browser's developer tools could change the data. Passwords are salted and hashed with SHA-256 using the Web Crypto API rather than stored as text, but a real launch would move all of this to a backend.
 
 ### Everywhere
 - **Light and dark themes.** The site follows your system setting until you pick one, then remembers your choice. The switch is a little sky: the sun slides across, turns into a moon and the stars come out, and the new theme spreads out in a circle from it.
-- **Logo.** The name with "There" printed on a torn ticket stub, and a paper plane flying a dashed orbit around it. Hover it and the plane loops round.
+- **Logo.** "There" is printed on a torn ticket stub, and a paper plane's dashed flight path loops round the name: it slips behind the word, loops back over the top and sweeps out underneath, with the plane at the end. The path is drawn to fit the word, and the plane flies it on load and on hover.
 - **Countdown timers.** Shown on the hero, the headliners and the event pages.
 - **Animation.** Scroll reveals, marquee tapes, a 3D tilt on cards, magnetic buttons and page transitions. All motion is turned off for people who set "reduce motion" in their system settings.
 - **Responsive layout.** Built mobile first and tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide.
