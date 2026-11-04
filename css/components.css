@@ -242,7 +242,7 @@
 .stamp {
   display: inline-block;
   padding: 0.3em 0.6em;
-  font-family: var(--font-display);
+  font-family: var(--font-poster);
   font-weight: 900;
   font-size: 0.95rem;
   font-variation-settings: "wdth" 110;
@@ -385,7 +385,6 @@
   font-weight: 900;
   font-size: 2.6rem;
   line-height: 0.85;
-  font-variation-settings: "wdth" 70;
 }
 
 .ticket-card__month,
@@ -410,7 +409,6 @@
 
 .ticket-card__title {
   font-size: var(--step-2);
-  font-variation-settings: "wdth" 78;
 }
 
 .ticket-card__title a {
@@ -547,7 +545,7 @@
   display: inline-flex;
   align-items: center;
   gap: 2rem;
-  font-family: var(--font-display);
+  font-family: var(--font-poster);
   font-weight: 900;
   font-size: var(--step-3);
   line-height: 1;
@@ -735,7 +733,7 @@
 
 .countdown__value {
   display: block;
-  font-family: var(--font-display);
+  font-family: var(--font-poster);
   font-size: var(--step-3);
   font-weight: 900;
   line-height: 1;
@@ -871,7 +869,7 @@
   display: none;
 }
 
-.select-field--large select {
+.field .select-field--large select {
   min-height: 3.2rem;
   border: 1.5px solid var(--line);
   border-radius: var(--radius);

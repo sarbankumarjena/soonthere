@@ -33,11 +33,25 @@
   top: 0;
   z-index: 50;
   height: var(--header-h);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+/* the blur lives on a layer behind the header: backdrop-filter on the header itself
+   would trap the fixed mobile menu inside the 72px bar */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s ease, background-color 0.4s ease;
+  transition: background-color 0.4s ease;
+}
+
+body.menu-open .site-header::before {
+  background: var(--paper);
 }
 
 .site-header.is-scrolled {
@@ -55,7 +69,7 @@
 .logo {
   display: inline-flex;
   align-items: baseline;
-  font-family: var(--font-display);
+  font-family: var(--font-poster);
   font-size: 1.65rem;
   font-weight: 900;
   line-height: 1;
@@ -249,7 +263,6 @@
     font-family: var(--font-display);
     font-size: var(--step-4);
     font-weight: 800;
-    font-variation-settings: "wdth" 75;
     border-radius: 0;
     border-bottom: 1px solid var(--line);
     opacity: 0;
@@ -342,9 +355,9 @@ body.menu-open {
 .footer-big {
   display: block;
   margin-top: var(--space-2xl);
-  font-family: var(--font-display);
+  font-family: var(--font-poster);
   font-weight: 900;
-  font-size: clamp(3rem, 14vw, 13.5rem);
+  font-size: clamp(3rem, 12vw, 11.5rem);
   line-height: 0.78;
   letter-spacing: -0.02em;
   white-space: nowrap;

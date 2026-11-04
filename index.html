@@ -16,7 +16,7 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap">
   <script>
     (function () {
       var t;
@@ -68,25 +68,26 @@
         <div class="container stage__top">
           <div class="hero__copy">
             <p class="eyebrow"><span>Season 26/27</span><span>Worldwide</span></p>
-            <h1 class="hero__title" id="hero-title" data-stretch data-min="62" data-max="135" data-reach="240">
+            <h1 class="hero__title" id="hero-title">
               <span class="visually-hidden">Discover what's happening next.</span>
-              <span class="hero__line" aria-hidden="true"><span data-kinetic>Discover</span> <span data-kinetic>what's</span></span>
-              <span class="hero__line" aria-hidden="true"><span class="outline-text" data-kinetic>happening</span></span>
-              <span class="hero__line hero__line--accent" aria-hidden="true"><span data-kinetic>next.</span></span>
+              <span class="hero__line" aria-hidden="true"><span>Discover what's</span></span>
+              <span class="hero__line" aria-hidden="true"><span>happening <em>next.</em></span></span>
             </h1>
-            <p class="hero__lede">Gigs, talks, tastings and late nights in cities around the world. Find the one, grab a pass, and we'll see you <strong>SoonThere</strong>.</p>
+            <p class="hero__lede">Gigs, talks, tastings and late nights around the world. Find the one, grab a pass, and see you <strong>SoonThere</strong>.</p>
             <div class="hero__actions">
               <a class="btn btn-accent" href="#lineup" data-magnetic>Browse the lineup <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
               <a class="btn btn-ghost" href="tickets.html">My tickets</a>
             </div>
           </div>
 
-          <div class="spotlight" id="spotlight" aria-live="polite"></div>
+          <div class="spotlight" id="spotlight"></div>
         </div>
 
         <div class="dial" id="dial" role="group" aria-roledescription="carousel" aria-label="Upcoming events, in date order">
-          <div class="dial__ring dial__ring--outer" aria-hidden="true"></div>
-          <div class="dial__ring dial__ring--inner" aria-hidden="true"></div>
+          <div class="dial__rings" aria-hidden="true">
+            <div class="dial__ring dial__ring--outer"></div>
+            <div class="dial__ring dial__ring--inner"></div>
+          </div>
           <span class="dial__needle" aria-hidden="true"></span>
           <ol class="dial__track" id="dial-track"></ol>
           <div class="dial__controls">

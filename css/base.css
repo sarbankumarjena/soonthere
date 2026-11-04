@@ -22,17 +22,18 @@
   --cat-comedy: #1f8a5b;
   --cat-wellness: #0e8a8c;
 
-  --font-display: "Anybody", "Arial Narrow", sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-poster: "Anybody", "Arial Narrow", sans-serif;
   --font-body: "Schibsted Grotesk", system-ui, sans-serif;
   --font-mono: "DM Mono", ui-monospace, monospace;
 
-  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
-  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
-  --step-1: clamp(1.2rem, 1.1rem + 0.45vw, 1.45rem);
-  --step-2: clamp(1.45rem, 1.25rem + 0.9vw, 2rem);
-  --step-3: clamp(1.9rem, 1.5rem + 1.8vw, 3rem);
-  --step-4: clamp(2.6rem, 1.9rem + 3.4vw, 4.75rem);
-  --step-5: clamp(3.2rem, 2rem + 6.4vw, 8.5rem);
+  --step--1: clamp(0.82rem, 0.8rem + 0.1vw, 0.875rem);
+  --step-0: clamp(0.98rem, 0.95rem + 0.15vw, 1.05rem);
+  --step-1: clamp(1.08rem, 1.02rem + 0.25vw, 1.22rem);
+  --step-2: clamp(1.25rem, 1.15rem + 0.45vw, 1.55rem);
+  --step-3: clamp(1.55rem, 1.35rem + 0.9vw, 2.1rem);
+  --step-4: clamp(1.9rem, 1.55rem + 1.6vw, 2.9rem);
+  --step-5: clamp(2.3rem, 1.75rem + 2.6vw, 3.9rem);
 
   --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
@@ -170,11 +171,10 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   text-wrap: balance;
-  font-variation-settings: "wdth" 80;
 }
 
 p {
