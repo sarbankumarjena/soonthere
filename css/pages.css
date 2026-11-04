@@ -2305,34 +2305,114 @@
   color: var(--ink-2);
 }
 
+.line__label {
+  margin-bottom: var(--space-s);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-3);
+}
+
+/* watch face that switches to a night sky for evening events */
 .clock {
+  --face: var(--card);
+  --face-ink: var(--ink);
+  --face-soft: var(--ink-3);
+  width: 100%;
+  max-width: 8.5rem;
+  margin-inline: auto;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--ink), 4px 5px 0 1.5px var(--ink);
+  transition: box-shadow 0.4s ease;
+}
+
+.clock[data-period="night"] {
+  --face: #1c2238;
+  --face-ink: #f2ece1;
+  --face-soft: rgb(242 236 225 / 0.45);
+}
+
+.clock svg {
   display: block;
   width: 100%;
-  max-width: 8rem;
-  margin-inline: auto;
+  height: auto;
 }
 
 .clock__face {
-  fill: var(--card);
-  stroke: var(--ink);
-  stroke-width: 2;
+  fill: var(--face);
+  transition: fill 0.6s ease;
 }
 
 .clock__tick {
-  stroke: var(--ink-3);
+  stroke: var(--face-soft);
+  stroke-width: 1;
+  transition: stroke 0.6s ease;
+}
+
+.clock__tick.is-hour {
+  stroke: var(--face-ink);
   stroke-width: 2;
   stroke-linecap: round;
 }
 
+.clock__num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-anchor: middle;
+  fill: var(--face-ink);
+  transition: fill 0.6s ease;
+}
+
+.clock__stars {
+  fill: #f2ece1;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.clock[data-period="night"] .clock__stars {
+  opacity: 0.7;
+}
+
+.clock__sun,
+.clock__moon {
+  transition: opacity 0.5s ease, transform 0.6s var(--ease-spring);
+}
+
+.clock__sun {
+  fill: var(--cat-food);
+  stroke: var(--cat-food);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.clock__moon {
+  fill: #f6e7b8;
+  opacity: 0;
+  transform: scale(0.4);
+}
+
+.clock[data-period="night"] .clock__sun {
+  opacity: 0;
+  transform: scale(0.4) rotate(90deg);
+}
+
+.clock[data-period="night"] .clock__moon {
+  opacity: 1;
+  transform: none;
+}
+
 .clock__hand {
-  stroke: var(--ink);
+  stroke: var(--face-ink);
   stroke-linecap: round;
   transform-origin: 60px 60px;
-  transition: transform 0.8s var(--ease-spring);
+  transition: transform 0.9s var(--ease-spring), stroke 0.6s ease;
 }
 
 .clock__hand--hour {
-  stroke-width: 4;
+  stroke-width: 4.5;
 }
 
 .clock__hand--minute {
@@ -2341,7 +2421,9 @@
 }
 
 .clock__pin {
-  fill: var(--ink);
+  fill: var(--accent);
+  stroke: var(--face);
+  stroke-width: 1.5;
 }
 
 .line__track-wrap {
@@ -2507,26 +2589,30 @@
   height: 0.85rem;
 }
 
-/* tear-off calendar */
+/* tear-off calendar pad: a few pages showing underneath, spiral binding, perforated top */
 .tear {
   position: relative;
   width: 100%;
-  max-width: 8rem;
-  aspect-ratio: 1 / 1.1;
-  margin-inline: auto;
-  perspective: 600px;
+  max-width: 8.5rem;
+  aspect-ratio: 1 / 1.12;
+  margin: 8px auto 0;
+  perspective: 700px;
+  border-radius: var(--radius);
+  box-shadow:
+    0 4px 0 -1px var(--card), 0 4px 0 0.5px var(--ink),
+    0 8px 0 -1px var(--card), 0 8px 0 0.5px var(--ink),
+    5px 12px 0 0 var(--ink);
 }
 
-/* the binding rings along the top */
 .tear::before {
   content: "";
   position: absolute;
-  z-index: 5;
-  top: -6px;
-  left: 18%;
-  right: 18%;
-  height: 14px;
-  background: radial-gradient(circle at 7px 7px, var(--ink) 0 4px, transparent 4.5px) 0 0 / 33% 100% repeat-x;
+  z-index: 6;
+  top: -9px;
+  left: 12%;
+  right: 12%;
+  height: 16px;
+  background: radial-gradient(circle at 50% 100%, transparent 3.2px, var(--ink) 3.6px 5.4px, transparent 5.8px) 0 0 / 16px 16px repeat-x;
 }
 
 .tear__page {
@@ -2539,42 +2625,54 @@
   border: 1.5px solid var(--ink);
   border-radius: var(--radius);
   background: var(--card);
-  box-shadow: 0 2px 0 var(--paper-2), 0 4px 0 var(--line);
   transform-origin: 50% 0;
+}
+
+/* the little punched holes where the page tears from the pad */
+.tear__page::before {
+  content: "";
+  position: absolute;
+  top: 2.15rem;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: radial-gradient(circle, var(--paper) 1.4px, transparent 1.8px) 0 0 / 8px 4px repeat-x;
 }
 
 .tear__month {
   width: 100%;
-  padding: 0.55rem 0 0.4rem;
+  padding: 0.95rem 0 0.55rem;
   background: var(--cat, var(--accent));
   color: #171513;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 500;
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
 }
 
 .tear__day {
   align-self: center;
   font-family: var(--font-poster);
-  font-size: 3.4rem;
+  font-size: 3.6rem;
   font-weight: 900;
   line-height: 1;
   font-variation-settings: "wdth" 85;
 }
 
 .tear__weekday {
-  padding-bottom: 0.6rem;
+  padding-bottom: 0.7rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  color: var(--ink-3);
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
 }
 
 .tear__page.is-tearing {
   z-index: 3;
-  animation: tear-off 0.75s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+  animation: tear-off 0.8s cubic-bezier(0.5, 0, 0.75, 0) forwards;
 }
 
 .tear__page.is-sticking {
@@ -2582,11 +2680,12 @@
 }
 
 @keyframes tear-off {
-  30% {
-    transform: rotateX(-25deg) rotateZ(-4deg);
+  25% {
+    transform: rotateX(-18deg) rotateZ(-3deg);
+    box-shadow: 0 18px 20px -12px rgb(0 0 0 / 0.35);
   }
   to {
-    transform: translate(-30%, 140%) rotateX(-60deg) rotateZ(-28deg);
+    transform: translate(-35%, 150%) rotateX(-70deg) rotateZ(-32deg);
     opacity: 0;
   }
 }
@@ -2875,11 +2974,11 @@
 
   .clock,
   .tear {
-    max-width: 6.5rem;
+    max-width: 7rem;
   }
 
   .tear__day {
-    font-size: 2.6rem;
+    font-size: 2.9rem;
   }
 
   .stub {

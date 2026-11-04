@@ -137,19 +137,29 @@ function timeline(ahead) {
       </div>
       <div class="line">
         <div class="line__clock" aria-hidden="true">
-          <svg class="clock" viewBox="0 0 120 120">
-            <circle class="clock__face" cx="60" cy="60" r="54"/>
-            ${Array.from({ length: 12 }, (_, i) => html`<line class="clock__tick" x1="60" y1="10" x2="60" y2="${i % 3 ? 15 : 19}" transform="rotate(${i * 30} 60 60)"/>`)}
-            <line class="clock__hand clock__hand--hour" x1="60" y1="60" x2="60" y2="34"/>
-            <line class="clock__hand clock__hand--minute" x1="60" y1="60" x2="60" y2="20"/>
-            <circle class="clock__pin" cx="60" cy="60" r="3.5"/>
-          </svg>
+          <p class="line__label">Doors open</p>
+          <div class="clock" id="clock" data-period="day">
+            <svg viewBox="0 0 120 120">
+              <circle class="clock__face" cx="60" cy="60" r="55"/>
+              <g class="clock__stars">${[[34, 30], [86, 26], [92, 52], [28, 66], [80, 88], [44, 92]].map(([x, y], i) => html`<circle cx="${x}" cy="${y}" r="${i % 2 ? 0.9 : 1.3}"/>`)}</g>
+              ${Array.from({ length: 60 }, (_, i) => html`<line class="clock__tick ${i % 5 ? "" : "is-hour"}" x1="60" y1="8" x2="60" y2="${i % 5 ? 11 : 14}" transform="rotate(${i * 6} 60 60)"/>`)}
+              ${[["12", 60, 27], ["3", 95, 64], ["6", 60, 100], ["9", 25, 64]].map(([n, x, y]) => html`<text class="clock__num" x="${x}" y="${y}">${n}</text>`)}
+              <g class="clock__sky" transform="translate(60 80)">
+                <g class="clock__sun"><circle r="4.2"/>${Array.from({ length: 8 }, (_, i) => html`<line x1="0" y1="-6.5" x2="0" y2="-8.5" transform="rotate(${i * 45})"/>`)}</g>
+                <path class="clock__moon" d="M2.5 -5.5a6 6 0 1 0 3 10.6A5 5 0 0 1 2.5 -5.5Z"/>
+              </g>
+              <line class="clock__hand clock__hand--hour" x1="60" y1="66" x2="60" y2="36"/>
+              <line class="clock__hand clock__hand--minute" x1="60" y1="68" x2="60" y2="19"/>
+              <circle class="clock__pin" cx="60" cy="60" r="3.2"/>
+            </svg>
+          </div>
           <p class="line__caption" id="clock-caption"></p>
         </div>
         <div class="line__track-wrap">
           <ol class="line__track" id="line-track" role="list">${ahead.map((b) => stub(b, findClashes(b.event, all)))}</ol>
         </div>
         <div class="line__calendar" aria-hidden="true">
+          <p class="line__label">On the day</p>
           <div class="tear" id="tear"></div>
           <p class="line__caption" id="tear-caption"></p>
         </div>
@@ -186,18 +196,28 @@ function filmRoll(past) {
 
 let focused = null;
 
+// hands keep a running angle so they always turn the short way round
+const hands = { hour: 0, minute: 0 };
+const nearest = (from, to) => from + ((((to - from) % 360) + 540) % 360) - 180;
+
 function setClock(event) {
   const parts = new Intl.DateTimeFormat("en-GB", { timeZone: event.timeZone, hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date(event.start));
   const hour = Number(parts.find((p) => p.type === "hour").value);
   const minute = Number(parts.find((p) => p.type === "minute").value);
-  $(".clock__hand--hour").style.transform = `rotate(${(hour % 12) * 30 + minute / 2}deg)`;
-  $(".clock__hand--minute").style.transform = `rotate(${minute * 6}deg)`;
+  hands.hour = nearest(hands.hour, (hour % 12) * 30 + minute / 2);
+  hands.minute = nearest(hands.minute, minute * 6);
+  $(".clock__hand--hour").style.transform = `rotate(${hands.hour}deg)`;
+  $(".clock__hand--minute").style.transform = `rotate(${hands.minute}deg)`;
+  $("#clock").dataset.period = hour >= 6 && hour < 18 ? "day" : "night";
   $("#clock-caption").textContent = `${formatTime(event.start, event.timeZone)} in ${event.city}`;
 }
 
 function calendarPage(event) {
-  const { day, month, weekday } = dateParts(event);
-  return `<div class="tear__page" data-category="${event.category}"><span class="tear__month">${month}</span><b class="tear__day">${day}</b><span class="tear__weekday">${weekday}</span></div>`;
+  const { day, month } = dateParts(event);
+  const date = new Date(event.start);
+  const year = new Intl.DateTimeFormat(undefined, { timeZone: event.timeZone, year: "numeric" }).format(date);
+  const weekday = new Intl.DateTimeFormat(undefined, { timeZone: event.timeZone, weekday: "long" }).format(date);
+  return `<div class="tear__page" data-category="${event.category}"><span class="tear__month">${month} ${year}</span><b class="tear__day">${day}</b><span class="tear__weekday">${weekday}</span></div>`;
 }
 
 function setCalendar(event, direction) {
