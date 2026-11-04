@@ -49,8 +49,8 @@ function renderForms() {
       <div class="account__demo">
         <p><b>Just looking around?</b> Try one of the demo accounts.</p>
         <div class="account__demo-row">
-          <div><p>Maya, a member with bookings</p><p class="mono">${DEMO_MEMBER.email}<br>${DEMO_MEMBER.password}</p></div>
-          <button class="btn btn-small btn-ghost" type="button" data-demo="member">Use Maya</button>
+          <div><p>Demo user, a member with bookings</p><p class="mono">${DEMO_MEMBER.email}<br>${DEMO_MEMBER.password}</p></div>
+          <button class="btn btn-small btn-ghost" type="button" data-demo="member">Use demo user</button>
         </div>
         <div class="account__demo-row">
           <div><p>The organiser, with admin access</p><p class="mono">${DEMO_ADMIN.email}<br>${DEMO_ADMIN.password}</p></div>

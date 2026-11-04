@@ -7,7 +7,7 @@ const USERS = "soonthere:users";
 const SESSION = "soonthere:session";
 
 export const DEMO_ADMIN = { email: "admin@soonthere.app", password: "soonthere-admin" };
-export const DEMO_MEMBER = { email: "maya@soonthere.app", password: "soonthere-demo" };
+export const DEMO_MEMBER = { email: "user1@soonthere.app", password: "soonthere-demo" };
 
 const toHex = (buffer) => [...new Uint8Array(buffer)].map((b) => b.toString(16).padStart(2, "0")).join("");
 
@@ -104,13 +104,13 @@ export async function ensureDemoAccounts() {
   const users = getUsers();
   const before = users.length;
   await demoUser(users, DEMO_ADMIN, "SoonThere Admin", "admin");
-  const maya = await demoUser(users, DEMO_MEMBER, "Maya Fernandes", "member");
+  const member = await demoUser(users, DEMO_MEMBER, "Demo User", "member");
   if (users.length !== before) saveUsers(users);
 
-  // Maya's history is added once per browser, so cancelling her bookings sticks
+  // the demo user's history is added once per browser, so cancelled bookings stay cancelled
   if (read(DEMO_SEEDED, false)) return;
   write(DEMO_SEEDED, true);
-  const base = { userId: maya.id, name: maya.name, email: maya.email, phone: "+351912345678", note: "" };
+  const base = { userId: member.id, name: member.name, email: member.email, phone: "+351912345678", note: "" };
   addRegistrations([
     { ...base, id: "ST-K7M2QX", eventId: "neon-tide", passes: 2, createdAt: daysAgo(9) },
     { ...base, id: "ST-P4WZ8D", eventId: "night-bites", passes: 3, note: "Bringing my parents, one of them uses a cane.", createdAt: daysAgo(6) },

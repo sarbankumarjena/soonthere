@@ -75,8 +75,8 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 
   | Account | Email | Password | What you'll see |
   | --- | --- | --- | --- |
-  | Member | `maya@soonthere.app` | `soonthere-demo` | Five upcoming bookings on the timeline, dials and heatmap, and one past event on the "Been there" reel |
-  | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in Maya's booking `ST-K7M2QX`, then scanning it again |
+  | Demo user | `user1@soonthere.app` | `soonthere-demo` | Five upcoming bookings on the timeline, dials and heatmap, and one past event on the "Been there" reel |
+  | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in the demo user's booking `ST-K7M2QX`, then scanning it again |
 
 > There's no server behind the site, so accounts, bookings and lineup changes are stored in the browser (localStorage). They don't sync between devices, and this isn't real security: anyone with the browser's developer tools could change the data. Passwords are salted and hashed with SHA-256 using the Web Crypto API rather than stored as text, but a real launch would move all of this to a backend.
 
