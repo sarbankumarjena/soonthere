@@ -249,10 +249,10 @@ function initLogo() {
       const mid = (y0 + y1) / 2;
       const r = (n) => n.toFixed(1);
 
-      const behind = `M ${r(x0 - 0.75 * em)} ${r(mid + 0.15 * em)} C ${r(x0 + ww * 0.3)} ${r(mid - 0.05 * em)}, ${r(x1 - ww * 0.25)} ${r(mid - 0.2 * em)}, ${r(x1 + 0.45 * em)} ${r(mid - 0.3 * em)}`;
-      const loop = ` C ${r(x1 + 1.05 * em)} ${r(y0 - 0.15 * em)}, ${r(x1 - ww * 0.15)} ${r(y0 - 0.55 * em)}, ${r(x0 + ww * 0.45)} ${r(y0 - 0.48 * em)}`
-        + ` C ${r(x0 + ww * 0.05)} ${r(y0 - 0.42 * em)}, ${r(x0 - 0.85 * em)} ${r(y0 - 0.1 * em)}, ${r(x0 - 0.62 * em)} ${r(mid + 0.35 * em)}`
-        + ` C ${r(x0 - 0.4 * em)} ${r(y1 + 0.45 * em)}, ${r(x1 - ww * 0.3)} ${r(y1 + 0.5 * em)}, ${r(x1 + 1.05 * em)} ${r(mid + 0.05 * em)}`;
+      const behind = `M ${r(x0 - 0.45 * em)} ${r(mid + 0.1 * em)} C ${r(x0 + ww * 0.3)} ${r(mid - 0.05 * em)}, ${r(x1 - ww * 0.25)} ${r(mid - 0.15 * em)}, ${r(x1 + 0.25 * em)} ${r(mid - 0.22 * em)}`;
+      const loop = ` C ${r(x1 + 0.68 * em)} ${r(y0 - 0.08 * em)}, ${r(x1 - ww * 0.15)} ${r(y0 - 0.36 * em)}, ${r(x0 + ww * 0.45)} ${r(y0 - 0.31 * em)}`
+        + ` C ${r(x0 + ww * 0.05)} ${r(y0 - 0.27 * em)}, ${r(x0 - 0.55 * em)} ${r(y0 - 0.05 * em)}, ${r(x0 - 0.4 * em)} ${r(mid + 0.25 * em)}`
+        + ` C ${r(x0 - 0.25 * em)} ${r(y1 + 0.3 * em)}, ${r(x1 - ww * 0.3)} ${r(y1 + 0.33 * em)}, ${r(x1 + 0.7 * em)} ${r(mid + 0.05 * em)}`;
       const full = behind + loop;
 
       // where the path passes behind the word, mask it out so it seems to go round the back

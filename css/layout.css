@@ -70,8 +70,8 @@ body.menu-open .site-header::before {
   position: relative;
   display: inline-flex;
   align-items: center;
-  margin-left: -0.9em;
-  padding: 0.62em 1.5em 0.62em 0.9em;
+  margin-left: -0.6em;
+  padding: 0.42em 1.05em 0.42em 0.6em;
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 800;
@@ -137,8 +137,8 @@ body.menu-open .site-header::before {
   top: 0;
   left: 0;
   z-index: 3;
-  width: 0.7em;
-  height: 0.7em;
+  width: 0.6em;
+  height: 0.6em;
   overflow: visible;
   offset-path: var(--flight, none);
   offset-distance: 100%;
