@@ -2215,6 +2215,7 @@
 }
 
 .confirm__pass {
+  margin-inline-end: 0.9rem;
   rotate: -2deg;
   animation: hand-over 0.9s var(--ease-out) 0.15s both;
 }
