@@ -222,21 +222,114 @@ function initStretchType() {
   });
 }
 
-// the plane in the logo flies an ellipse drawn around the name, sized to the logo
+// The logo's flight path is drawn to fit the name: it starts on the left, slips behind the
+// word (hidden where it passes behind the letters), loops back over the top, comes down the
+// left side and sweeps out underneath, with the plane at the end of it.
+const SVG = "http://www.w3.org/2000/svg";
+
 function initLogo() {
   $$(".logo").forEach((logo) => {
-    if (!$(".logo__plane", logo)) return;
+    const word = $(".logo__word", logo);
+    const svg = $(".logo__trail", logo);
+    const plane = $(".logo__plane", logo);
+    if (!word || !svg || !plane) return;
+    let flight;
+
+    const draw = () => {
+      const box = logo.getBoundingClientRect();
+      const wb = word.getBoundingClientRect();
+      const em = parseFloat(getComputedStyle(logo).fontSize);
+      const w = box.width;
+      const h = box.height;
+      const x0 = wb.left - box.left;
+      const x1 = wb.right - box.left;
+      const y0 = wb.top - box.top;
+      const y1 = wb.bottom - box.top;
+      const ww = x1 - x0;
+      const mid = (y0 + y1) / 2;
+      const r = (n) => n.toFixed(1);
+
+      const behind = `M ${r(x0 - 0.75 * em)} ${r(mid + 0.15 * em)} C ${r(x0 + ww * 0.3)} ${r(mid - 0.05 * em)}, ${r(x1 - ww * 0.25)} ${r(mid - 0.2 * em)}, ${r(x1 + 0.45 * em)} ${r(mid - 0.3 * em)}`;
+      const loop = ` C ${r(x1 + 1.05 * em)} ${r(y0 - 0.15 * em)}, ${r(x1 - ww * 0.15)} ${r(y0 - 0.55 * em)}, ${r(x0 + ww * 0.45)} ${r(y0 - 0.48 * em)}`
+        + ` C ${r(x0 + ww * 0.05)} ${r(y0 - 0.42 * em)}, ${r(x0 - 0.85 * em)} ${r(y0 - 0.1 * em)}, ${r(x0 - 0.62 * em)} ${r(mid + 0.35 * em)}`
+        + ` C ${r(x0 - 0.4 * em)} ${r(y1 + 0.45 * em)}, ${r(x1 - ww * 0.3)} ${r(y1 + 0.5 * em)}, ${r(x1 + 1.05 * em)} ${r(mid + 0.05 * em)}`;
+      const full = behind + loop;
+
+      // where the path passes behind the word, mask it out so it seems to go round the back
+      const id = `logo-mask-${Math.random().toString(36).slice(2, 8)}`;
+      // the remainder starts where the behind segment ends
+      const rest = `M ${behind.split(" ").slice(-2).join(" ")}${loop}`;
+      const box2 = `x="-20" y="-20" width="${r(w + 40)}" height="${r(h + 40)}"`;
+      svg.setAttribute("viewBox", `0 0 ${r(w)} ${r(h)}`);
+      svg.innerHTML = `
+        <defs>
+          <mask id="${id}-a" maskUnits="userSpaceOnUse" ${box2}>
+            <path class="logo__reveal" d="${behind}"/>
+            <rect x="${r(x0 - 2)}" y="${r(y0 - 1)}" width="${r(ww + 4)}" height="${r(y1 - y0 + 2)}" rx="3" fill="#000"/>
+          </mask>
+          <mask id="${id}-b" maskUnits="userSpaceOnUse" ${box2}><path class="logo__reveal" d="${rest}"/></mask>
+        </defs>
+        <path d="${behind}" mask="url(#${id}-a)"/>
+        <path d="${rest}" mask="url(#${id}-b)"/>`;
+      logo.style.setProperty("--flight", `path("${full}")`);
+
+      // hide the plane while it's behind the word
+      const probe = document.createElementNS(SVG, "path");
+      probe.setAttribute("d", full);
+      const total = probe.getTotalLength();
+      const behindLength = (() => {
+        const p = document.createElementNS(SVG, "path");
+        p.setAttribute("d", behind);
+        return p.getTotalLength();
+      })();
+      let enter = null;
+      let exit = null;
+      for (let l = 0; l <= behindLength; l += 1) {
+        const pt = probe.getPointAtLength(l);
+        const inside = pt.x > x0 + 2 && pt.x < x1 - 2 && pt.y > y0 && pt.y < y1;
+        if (inside && enter === null) enter = l / total;
+        if (!inside && enter !== null && exit === null) exit = l / total;
+      }
+      flight = { enter: enter ?? 0, exit: exit ?? 0, split: behindLength / total };
+      logo.classList.add("is-ready");
+    };
+
+    const fly = () => {
+      if (!flight || prefersReducedMotion() || !plane.animate) return;
+      const { enter, exit, split } = flight;
+      plane.animate(
+        [
+          { offsetDistance: "0%", opacity: 0, offset: 0 },
+          { offsetDistance: "2%", opacity: 1, offset: 0.02 },
+          { offsetDistance: `${enter * 100}%`, opacity: 1, offset: enter },
+          { offsetDistance: `${(enter + 0.01) * 100}%`, opacity: 0, offset: enter + 0.01 },
+          { offsetDistance: `${(exit - 0.01) * 100}%`, opacity: 0, offset: exit - 0.01 },
+          { offsetDistance: `${exit * 100}%`, opacity: 1, offset: exit },
+          { offsetDistance: "100%", opacity: 1, offset: 1 },
+        ],
+        { duration: 2600, easing: "linear" },
+      );
+      // the dashes draw in behind the plane, revealed through the masks
+      $$(".logo__reveal", svg).forEach((path, i) => {
+        const length = path.getTotalLength();
+        path.animate(
+          [{ strokeDasharray: `${length} ${length}`, strokeDashoffset: length }, { strokeDasharray: `${length} ${length}`, strokeDashoffset: 0 }],
+          { duration: 2600 * (i === 0 ? split : 1 - split), delay: i === 0 ? 0 : 2600 * split, easing: "linear", fill: "backwards" },
+        );
+      });
+    };
+
+    let drawn = false;
     const fit = () => {
-      const w = logo.offsetWidth;
-      const h = logo.offsetHeight;
-      const rx = w / 2;
-      const ry = h / 2;
-      // starts on the left and goes clockwise over the top
-      logo.style.setProperty("--orbit", `path("M 0 ${ry} A ${rx} ${ry} 0 1 1 ${w} ${ry} A ${rx} ${ry} 0 1 1 0 ${ry}")`);
-      logo.classList.add("has-orbit");
+      draw();
+      if (!drawn) {
+        drawn = true;
+        fly();
+      }
     };
     document.fonts.ready.then(fit);
-    new ResizeObserver(fit).observe(logo);
+    new ResizeObserver(() => drawn && draw()).observe(logo);
+    logo.addEventListener("pointerenter", fly);
   });
 }
 
