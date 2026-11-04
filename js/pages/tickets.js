@@ -1,7 +1,7 @@
 import { toast } from "../app.js";
 import { $, $$, html, prefersReducedMotion } from "../lib/dom.js";
 import { icons } from "../lib/icons.js";
-import { dateParts, formatDate, formatPrice, formatShortDate, formatTime, pluralise, relativeTime } from "../lib/format.js";
+import { dateParts, formatDate, formatShortDate, formatTime, pad, pluralise, relativeTime } from "../lib/format.js";
 import { events, findClashes, getEvent, imageSrc, isPast, upcoming } from "../lib/catalog.js";
 import { clearRegistrations, getRegistrations, removeRegistration } from "../lib/storage.js";
 import { downloadIcs } from "../lib/calendar.js";
@@ -136,32 +136,29 @@ function timeline(ahead) {
         </div>
       </div>
       <div class="line">
-        <div class="line__clock" aria-hidden="true">
-          <p class="line__label">Doors open</p>
-          <div class="clock" id="clock" data-period="day">
-            <svg viewBox="0 0 120 120">
-              <circle class="clock__face" cx="60" cy="60" r="55"/>
-              <g class="clock__stars">${[[34, 30], [86, 26], [92, 52], [28, 66], [80, 88], [44, 92]].map(([x, y], i) => html`<circle cx="${x}" cy="${y}" r="${i % 2 ? 0.9 : 1.3}"/>`)}</g>
-              ${Array.from({ length: 60 }, (_, i) => html`<line class="clock__tick ${i % 5 ? "" : "is-hour"}" x1="60" y1="8" x2="60" y2="${i % 5 ? 11 : 14}" transform="rotate(${i * 6} 60 60)"/>`)}
-              ${[["12", 60, 27], ["3", 95, 64], ["6", 60, 100], ["9", 25, 64]].map(([n, x, y]) => html`<text class="clock__num" x="${x}" y="${y}">${n}</text>`)}
-              <g class="clock__sky" transform="translate(60 80)">
-                <g class="clock__sun"><circle r="4.2"/>${Array.from({ length: 8 }, (_, i) => html`<line x1="0" y1="-6.5" x2="0" y2="-8.5" transform="rotate(${i * 45})"/>`)}</g>
-                <path class="clock__moon" d="M2.5 -5.5a6 6 0 1 0 3 10.6A5 5 0 0 1 2.5 -5.5Z"/>
-              </g>
-              <line class="clock__hand clock__hand--hour" x1="60" y1="66" x2="60" y2="36"/>
-              <line class="clock__hand clock__hand--minute" x1="60" y1="68" x2="60" y2="19"/>
-              <circle class="clock__pin" cx="60" cy="60" r="3.2"/>
-            </svg>
+        <div class="side-dial side-dial--time" id="time-dial" aria-hidden="true">
+          <div class="side-dial__wheel">
+            ${Array.from({ length: 48 }, (_, i) => html`<i class="side-dial__tick ${i % 2 ? "" : "is-major"}" style="--a:${i * 7.5}deg"></i>`)}
+            ${Array.from({ length: 8 }, (_, i) => html`<span class="side-dial__num" style="--a:${i * 45}deg">${pad(i * 3)}</span>`)}
           </div>
-          <p class="line__caption" id="clock-caption"></p>
+          <div class="side-dial__hub">
+            <span class="side-dial__k">Doors</span>
+            <b class="side-dial__big" id="time-big"></b>
+            <span class="side-dial__small" id="time-small"></span>
+          </div>
+          <span class="side-dial__mark"></span>
         </div>
         <div class="line__track-wrap">
           <ol class="line__track" id="line-track" role="list">${ahead.map((b) => stub(b, findClashes(b.event, all)))}</ol>
         </div>
-        <div class="line__calendar" aria-hidden="true">
-          <p class="line__label">On the day</p>
-          <div class="tear" id="tear"></div>
-          <p class="line__caption" id="tear-caption"></p>
+        <div class="side-dial side-dial--date" id="date-dial" aria-hidden="true">
+          <div class="side-dial__wheel" id="date-wheel"></div>
+          <div class="side-dial__hub">
+            <span class="side-dial__k" id="date-month"></span>
+            <b class="side-dial__big" id="date-big"></b>
+            <span class="side-dial__small" id="date-small"></span>
+          </div>
+          <span class="side-dial__mark"></span>
         </div>
       </div>
     </section>`;
@@ -199,69 +196,75 @@ function filmRoll(past) {
     </section>`;
 }
 
-/* ---------- focus: clock + tear-off calendar follow the ticket in the middle ---------- */
+/* ---------- focus: the two side dials follow the ticket in the middle ---------- */
 
 let focused = null;
 
-// hands keep a running angle so they always turn the short way round
-const hands = { hour: 0, minute: 0 };
+// each wheel keeps a running angle so it always turns the short way round
+const turn = { time: 0, date: 0 };
 const nearest = (from, to) => from + ((((to - from) % 360) + 540) % 360) - 180;
 
-function setClock(event) {
-  const parts = new Intl.DateTimeFormat("en-GB", { timeZone: event.timeZone, hour: "numeric", minute: "numeric", hourCycle: "h23" }).formatToParts(new Date(event.start));
-  const hour = Number(parts.find((p) => p.type === "hour").value);
-  const minute = Number(parts.find((p) => p.type === "minute").value);
-  hands.hour = nearest(hands.hour, (hour % 12) * 30 + minute / 2);
-  hands.minute = nearest(hands.minute, minute * 6);
-  $(".clock__hand--hour").style.transform = `rotate(${hands.hour}deg)`;
-  $(".clock__hand--minute").style.transform = `rotate(${hands.minute}deg)`;
-  $("#clock").dataset.period = hour >= 6 && hour < 18 ? "day" : "night";
-  $("#clock-caption").textContent = `${formatTime(event.start, event.timeZone)} in ${event.city}`;
+function localParts(event) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: event.timeZone, year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "numeric", hourCycle: "h23",
+  }).formatToParts(new Date(event.start));
+  const get = (type) => Number(parts.find((p) => p.type === type).value);
+  return { year: get("year"), month: get("month"), day: get("day"), hour: get("hour"), minute: get("minute") };
 }
 
-function calendarPage(event) {
-  const { day, month } = dateParts(event);
+// hours run round a 24-hour bezel; the wheel turns so the start time faces the timeline
+function setTime(event) {
+  const { hour, minute } = localParts(event);
+  turn.time = nearest(turn.time, 90 - (hour + minute / 60) * 15);
+  $("#time-dial .side-dial__wheel").style.transform = `rotate(${turn.time}deg)`;
+  $("#time-dial").dataset.period = hour >= 6 && hour < 19 ? "day" : "night";
+  const [big, ...rest] = formatTime(event.start, event.timeZone).split(" ");
+  $("#time-big").textContent = big;
+  $("#time-small").textContent = `${rest.join(" ")} ${event.city}`.trim();
+}
+
+// the days of the event's month run round the second wheel, with a dot on every booked day
+let wheelMonth = "";
+
+function setDate(event) {
+  const { year, month, day } = localParts(event);
+  const days = new Date(year, month, 0).getDate();
+  const step = 360 / days;
+  const key = `${year}-${month}`;
+  const wheel = $("#date-wheel");
+
+  if (key !== wheelMonth) {
+    const booked = new Set(
+      bookings()
+        .map((b) => localParts(b.event))
+        .filter((p) => p.year === year && p.month === month)
+        .map((p) => p.day),
+    );
+    const labelled = (d) => d === 1 || d % 5 === 0 || booked.has(d);
+    wheel.innerHTML = Array.from({ length: days }, (_, i) => {
+      const d = i + 1;
+      return `<i class="side-dial__tick is-major" style="--a:${i * step}deg"></i>${labelled(d) ? `<span class="side-dial__num ${booked.has(d) ? "is-booked" : ""}" style="--a:${i * step}deg">${d}</span>` : ""}${booked.has(d) ? `<b class="side-dial__dot" style="--a:${i * step}deg"></b>` : ""}`;
+    }).join("");
+    wheelMonth = key;
+  }
+
+  turn.date = nearest(turn.date, 270 - (day - 1) * step);
+  wheel.style.transform = `rotate(${turn.date}deg)`;
   const date = new Date(event.start);
-  const year = new Intl.DateTimeFormat(undefined, { timeZone: event.timeZone, year: "numeric" }).format(date);
-  const weekday = new Intl.DateTimeFormat(undefined, { timeZone: event.timeZone, weekday: "long" }).format(date);
-  return `<div class="tear__page" data-category="${event.category}"><span class="tear__month">${month} ${year}</span><b class="tear__day">${day}</b><span class="tear__weekday">${weekday}</span></div>`;
-}
-
-function setCalendar(event, direction) {
-  const tear = $("#tear");
-  const current = $(".tear__page:last-child", tear);
-  tear.insertAdjacentHTML(direction > 0 ? "afterbegin" : "beforeend", calendarPage(event));
-  $("#tear-caption").textContent = relativeTime(event.start);
-  if (!current || prefersReducedMotion()) {
-    current?.remove();
-    return;
-  }
-  if (direction > 0) {
-    // going forward: tear the old page off the top
-    current.classList.add("is-tearing");
-    current.addEventListener("animationend", () => current.remove(), { once: true });
-  } else {
-    // going back: the earlier page sticks back on over the top
-    const page = $(".tear__page:last-child", tear);
-    page.classList.add("is-sticking");
-    page.addEventListener("animationend", () => {
-      page.classList.remove("is-sticking");
-      current.remove();
-    }, { once: true });
-  }
+  $("#date-month").textContent = new Intl.DateTimeFormat(undefined, { timeZone: event.timeZone, month: "short", year: "numeric" }).format(date);
+  $("#date-big").textContent = day;
+  $("#date-small").textContent = new Intl.DateTimeFormat(undefined, { timeZone: event.timeZone, weekday: "long" }).format(date);
+  $("#date-dial").dataset.category = event.category;
 }
 
 function focusStub(item) {
   if (!item || item === focused) return;
-  const list = bookings();
-  const from = focused ? list.findIndex((b) => b.id === focused.dataset.id) : -1;
-  const to = list.findIndex((b) => b.id === item.dataset.id);
+  const booking = bookings().find((b) => b.id === item.dataset.id);
   focused?.classList.remove("is-focused");
   item.classList.add("is-focused");
   focused = item;
-  const { event } = list[to];
-  setClock(event);
-  setCalendar(event, to >= from ? 1 : -1);
+  setTime(booking.event);
+  setDate(booking.event);
 }
 
 function initTimeline() {
@@ -349,6 +352,7 @@ function render() {
   const ahead = list.filter((b) => !isPast(b.event));
   const past = list.filter((b) => isPast(b.event));
   focused = null;
+  wheelMonth = "";
   renderSummary(list, ahead);
   root.innerHTML = html`
     ${timeline(ahead)}

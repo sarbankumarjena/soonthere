@@ -2356,7 +2356,7 @@
 /* timeline: clock on one end, tear-off calendar on the other, tickets riding between a date line and a time line */
 .line {
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1fr) 9rem;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: var(--space-l);
   align-items: center;
 }
@@ -2382,127 +2382,6 @@
   font-size: 0.75rem;
   text-align: center;
   color: var(--ink-2);
-}
-
-.line__label {
-  margin-bottom: var(--space-s);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--ink-3);
-}
-
-/* watch face that switches to a night sky for evening events */
-.clock {
-  --face: var(--card);
-  --face-ink: var(--ink);
-  --face-soft: var(--ink-3);
-  width: 100%;
-  max-width: 8.5rem;
-  margin-inline: auto;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1.5px var(--ink), 4px 5px 0 1.5px var(--ink);
-  transition: box-shadow 0.4s ease;
-}
-
-.clock[data-period="night"] {
-  --face: #1c2238;
-  --face-ink: #f2ece1;
-  --face-soft: rgb(242 236 225 / 0.45);
-}
-
-.clock svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.clock__face {
-  fill: var(--face);
-  transition: fill 0.6s ease;
-}
-
-.clock__tick {
-  stroke: var(--face-soft);
-  stroke-width: 1;
-  transition: stroke 0.6s ease;
-}
-
-.clock__tick.is-hour {
-  stroke: var(--face-ink);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-.clock__num {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  text-anchor: middle;
-  fill: var(--face-ink);
-  transition: fill 0.6s ease;
-}
-
-.clock__stars {
-  fill: #f2ece1;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.clock[data-period="night"] .clock__stars {
-  opacity: 0.7;
-}
-
-.clock__sun,
-.clock__moon {
-  transition: opacity 0.5s ease, transform 0.6s var(--ease-spring);
-}
-
-.clock__sun {
-  fill: var(--cat-food);
-  stroke: var(--cat-food);
-  stroke-width: 1.4;
-  stroke-linecap: round;
-}
-
-.clock__moon {
-  fill: #f6e7b8;
-  opacity: 0;
-  transform: scale(0.4);
-}
-
-.clock[data-period="night"] .clock__sun {
-  opacity: 0;
-  transform: scale(0.4) rotate(90deg);
-}
-
-.clock[data-period="night"] .clock__moon {
-  opacity: 1;
-  transform: none;
-}
-
-.clock__hand {
-  stroke: var(--face-ink);
-  stroke-linecap: round;
-  transform-origin: 60px 60px;
-  transition: transform 0.9s var(--ease-spring), stroke 0.6s ease;
-}
-
-.clock__hand--hour {
-  stroke-width: 4.5;
-}
-
-.clock__hand--minute {
-  stroke-width: 2.5;
-  stroke: var(--accent);
-}
-
-.clock__pin {
-  fill: var(--accent);
-  stroke: var(--face);
-  stroke-width: 1.5;
 }
 
 .line__track-wrap {
@@ -2668,105 +2547,165 @@
   height: 0.85rem;
 }
 
-/* tear-off calendar pad: a few pages showing underneath, spiral binding, perforated top */
-.tear {
+/* side dials: half-wheels peeking out at each end of the timeline */
+.side-dial {
+  --D: 17rem;
+  --band: 2rem;
   position: relative;
-  width: 100%;
-  max-width: 8.5rem;
-  aspect-ratio: 1 / 1.12;
-  margin: 8px auto 0;
-  perspective: 700px;
-  border-radius: var(--radius);
-  box-shadow:
-    0 4px 0 -1px var(--card), 0 4px 0 0.5px var(--ink),
-    0 8px 0 -1px var(--card), 0 8px 0 0.5px var(--ink),
-    5px 12px 0 0 var(--ink);
-}
-
-.tear::before {
-  content: "";
-  position: absolute;
-  z-index: 6;
-  top: -9px;
-  left: 12%;
-  right: 12%;
-  height: 16px;
-  background: radial-gradient(circle at 50% 100%, transparent 3.2px, var(--ink) 3.6px 5.4px, transparent 5.8px) 0 0 / 16px 16px repeat-x;
-}
-
-.tear__page {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  justify-items: center;
+  width: calc(var(--D) / 2);
+  height: var(--D);
   overflow: hidden;
-  border: 1.5px solid var(--ink);
-  border-radius: var(--radius);
-  background: var(--card);
-  transform-origin: 50% 0;
 }
 
-/* the little punched holes where the page tears from the pad */
-.tear__page::before {
-  content: "";
+.side-dial__wheel {
   position: absolute;
-  top: 2.15rem;
+  top: 0;
+  width: var(--D);
+  height: var(--D);
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+  transition: transform 0.9s var(--ease-spring);
+}
+
+.side-dial--time .side-dial__wheel {
+  left: calc(var(--D) / -2);
+  /* night, dawn, day, dusk round a 24-hour bezel */
+  background: conic-gradient(#232a45 0 75deg, #b98ba6 90deg, #f3d99b 105deg, #f6e3b4 255deg, #e9a074 275deg, #232a45 292deg 360deg);
+}
+
+.side-dial--date .side-dial__wheel {
   left: 0;
-  right: 0;
-  height: 4px;
-  background: radial-gradient(circle, var(--paper) 1.4px, transparent 1.8px) 0 0 / 8px 4px repeat-x;
+  background: var(--paper-2);
 }
 
-.tear__month {
-  width: 100%;
-  padding: 0.95rem 0 0.55rem;
-  background: var(--cat, var(--accent));
-  color: #171513;
+.side-dial__tick,
+.side-dial__num,
+.side-dial__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  rotate: var(--a);
+}
+
+.side-dial__tick {
+  width: 1.5px;
+  height: 0.45rem;
+  margin: calc(var(--D) / -2 + 2px) 0 0 -0.75px;
+  background: color-mix(in srgb, var(--ink) 40%, transparent);
+  transform-origin: 50% calc(var(--D) / 2 - 2px);
+}
+
+.side-dial__tick.is-major {
+  height: 0.7rem;
+  background: var(--ink);
+}
+
+.side-dial--time .side-dial__tick {
+  background: rgb(23 21 19 / 0.55);
+}
+
+.side-dial__num {
+  width: 2rem;
+  margin: calc(var(--D) / -2 + 0.85rem) 0 0 -1rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 500;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.tear__day {
-  align-self: center;
-  font-family: var(--font-poster);
-  font-size: 3.6rem;
-  font-weight: 900;
   line-height: 1;
-  font-variation-settings: "wdth" 85;
+  text-align: center;
+  color: #171513;
+  transform-origin: 50% calc(var(--D) / 2 - 0.85rem);
 }
 
-.tear__weekday {
-  padding-bottom: 0.7rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+.side-dial--date .side-dial__num {
   color: var(--ink-2);
 }
 
-.tear__page.is-tearing {
-  z-index: 3;
-  animation: tear-off 0.8s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+.side-dial__num.is-booked {
+  color: var(--ink);
+  font-weight: 700;
 }
 
-.tear__page.is-sticking {
-  animation: tear-off 0.6s var(--ease-out) reverse both;
+.side-dial__dot {
+  width: 5px;
+  height: 5px;
+  margin: calc(var(--D) / -2 + 1.75rem) 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform-origin: 50% calc(var(--D) / 2 - 1.75rem);
 }
 
-@keyframes tear-off {
-  25% {
-    transform: rotateX(-18deg) rotateZ(-3deg);
-    box-shadow: 0 18px 20px -12px rgb(0 0 0 / 0.35);
-  }
-  to {
-    transform: translate(-35%, 150%) rotateX(-70deg) rotateZ(-32deg);
-    opacity: 0;
-  }
+/* hub: the readout, half showing */
+.side-dial__hub {
+  position: absolute;
+  top: var(--band);
+  bottom: var(--band);
+  width: calc(var(--D) - 2 * var(--band));
+  display: grid;
+  align-content: center;
+  gap: 0.15rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+}
+
+.side-dial--time .side-dial__hub {
+  left: calc(var(--band) - var(--D) / 2);
+  padding-left: calc(var(--D) / 2 - var(--band) + 0.55rem);
+}
+
+.side-dial--date .side-dial__hub {
+  left: var(--band);
+  padding-right: calc(var(--D) / 2 - var(--band) + 0.8rem);
+  text-align: right;
+}
+
+.side-dial__k {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+
+.side-dial__big {
+  font-family: var(--font-poster);
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1;
+  font-variation-settings: "wdth" 80;
+  font-variant-numeric: tabular-nums;
+}
+
+.side-dial--date .side-dial__big {
+  font-size: 2.8rem;
+  color: var(--cat, var(--accent));
+}
+
+.side-dial__small {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: var(--ink-2);
+}
+
+/* the pointer where the wheel meets the timeline */
+.side-dial__mark {
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-block: 6px solid transparent;
+  translate: 0 -50%;
+}
+
+.side-dial--time .side-dial__mark {
+  right: 0;
+  border-right: 8px solid var(--accent);
+}
+
+.side-dial--date .side-dial__mark {
+  left: 0;
+  border-left: 8px solid var(--accent);
 }
 
 /* heatmap */
@@ -3038,12 +2977,26 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .line__clock {
+  .side-dial {
+    --D: 13rem;
+    --band: 1.7rem;
+  }
+
+  .side-dial--time {
     order: 1;
   }
 
-  .line__calendar {
+  .side-dial--date {
     order: 2;
+    justify-self: end;
+  }
+
+  .side-dial__big {
+    font-size: 1.7rem;
+  }
+
+  .side-dial--date .side-dial__big {
+    font-size: 2.2rem;
   }
 
   .line__track-wrap {
@@ -3051,14 +3004,6 @@
     grid-column: 1 / -1;
   }
 
-  .clock,
-  .tear {
-    max-width: 7rem;
-  }
-
-  .tear__day {
-    font-size: 2.9rem;
-  }
 
   .stub {
     flex-basis: 72vw;
