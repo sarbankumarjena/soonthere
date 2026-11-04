@@ -750,3 +750,248 @@
   letter-spacing: 0.08em;
   color: var(--ink-3);
 }
+
+/* form fields */
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.field label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  font-weight: 600;
+}
+
+.field__optional {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 6rem;
+  line-height: 1.5;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-3);
+}
+
+.field input:hover,
+.field textarea:hover {
+  border-color: var(--ink-3);
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.field.has-error input,
+.field.has-error select,
+.field.has-error textarea {
+  border-color: var(--danger);
+}
+
+.field.has-error input:focus,
+.field.has-error select:focus {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 22%, transparent);
+}
+
+.field__hint {
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.field__count {
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.field__error:empty {
+  display: none;
+}
+
+.field__error,
+.field__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--danger);
+  animation: nudge 0.35s var(--ease-out);
+}
+
+.field__error svg,
+.field__notice svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.2rem;
+}
+
+@keyframes nudge {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.field__notice {
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--cat-food) 18%, transparent);
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.field__notice[hidden] {
+  display: none;
+}
+
+.select-field--large select {
+  min-height: 3.2rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.stepper .stepper__btn {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.stepper__btn:hover {
+  background: var(--paper-2);
+}
+
+.stepper__btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.field .stepper input {
+  width: 3.5rem;
+  min-height: 3rem;
+  padding: 0;
+  border: 0;
+  border-inline: 1.5px solid var(--line);
+  border-radius: 0;
+  background: none;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.stepper input::-webkit-inner-spin-button,
+.stepper input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.field .stepper input:focus {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+/* custom checkbox */
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.check__box {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+  margin-top: 0.05rem;
+  border: 1.5px solid var(--ink-3);
+  border-radius: 5px;
+  background: var(--card);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.check__box svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--on-accent);
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  transition: stroke-dashoffset 0.3s var(--ease-out);
+}
+
+.check input:checked + .check__box {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.check input:checked + .check__box svg {
+  stroke-dashoffset: 0;
+}
+
+.check input:focus-visible + .check__box {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.has-error .check__box {
+  border-color: var(--danger);
+}
+
+.spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}

@@ -116,6 +116,7 @@ body {
   font-size: var(--step-0);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
@@ -195,6 +196,11 @@ ol[role="list"] {
   outline: 2.5px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* components set display on lots of things, so make sure hidden always wins */
+[hidden] {
+  display: none !important;
 }
 
 .visually-hidden {

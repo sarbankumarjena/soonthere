@@ -59,6 +59,32 @@ export function related(event, limit = 3) {
   return [...same, ...others.filter((e) => e.category !== event.category)].slice(0, limit);
 }
 
+// open for bookings: not ended, not sold out and doors not open yet
+export function isBookable(event) {
+  return canRegister(event) && !hasStarted(event);
+}
+
+const HOUR = 3_600_000;
+
+// other booked events that overlap this one, or sit in another city too close to get between
+export function findClashes(event, bookings = getRegistrations()) {
+  const start = new Date(event.start).getTime();
+  const end = new Date(event.end).getTime();
+  const ids = new Set(bookings.map((b) => b.eventId));
+  ids.delete(event.id);
+
+  return [...ids]
+    .map(getEvent)
+    .filter(Boolean)
+    .filter((other) => {
+      const otherStart = new Date(other.start).getTime();
+      const otherEnd = new Date(other.end).getTime();
+      const overlaps = otherStart < end && start < otherEnd;
+      const gap = Math.min(Math.abs(otherStart - end), Math.abs(start - otherEnd));
+      return overlaps || (other.city !== event.city && gap < 12 * HOUR);
+    });
+}
+
 export function imageSrc(event, size = 960) {
   return `assets/images/events/${event.image}-${size}.webp`;
 }
@@ -67,7 +93,6 @@ export function mapsUrl(event) {
   const query = encodeURIComponent(`${event.venue}, ${event.area}, ${event.city}`);
   return `https://www.google.com/maps/search/?api=1&query=${query}`;
 }
-
 
 // rough rates, only used so "sort by price" makes sense across currencies
 const USD_RATES = { USD: 1, EUR: 1.08, GBP: 1.27, AUD: 0.66, HKD: 0.128, INR: 0.012, ZAR: 0.055, IDR: 0.000063, MXN: 0.055 };
