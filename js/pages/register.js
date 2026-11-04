@@ -128,11 +128,53 @@ function confetti() {
   return html`<div class="confetti" aria-hidden="true">${Array.from({ length: 28 }, (_, i) => html`<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${colours[i % colours.length]}"></i>`)}</div>`;
 }
 
+// the pass arrives as a paper plane: it flies in along a dashed path, lands, then unfolds
+function deliver(confirm) {
+  const pass = $(".confirm__pass", confirm);
+  if (prefersReducedMotion() || !CSS.supports("offset-path", 'path("M 0 0 L 1 1")')) return Promise.resolve();
+
+  const box = pass.getBoundingClientRect();
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const tx = box.left + box.width / 2;
+  const ty = Math.min(box.top + box.height / 2, h * 0.6);
+  const d = `M -80 ${h * 0.82} C ${w * 0.28} ${h * 0.05}, ${tx + 160} ${ty - 300}, ${tx} ${ty}`;
+
+  const layer = document.createElement("div");
+  layer.className = "delivery";
+  layer.setAttribute("aria-hidden", "true");
+  layer.innerHTML = `
+    <svg class="delivery__sky" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+      <defs><mask id="delivery-reveal"><path class="delivery__reveal" d="${d}" pathLength="1"/></mask></defs>
+      <path class="delivery__trail" d="${d}" mask="url(#delivery-reveal)"/>
+    </svg>
+    <svg class="delivery__plane" viewBox="0 0 40 40" style="offset-path: path('${d}')">
+      <path class="delivery__wing" d="M2 15 38 2 26 36 19 22Z"/><path class="delivery__fold" d="M19 22 38 2"/>
+    </svg>`;
+  document.body.append(layer);
+  pass.classList.add("is-waiting");
+
+  const plane = $(".delivery__plane", layer);
+  const flight = plane.animate(
+    [{ offsetDistance: "0%", scale: 0.7 }, { offsetDistance: "100%", scale: 1.6 }],
+    { duration: 1300, easing: "cubic-bezier(0.45, 0, 0.25, 1)", fill: "forwards" },
+  );
+  $(".delivery__reveal", layer).animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], { duration: 1300, easing: "cubic-bezier(0.45, 0, 0.25, 1)", fill: "forwards" });
+
+  return flight.finished.then(() => {
+    plane.animate([{ opacity: 1, rotate: "0deg" }, { opacity: 0, rotate: "40deg", scale: 2.4 }], { duration: 380, easing: "ease-in", fill: "forwards" });
+    $(".delivery__sky", layer).animate([{ opacity: 1 }, { opacity: 0 }], { duration: 900, delay: 300, fill: "forwards" });
+    pass.classList.remove("is-waiting");
+    pass.classList.add("is-unfolding");
+    setTimeout(() => layer.remove(), 1300);
+    return new Promise((resolve) => setTimeout(resolve, 900));
+  });
+}
+
 function showConfirmation(booking, event) {
   const first = booking.name.split(" ")[0];
   const confirm = $("#confirm");
   confirm.innerHTML = html`
-    ${confetti()}
     <div class="confirm__copy">
       <p class="eyebrow"><span>${booking.id}</span><span>Confirmed</span></p>
       <h1 class="confirm__title" id="confirm-title"><span>You're in!</span> <span>See you SoonThere.</span></h1>
@@ -151,13 +193,18 @@ function showConfirmation(booking, event) {
     toast("Calendar file downloaded. Open it to add the event.");
   });
 
-  setTimeout(() => $(".confetti", confirm)?.remove(), 4000);
   $("#register").hidden = true;
   $("#back-link").hidden = true;
   confirm.hidden = false;
   document.title = "You're in! | SoonThere";
-  window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  window.scrollTo({ top: 0, behavior: "instant" });
   confirm.focus({ preventScroll: true });
+
+  deliver(confirm).then(() => {
+    confirm.classList.add("is-delivered");
+    confirm.insertAdjacentHTML("afterbegin", confetti());
+    setTimeout(() => $(".confetti", confirm)?.remove(), 4000);
+  });
 }
 
 async function submit(e) {
