@@ -1,12 +1,14 @@
 import { initTilt, observeReveals } from "../app.js";
 import { $, $$, html, debounce, prefersReducedMotion } from "../lib/dom.js";
 import { icons } from "../lib/icons.js";
-import { formatShortDate, pluralise } from "../lib/format.js";
+import { formatPrice, formatShortDate, formatTime, pluralise, relativeTime } from "../lib/format.js";
 import {
   categories,
   events,
   byStart,
   getCategory,
+  getStatus,
+  imageSrc,
   isPast,
   nextEvent,
   popularity,
@@ -15,6 +17,7 @@ import {
 } from "../lib/catalog.js";
 import { eventCard, featuredCard } from "../components/card.js";
 import { mountCountdown } from "../components/countdown.js";
+import { mountDial } from "../components/dial.js";
 
 const grid = $("#event-grid");
 const form = $("#filters");
@@ -205,48 +208,75 @@ function renderFeatured() {
   initTilt(container);
 }
 
-function renderNextUp() {
-  const container = $("#next-up");
-  const event = nextEvent();
-  if (!event) {
-    container.hidden = true;
-    return;
-  }
-  container.innerHTML = html`
-    <a class="next-up__card" href="event.html?id=${encodeURIComponent(event.id)}" data-category="${event.category}">
-      <span class="next-up__label mono"><i></i> Next up</span>
-      <strong class="next-up__title">${event.title}</strong>
-      <span class="next-up__meta mono">${formatShortDate(event)} · ${event.city}</span>
-      <span class="next-up__count" data-countdown></span>
-      <span class="next-up__go" aria-hidden="true">${icons.arrowUpRight}</span>
-    </a>`;
-  mountCountdown($("[data-countdown]", container), event.start, { variant: "compact", onEnd: renderNextUp });
+const eventUrl = (event) => `event.html?id=${encodeURIComponent(event.id)}`;
+
+let spotlightCountdown;
+
+function renderSpotlight(event) {
+  const el = $("#spotlight");
+  const status = getStatus(event);
+  const when = event.id === nextEvent()?.id ? "Next up" : relativeTime(event.start);
+  const cta = { "sold-out": "Sold out, see details", "few-left": "Grab a last spot" }[status] ?? (event.price ? "Get tickets" : "Get a free pass");
+
+  el.dataset.category = event.category;
+  el.innerHTML = html`
+    <div class="spotlight__label">
+      <span class="mono">${when}</span>
+      <span class="chip" data-category="${event.category}">${getCategory(event.category)?.label}</span>
+    </div>
+    <h2 class="spotlight__title"><a href="${eventUrl(event)}">${event.title}</a></h2>
+    <ul class="spotlight__meta" role="list">
+      <li>${icons.calendar}${formatShortDate(event)}, ${formatTime(event.start, event.timeZone)}</li>
+      <li>${icons.pin}${event.venue}, ${event.city}</li>
+      <li>${icons.ticket}${formatPrice(event.price, event.currency)}</li>
+    </ul>
+    <div class="spotlight__foot">
+      <span data-countdown></span>
+      <a class="btn btn-small ${status === "sold-out" ? "btn-ghost" : "btn-accent"}" href="${eventUrl(event)}">${cta}</a>
+    </div>`;
+  spotlightCountdown?.stop();
+  spotlightCountdown = mountCountdown($("[data-countdown]", el), event.start, { variant: "compact" });
 }
 
-function renderStats() {
-  const live = upcoming();
-  const stats = [
-    [live.length, "upcoming events"],
-    [new Set(live.map((e) => e.city)).size, "cities"],
-    [categories.length, "scenes"],
-  ];
-  const container = $("#hero-stats");
-  container.innerHTML = stats
-    .map(([value, label]) => html`<div><dt class="visually-hidden">${label}</dt><dd><b data-count-to="${value}">${value}</b> ${label}</dd></div>`)
-    .join("");
+function initStage() {
+  const list = upcoming();
+  const stage = $("#stage");
+  if (!list.length) {
+    $("#dial").hidden = true;
+    return;
+  }
 
-  if (prefersReducedMotion()) return;
-  $$("[data-count-to]", container).forEach((el) => {
-    const target = Number(el.dataset.countTo);
-    const start = performance.now();
-    const duration = 1200;
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / duration);
-      el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
-      if (t < 1) requestAnimationFrame(step);
-    };
-    el.textContent = "0";
-    requestAnimationFrame(step);
+  const layers = $$(".stage__backdrop img", stage);
+  let front = 0;
+  let latest;
+
+  // crossfade between two layers once the next photo has decoded
+  const setBackdrop = (event) => {
+    const incoming = layers[1 - front];
+    const outgoing = layers[front];
+    const token = (latest = {});
+    incoming.src = imageSrc(event, 960);
+    incoming
+      .decode()
+      .catch(() => {})
+      .then(() => {
+        if (token !== latest) return;
+        incoming.classList.add("is-on");
+        outgoing.classList.remove("is-on");
+        front = 1 - front;
+      });
+  };
+
+  mountDial($("#dial"), list, {
+    pauseArea: stage,
+    onChange(event) {
+      stage.dataset.category = event.category;
+      renderSpotlight(event);
+      setBackdrop(event);
+    },
+    onOpen(event) {
+      window.location.href = eventUrl(event);
+    },
   });
 }
 
@@ -278,8 +308,7 @@ function initCoverTransition() {
   });
 }
 
-renderStats();
-renderNextUp();
+initStage();
 renderMarquees();
 renderFeatured();
 initFilters();

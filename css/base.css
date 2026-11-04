@@ -251,6 +251,12 @@ ol[role="list"] {
   background: currentColor;
 }
 
+/* two-part eyebrows: the first part sits in front of the rule */
+.eyebrow > :first-child:not(:only-child) {
+  order: -1;
+  color: var(--accent-text);
+}
+
 .outline-text {
   color: transparent;
   -webkit-text-stroke: 1.5px var(--ink);

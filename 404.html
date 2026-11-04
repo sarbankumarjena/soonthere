@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wrong venue | SoonThere</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f2ece1">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap">
+  <script>
+    (function () {
+      var t;
+      try { t = JSON.parse(localStorage.getItem("soonthere:theme")); } catch (e) {}
+      document.documentElement.dataset.theme = t || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <!-- absolute paths: this page is served for any missing URL, however deep -->
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/pages.css">
+  <script type="module" src="/js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="/" aria-label="SoonThere home"><span>Soon</span><span>There</span><i class="logo-dot"></i></a>
+      <nav class="nav" aria-label="Main">
+        <div class="nav-links" id="nav-links">
+          <a href="/#lineup">Events</a>
+          <a href="/#how">How it works</a>
+          <a href="/tickets.html">My tickets <span class="ticket-count"></span></a>
+        </div>
+        <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <g class="sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g>
+            <path class="moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/>
+          </svg>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path class="bar bar-1" d="M4 8h16"/><path class="bar bar-2" d="M4 16h16"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="stage stage--plain" data-stretch-area>
+        <div class="container lost">
+          <p class="eyebrow"><span>Error 404</span><span>Gate closed</span></p>
+          <h1 class="lost__title" data-stretch data-min="55" data-max="140" data-reach="260">Wrong venue.</h1>
+          <p class="lost__text">This page isn't on the lineup. The link might be old, or it took a wrong turn somewhere. The good stuff is this way.</p>
+          <div class="hero__actions">
+            <a class="btn btn-accent" href="/#lineup">Back to the lineup <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn-ghost" href="/tickets.html">My tickets</a>
+          </div>
+          <div class="lost__stub mono" aria-hidden="true">
+            <span>Admit</span>
+            <b>None</b>
+            <span>Row 4, seat 04</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer site-footer--slim">
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> SoonThere. Built by Sarban Kumar Jena.</span>
+        <span>Find it. Book it. Be SoonThere.</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

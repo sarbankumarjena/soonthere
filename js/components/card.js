@@ -78,7 +78,7 @@ export function featuredCard(event, { large = false } = {}) {
           ${statusStamp(event)}
         </div>
         <div class="poster-card__bottom">
-          <p class="poster-card__meta mono">${formatShortDate(event)} · ${event.city}</p>
+          <p class="poster-card__meta mono"><span>${formatShortDate(event)}</span><span>${event.city}</span></p>
           <h3 class="poster-card__title"><a href="event.html?id=${encodeURIComponent(event.id)}">${event.title}</a></h3>
           <div class="poster-card__foot">
             <span class="poster-card__price">${formatPrice(event.price, event.currency)}</span>

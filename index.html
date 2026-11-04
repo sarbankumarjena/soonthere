@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SoonThere · Discover what's happening next</title>
+  <title>SoonThere | Discover what's happening next</title>
   <meta name="description" content="Find gigs, talks, tastings and late nights in cities around the world. Browse the lineup, grab a pass and see you SoonThere.">
   <meta name="theme-color" content="#f2ece1">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="SoonThere · Discover what's happening next">
+  <meta property="og:title" content="SoonThere | Discover what's happening next">
   <meta property="og:description" content="Find it. Book it. Be SoonThere.">
   <meta property="og:image" content="assets/images/og-cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,36 +57,42 @@
 
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero__grid">
-        <div class="hero__copy">
-          <p class="eyebrow hero__eyebrow">Season 26/27 · Worldwide</p>
-          <h1 class="hero__title" id="hero-title" data-stretch data-min="62" data-max="135" data-reach="240">
-            <span class="visually-hidden">Discover what's happening next.</span>
-            <span class="hero__line" aria-hidden="true"><span data-kinetic>Discover</span></span>
-            <span class="hero__line" aria-hidden="true"><span data-kinetic>what's</span> <span class="outline-text" data-kinetic>happening</span></span>
-            <span class="hero__line hero__line--accent" aria-hidden="true"><span data-kinetic>next.</span></span>
-          </h1>
-          <p class="hero__lede">Gigs, talks, tastings and late nights in cities around the world. Find the one, grab a pass, and we'll see you <strong>SoonThere</strong>.</p>
-          <div class="hero__actions">
-            <a class="btn btn-accent" href="#lineup" data-magnetic>Browse the lineup <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn-ghost" href="tickets.html">My tickets</a>
-          </div>
-          <dl class="hero__stats" id="hero-stats"></dl>
+      <div class="stage" id="stage">
+        <div class="stage__backdrop" id="stage-backdrop" aria-hidden="true">
+          <img alt="" class="is-on">
+          <img alt="">
         </div>
 
-        <div class="hero__art">
-          <figure class="hero__poster print">
-            <img src="assets/images/hero-960.webp" srcset="assets/images/hero-480.webp 480w, assets/images/hero-960.webp 960w" sizes="(max-width: 900px) 90vw, 520px" alt="A concert crowd making heart shapes with their hands under stage lights" width="960" height="640" fetchpriority="high">
-            <figcaption class="hero__caption mono">Live, loud &amp; nearby</figcaption>
-          </figure>
-          <a class="badge-spin hero__badge" href="#lineup" aria-label="Jump to the lineup">
-            <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
-              <defs><path id="ring-path" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"/></defs>
-              <text><textPath href="#ring-path">Find it · Book it · Be SoonThere ·</textPath></text>
-            </svg>
-            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 8v9H8"/></svg>
-          </a>
-          <div class="next-up" id="next-up"></div>
+        <div class="container stage__top">
+          <div class="hero__copy">
+            <p class="eyebrow"><span>Season 26/27</span><span>Worldwide</span></p>
+            <h1 class="hero__title" id="hero-title" data-stretch data-min="62" data-max="135" data-reach="240">
+              <span class="visually-hidden">Discover what's happening next.</span>
+              <span class="hero__line" aria-hidden="true"><span data-kinetic>Discover</span> <span data-kinetic>what's</span></span>
+              <span class="hero__line" aria-hidden="true"><span class="outline-text" data-kinetic>happening</span></span>
+              <span class="hero__line hero__line--accent" aria-hidden="true"><span data-kinetic>next.</span></span>
+            </h1>
+            <p class="hero__lede">Gigs, talks, tastings and late nights in cities around the world. Find the one, grab a pass, and we'll see you <strong>SoonThere</strong>.</p>
+            <div class="hero__actions">
+              <a class="btn btn-accent" href="#lineup" data-magnetic>Browse the lineup <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <a class="btn btn-ghost" href="tickets.html">My tickets</a>
+            </div>
+          </div>
+
+          <div class="spotlight" id="spotlight" aria-live="polite"></div>
+        </div>
+
+        <div class="dial" id="dial" role="group" aria-roledescription="carousel" aria-label="Upcoming events, in date order">
+          <div class="dial__ring dial__ring--outer" aria-hidden="true"></div>
+          <div class="dial__ring dial__ring--inner" aria-hidden="true"></div>
+          <span class="dial__needle" aria-hidden="true"></span>
+          <ol class="dial__track" id="dial-track"></ol>
+          <div class="dial__controls">
+            <button class="dial__btn" type="button" data-step="-1" aria-label="Previous event"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <p class="dial__count mono" id="dial-count"></p>
+            <button class="dial__btn" type="button" data-step="1" aria-label="Next event"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <span class="dial__progress" id="dial-progress" aria-hidden="true"></span>
         </div>
       </div>
     </section>
@@ -99,7 +106,7 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <div>
-            <p class="eyebrow">01 · Headliners</p>
+            <p class="eyebrow"><span>01</span><span>Headliners</span></p>
             <h2 id="featured-title">Don't sleep on these.</h2>
           </div>
           <p>Three events we'd clear the calendar for. Spots are going quickly.</p>
@@ -112,7 +119,7 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <div>
-            <p class="eyebrow">02 · The lineup</p>
+            <p class="eyebrow"><span>02</span><span>The lineup</span></p>
             <h2 id="lineup-title">Everything coming up.</h2>
           </div>
           <p>Search by name, city or venue, or narrow it down by what you're into.</p>
@@ -157,7 +164,7 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <div>
-            <p class="eyebrow">03 · How it works</p>
+            <p class="eyebrow"><span>03</span><span>How it works</span></p>
             <h2 id="how-title">Three steps to the front row.</h2>
           </div>
         </div>
@@ -214,7 +221,7 @@
       </div>
       <p class="footer-big" data-stretch data-accent-from="4" data-min="55" data-max="150">SoonThere.</p>
       <div class="footer-bottom">
-        <span>© <span data-year>2026</span> SoonThere · Built by Sarban Kumar Jena</span>
+        <span>© <span data-year>2026</span> SoonThere. Built by Sarban Kumar Jena.</span>
         <span>Demo project. Events are made up and no real tickets are sold.</span>
       </div>
     </div>
