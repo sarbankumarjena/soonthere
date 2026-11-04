@@ -798,16 +798,36 @@
   color: inherit;
 }
 
+/* phones and small tablets: headliners become a row you swipe through, next card peeking in */
 @media (max-width: 860px) {
   .featured-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: none;
     grid-template-rows: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(82%, 380px);
+    gap: var(--space-m);
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 0 var(--gutter) var(--space-s);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .featured-grid::-webkit-scrollbar {
+    display: none;
   }
 
   .poster-card,
   .poster-card--large {
     grid-row: auto;
-    min-height: 380px;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    scroll-snap-align: start;
+  }
+
+  .poster-card--large .poster-card__title {
+    font-size: var(--step-3);
   }
 }
 
@@ -2221,8 +2241,7 @@
   }
 
   .register__preview {
-    position: static;
-    max-width: 420px;
+    display: none;
   }
 
   .confirm__pass {
@@ -2937,7 +2956,7 @@
   }
 
   .side-dial__big {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
   }
 
   .side-dial--date .side-dial__big {
@@ -3807,5 +3826,124 @@
 @media (max-width: 640px) {
   .field-row--3 {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+/* ---------- phones: denser lineup and steps ---------- */
+
+@media (max-width: 640px) {
+  /* each event becomes a compact ticket row: photo, date stub, details */
+  .card-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-s);
+  }
+
+  .card-grid .ticket-card {
+    --ticket-mask: none;
+  }
+
+  .card-grid .ticket-card__shadow {
+    display: none;
+  }
+
+  .card-grid .ticket-card__inner {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    border-radius: var(--radius-l);
+  }
+
+  .card-grid .ticket-card__media {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 7.5rem;
+  }
+
+  .card-grid .ticket-card__tags {
+    top: auto;
+    bottom: 0.4rem;
+    left: 0.4rem;
+    right: 0.4rem;
+    justify-content: flex-start;
+  }
+
+  .card-grid .ticket-card__tags .chip {
+    display: none;
+  }
+
+  .card-grid .ticket-card__price {
+    font-size: 0.66rem;
+    padding: 0.15em 0.45em;
+  }
+
+  .card-grid .ticket-card__stamp {
+    top: 0.4rem;
+    right: auto;
+    bottom: auto;
+    left: 0.3rem;
+    scale: 0.62;
+    transform-origin: top left;
+  }
+
+  .card-grid .ticket-card__body {
+    grid-template-columns: auto minmax(0, 1fr);
+    border-left: 2px dashed var(--line);
+  }
+
+  .card-grid .ticket-card__date {
+    padding: var(--space-s) var(--space-xs) var(--space-s) var(--space-s);
+    border-right: 0;
+  }
+
+  .card-grid .ticket-card__day {
+    font-size: 1.6rem;
+  }
+
+  .card-grid .ticket-card__info {
+    padding: var(--space-s) var(--space-s) var(--space-s) var(--space-2xs);
+    gap: 0.25rem;
+  }
+
+  .card-grid .ticket-card__title {
+    font-size: var(--step-0);
+  }
+
+  .card-grid .ticket-card__summary,
+  .card-grid .ticket-card__cta {
+    display: none;
+  }
+
+  .card-grid .ticket-card__venue {
+    font-size: 0.72rem;
+  }
+
+  .card-grid .ticket-card__foot {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  /* how it works: a tight numbered list */
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 3.4rem minmax(0, 1fr);
+    gap: 0.15rem var(--space-m);
+    padding-block: var(--space-m);
+  }
+
+  .step__num {
+    grid-row: span 2;
+    margin: 0;
+    font-size: 2.6rem;
+  }
+
+  .step h3 {
+    margin: 0;
+    font-size: var(--step-2);
   }
 }

@@ -570,6 +570,6 @@ body.menu-open {
 
 @media (max-width: 420px) {
   .footer-grid {
-    grid-template-columns: 1fr;
+    gap: var(--space-l);
   }
 }
