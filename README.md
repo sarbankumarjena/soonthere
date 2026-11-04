@@ -13,7 +13,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 ## What it does
 
 ### Home
-- **Hero dial.** Upcoming events sit on the rim of a large wheel, like the face of a clock. The event under the pointer is shown in full (title, date, venue, price, a live countdown) and its photo fills the background. The dial turns on its own every few seconds, and you can also drag it, swipe it on a trackpad, use the arrow buttons or the arrow keys. It pauses while you're hovering or using the keyboard.
+- **Hero dial.** Upcoming events sit on the rim of a large wheel. On wide screens its hub sits in the hero's bottom-right corner and the cards sweep round it; on phones and tablets it runs along the bottom. The event under the pointer is shown in full (title, date, venue, price, a live countdown) and its photo fills the background. The dial turns on its own every few seconds, and you can also drag it, swipe it on a trackpad, use the arrow buttons or the arrow keys. It pauses while you're hovering or using the keyboard.
 - **Headliners.** Three featured events as large poster cards with live countdowns.
 - **The lineup.** Every upcoming event as a ticket-style card with its name, date, venue, image and a short description.
   - **Search.** Matches names, venues, cities, organisers and tags, and ignores accents, so "alcantara" finds "Alcântara".
@@ -47,20 +47,37 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
   - **Errors:** each one appears next to its field and is linked to it for screen readers with `aria-describedby` and `aria-invalid`.
 - **Clash warning.** If the new booking overlaps one you already have, or is in another city only a few hours away, the form warns you but still lets you book.
 - **Live pass preview.** A ticket next to the form fills in as you type.
-- **Confirmation.** On success the pass is saved and the form is replaced by a confirmation: **"You're in! See you SoonThere."** It shows a stamped pass with a booking number such as `ST-K7M2QX` and offers an "Add to calendar" button.
+- **Confirmation.** On success the pass is saved and the form is replaced by a confirmation: **"You're in! See you SoonThere."** The pass is delivered by paper plane: it flies in along a dashed path, unfolds into the ticket, and a "You're in" stamp lands on it. It shows a booking number such as `ST-K7M2QX` and offers an "Add to calendar" button.
+- **Accounts are optional.** Guests can book straight away. Signed-in visitors get their name and email filled in, and the pass is saved to their account.
 
 ![Registration confirmation](docs/screenshots/register.webp)
 
 ### My tickets
-- **Coming up.** A sideways timeline of your bookings, with a date rail above the passes and a time rail below. A clock at one end shows the local start time of the pass in focus. A tear-off calendar at the other end tears a page away as you move forward and sticks it back as you go back.
+- **Coming up.** A sideways timeline of your bookings, with a date rail above the passes and a time rail below. Two half-wheels peek out at either end. The left one is a 24-hour bezel shaded from night to day that turns to the focused pass's start time. The right one carries the days of that month, with a dot on every day you're booked, and turns to its date.
 - **Season at a glance.** A heatmap of the whole season. Days you're going are highlighted, other days with events are shaded, and clicking a highlighted day jumps to that booking.
-- **Been there.** Past bookings on a strip of film.
+- **Been there.** Past bookings on a strip of film. When there aren't any yet, it says so.
 - **Pass details.** Open any pass to see it in full, add it to your calendar or cancel it. Cancelling asks for confirmation, and the spots go back on sale straight away. A "clear everything" option is there too.
 
 ![My tickets](docs/screenshots/tickets.webp)
 
+### Accounts and admin
+- **Sign in or create an account** on `account.html`. Passwords need at least 8 characters with a letter and a number.
+- **Members** see the bookings made on their account, or with their email, under My tickets. Signed out, My tickets shows guest bookings made on this device.
+- **Admins** get an Admin link in the header, which opens `admin.html`:
+  - **Overview:** events coming up, passes booked, passes checked in and accounts.
+  - **Events:** add, edit and remove events, with every field the event page uses, including the venue's time zone and a cover photo (pick one of the site's or upload your own). Each event shows how many of its spots are taken. "Restore the original lineup" undoes every change.
+  - **Check-in:** type a booking number to admit someone. It catches unknown numbers, passes that were already used and passes for a different event. Attendee lists can be filtered by event, and check-ins can be undone.
+  - **Bookings:** every booking, searchable, with cancelling and a CSV export.
+  - **Members:** every account, with the option to make someone an admin.
+![Admin area](docs/screenshots/admin.webp)
+
+- **Demo admin account:** `admin@soonthere.app` with the password `soonthere-admin`. The sign-in page offers to fill it in.
+
+> There's no server behind the site, so accounts, bookings and lineup changes are stored in the browser (localStorage). They don't sync between devices, and this isn't real security: anyone with the browser's developer tools could change the data. Passwords are salted and hashed with SHA-256 using the Web Crypto API rather than stored as text, but a real launch would move all of this to a backend.
+
 ### Everywhere
-- **Light and dark themes.** The site follows your system setting until you pick one, then remembers your choice. The new theme spreads out in a circle from the toggle button.
+- **Light and dark themes.** The site follows your system setting until you pick one, then remembers your choice. The switch is a little sky: the sun slides across, turns into a moon and the stars come out, and the new theme spreads out in a circle from it.
+- **Logo.** The name with "There" printed on a torn ticket stub, and a paper plane flying a dashed orbit around it. Hover it and the plane loops round.
 - **Countdown timers.** Shown on the hero, the headliners and the event pages.
 - **Animation.** Scroll reveals, marquee tapes, a 3D tilt on cards, magnetic buttons and page transitions. All motion is turned off for people who set "reduce motion" in their system settings.
 - **Responsive layout.** Built mobile first and tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide.
@@ -79,6 +96,8 @@ index.html        home: hero dial, headliners, lineup, how it works
 event.html        one event, picked with ?id=
 register.html     registration form and confirmation, event picked with ?event=
 tickets.html      My tickets
+account.html      sign in, create an account, profile
+admin.html        admin area: events, check-in, bookings, members
 404.html          not found
 css/
   base.css        design tokens, light and dark themes, reset, type
@@ -88,7 +107,7 @@ css/
 js/
   app.js          shared on every page: theme, header, reveals, tilt, toasts
   data/events.js  the events themselves
-  lib/            dom helpers, date and price formatting, storage, catalogue, validation, .ics export
+  lib/            dom helpers, date and price formatting, storage, catalogue, accounts, validation, .ics export
   components/     event cards, countdown, hero dial, pass
   pages/          one module per page
 assets/           favicon, share image, event photos
@@ -97,11 +116,12 @@ assets/           favicon, share image, event photos
 ### Notes on the implementation
 
 - **No build step.** Every page loads a single ES module (`js/pages/*.js`), which imports what it needs. The site is static files, so it deploys anywhere.
-- **One source of truth.** All events live in `js/data/events.js`. Cards, filters, the dial, event pages and the registration form all read from it through small helpers in `js/lib/catalog.js`, such as `upcoming()`, `getStatus()`, `seatsLeft()` and `findClashes()`.
+- **One source of truth.** The built-in lineup lives in `js/data/events.js`. When an admin changes it, the edited list is saved under `soonthere:events` and used instead, so every page sees the same events. Cards, filters, the dial, event pages and the registration form all read from it through small helpers in `js/lib/catalog.js`, such as `upcoming()`, `getStatus()`, `seatsLeft()` and `findClashes()`.
 - **Safe templating.** Markup is built with a small `html` tagged template (in `js/lib/dom.js`) that escapes every interpolated value, so nothing typed into the form can end up as HTML.
 - **Time zones.** Start and end times are stored in UTC along with the venue's IANA time zone. Every date and time on the site is formatted with `Intl.DateTimeFormat` in the venue's zone, so an 8 pm gig in Lisbon says 8 pm wherever you are. Prices use `Intl.NumberFormat` in the event's own currency, and phrases like "in 17 days" come from `Intl.RelativeTimeFormat`.
-- **localStorage.** Bookings are saved under `soonthere:registrations` as a list of `{ id, eventId, name, email, phone, passes, note, createdAt }`, and the theme is saved under `soonthere:theme`. Reads and writes are wrapped in `try`/`catch`, so private browsing modes that block storage don't break the site. A custom `registrations:change` event, plus the browser's `storage` event, keeps the ticket count and seat numbers in sync across open tabs. Seats left are worked out as capacity, minus the event's existing bookings, minus your own passes.
+- **localStorage.** Bookings are saved under `soonthere:registrations` as a list of `{ id, eventId, name, email, phone, passes, note, createdAt }`, the theme under `soonthere:theme`, accounts under `soonthere:users` and the signed-in session under `soonthere:session`. Reads and writes are wrapped in `try`/`catch`, so private browsing modes that block storage don't break the site. A custom `registrations:change` event, plus the browser's `storage` event, keeps the ticket count and seat numbers in sync across open tabs. Seats left are worked out as capacity, minus the event's existing bookings, minus your own passes.
 - **The dial.** Each card is rotated around a point far below the stage, so the cards sit on the rim of a big wheel. A `requestAnimationFrame` loop eases the dial towards its target position. The rings of tick marks are plain CSS (`repeating-conic-gradient` with a radial mask), and they fade out around the centre card so its date and time stay readable.
+- **Times entered by admins.** An event's doors time is typed in the venue's local time and converted to UTC by working out that zone's offset with `Intl.DateTimeFormat`, so daylight saving is handled.
 - **Progressive enhancement.** View transitions, the share sheet and the clipboard are used where the browser supports them, and everything still works without them.
 - **Accessibility.**
   - Semantic landmarks and a skip link.
