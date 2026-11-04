@@ -715,3 +715,38 @@
     transform: translateY(10px);
   }
 }
+
+/* full countdown: labelled boxes */
+
+.countdown:not(.countdown--compact) {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xs);
+}
+
+.countdown__unit {
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  padding: 0.7rem 0.25rem 0.55rem;
+  background: var(--paper-2);
+  border-radius: var(--radius);
+}
+
+.countdown__value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-weight: 900;
+  line-height: 1;
+  font-variation-settings: "wdth" 70;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}

@@ -1200,3 +1200,609 @@
     display: none;
   }
 }
+
+/* ---------- event page ---------- */
+
+.event-page {
+  padding-top: var(--space-l);
+}
+
+.back-link {
+  margin-bottom: var(--space-l);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.back-link:hover {
+  color: var(--ink);
+}
+
+.back-link:hover svg {
+  transform: translateX(-4px);
+}
+
+/* the cover "develops": it lands as a category-tinted print and fades up to full colour */
+.event-cover {
+  aspect-ratio: 21 / 9;
+  margin-bottom: var(--space-xl);
+  border-radius: var(--radius-l);
+  view-transition-name: event-cover;
+}
+
+.event-cover img {
+  object-position: 50% 40%;
+  mix-blend-mode: normal;
+  filter: grayscale(1) contrast(1.1);
+  transition: filter 1.6s var(--ease-out) 0.2s;
+}
+
+.event-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--tint);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  transition: opacity 1.6s var(--ease-out) 0.2s;
+}
+
+.event-cover::after {
+  z-index: 2;
+}
+
+.event-cover.is-developed img {
+  filter: none;
+}
+
+.event-cover.is-developed::before,
+.event-cover.is-developed::after {
+  opacity: 0;
+}
+
+.event-cover.is-ended.is-developed img {
+  filter: grayscale(1);
+}
+
+.event-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: start;
+}
+
+.event-head {
+  padding-bottom: var(--space-xl);
+}
+
+.event-head__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.event-head__title {
+  margin: var(--space-m) 0;
+  font-size: clamp(2.6rem, 1.4rem + 4.2vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.9;
+  font-variation-settings: "wdth" 70;
+  text-wrap: balance;
+}
+
+.event-head__summary {
+  max-width: 48ch;
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+.event-head__by {
+  margin-top: var(--space-m);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.event-head__by b {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.event-block {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: var(--space-m) var(--space-l);
+  padding-block: var(--space-xl);
+  border-top: 1px solid var(--line);
+}
+
+.event-block > :not(.event-block__title) {
+  grid-column: 2;
+}
+
+.event-block__title {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  padding-top: 0.2rem;
+}
+
+.event-block__note {
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+.event-prose {
+  display: grid;
+  gap: var(--space-m);
+  max-width: 62ch;
+}
+
+.highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  gap: var(--space-s) var(--space-l);
+  padding: 0;
+}
+
+.highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.highlights svg {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.25rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--cat) 18%, transparent);
+  color: var(--cat);
+}
+
+.schedule {
+  padding: 0;
+}
+
+.schedule li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--space-m);
+  padding: 0.7rem 0 0.7rem 1.4rem;
+}
+
+/* a thin line with a stop for each part of the day */
+.schedule li::before {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--line);
+}
+
+.schedule li::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.2rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 1.5px solid var(--cat);
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.schedule li:first-child::before {
+  top: 1.2rem;
+}
+
+.schedule li:last-child::before {
+  bottom: auto;
+  height: 1.2rem;
+}
+
+.schedule li:first-child::after {
+  background: var(--cat);
+}
+
+.schedule__time {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.venue-card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--card);
+}
+
+/* a little hand-drawn street grid rather than an embedded map */
+.venue-card__map {
+  position: relative;
+  min-height: 11rem;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(28deg, transparent 46%, color-mix(in srgb, var(--cat) 35%, transparent) 46% 49%, transparent 49%),
+    linear-gradient(-62deg, transparent 58%, var(--line) 58% 61%, transparent 61%),
+    repeating-linear-gradient(0deg, transparent 0 26px, var(--line) 26px 27px),
+    repeating-linear-gradient(90deg, transparent 0 34px, var(--line) 34px 35px),
+    var(--paper-2);
+}
+
+.venue-card__pin {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--cat);
+  color: var(--paper);
+}
+
+.venue-card__pin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--cat);
+  animation: ping 2.2s var(--ease-out) infinite;
+}
+
+@keyframes ping {
+  to {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.venue-card__pin svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.venue-card__info {
+  display: grid;
+  align-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-l);
+  color: var(--ink-2);
+}
+
+.venue-card__name {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 800;
+  line-height: 1;
+  font-variation-settings: "wdth" 75;
+  color: var(--ink);
+}
+
+.venue-card .link-arrow {
+  margin-top: var(--space-xs);
+  color: var(--ink);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: 0;
+}
+
+.tag-list li {
+  padding: 0.25em 0.75em;
+  border: 1px dashed var(--line-strong);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+}
+
+/* ticket panel */
+
+.ticket-panel {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-m));
+  background: var(--card);
+  border: var(--border);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-hard);
+}
+
+.ticket-panel__top,
+.ticket-panel__bottom {
+  padding: var(--space-l);
+}
+
+.ticket-panel__price {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  font-weight: 900;
+  line-height: 1;
+  font-variation-settings: "wdth" 75;
+}
+
+.ticket-panel__price small {
+  margin-left: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.ticket-panel__facts {
+  display: grid;
+  gap: var(--space-s);
+  margin-top: var(--space-l);
+}
+
+.ticket-panel__facts div {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: var(--space-s);
+}
+
+.ticket-panel__facts dt {
+  color: var(--ink-3);
+  padding-top: 0.15rem;
+}
+
+.ticket-panel__facts svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.ticket-panel__facts dd {
+  margin: 0;
+}
+
+.ticket-panel .muted {
+  margin-left: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-3);
+}
+
+.ticket-panel__yours {
+  display: block;
+  font-size: var(--step--1);
+  color: var(--ink-3);
+}
+
+/* perforation between the stub and the rest, with a notch bitten out of each side */
+.ticket-panel__bottom {
+  position: relative;
+  display: grid;
+  gap: var(--space-m);
+  border-top: 2px dashed var(--line);
+}
+
+.ticket-panel__bottom::before,
+.ticket-panel__bottom::after {
+  content: "";
+  position: absolute;
+  top: -12px;
+  width: 22px;
+  height: 22px;
+  border: var(--border);
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.ticket-panel__bottom::before {
+  left: -12px;
+  clip-path: inset(0 0 0 50%);
+}
+
+.ticket-panel__bottom::after {
+  right: -12px;
+  clip-path: inset(0 50% 0 0);
+}
+
+.seats__bar {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--paper-2);
+}
+
+.seats__bar span {
+  display: block;
+  width: var(--fill);
+  height: 100%;
+  border-radius: inherit;
+  background: var(--cat);
+  animation: fill 1.4s var(--ease-out) 0.3s both;
+}
+
+@keyframes fill {
+  from {
+    width: 0;
+  }
+}
+
+.seats__text {
+  margin-top: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+
+.seats__text b {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.ticket-panel__closed {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--ink-2);
+}
+
+.ticket-panel__closed-title {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 800;
+  line-height: 1;
+  font-variation-settings: "wdth" 75;
+  color: var(--ink);
+}
+
+.ticket-panel__mine {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  font-size: var(--step--1);
+}
+
+.ticket-panel__mine svg {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.15rem;
+  color: var(--success);
+}
+
+.ticket-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.ticket-panel__actions .btn {
+  flex: 1 1 auto;
+  padding-inline: 0.85rem;
+  white-space: nowrap;
+  border-color: var(--line);
+}
+
+.ticket-panel__actions svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* mobile buy bar */
+
+.buy-bar {
+  display: none;
+}
+
+.event-missing {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: start;
+  gap: var(--space-m);
+  padding-block: var(--space-2xl) var(--space-3xl);
+}
+
+.event-missing h1 {
+  font-size: var(--step-5);
+  font-weight: 900;
+  line-height: 0.9;
+  text-transform: uppercase;
+  font-variation-settings: "wdth" 70;
+}
+
+.event-missing p:not(.eyebrow) {
+  max-width: 44ch;
+  color: var(--ink-2);
+}
+
+@media (max-width: 900px) {
+  .event-cover {
+    aspect-ratio: 3 / 2;
+    margin-bottom: var(--space-l);
+  }
+
+  .event-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .event-main {
+    display: contents;
+  }
+
+  .ticket-panel {
+    position: static;
+    order: 1;
+    margin-bottom: var(--space-xl);
+  }
+
+  .event-block {
+    order: 2;
+  }
+
+  .buy-bar {
+    position: fixed;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+    padding: 0.5rem 0.5rem 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: 0 16px 30px -12px rgb(0 0 0 / 0.5);
+    transform: translateY(160%);
+    transition: transform 0.45s var(--ease-out);
+  }
+
+  .buy-bar[hidden] {
+    display: none;
+  }
+
+  .buy-bar.is-visible {
+    transform: none;
+  }
+
+  .buy-bar__info {
+    display: grid;
+    line-height: 1.2;
+  }
+
+  .buy-bar__info span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    opacity: 0.75;
+  }
+}
+
+@media (max-width: 640px) {
+  .event-block {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .event-block > :not(.event-block__title) {
+    grid-column: 1;
+  }
+
+  .venue-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .venue-card__map {
+    min-height: 8rem;
+  }
+}
