@@ -4,8 +4,8 @@ import { imageSrc } from "../lib/catalog.js";
 
 const INTERVAL = 7000;
 
-// wide screens tuck the dial into the stage's bottom-right corner
-const cornerMode = window.matchMedia("(min-width: 1100px)");
+// wide screens dock a smaller dial in the stage's bottom-right, beside the copy
+const dockMode = window.matchMedia("(min-width: 1100px)");
 
 // Event cards sit on the rim of a large wheel. `pos` is a float index; the card
 // at round(pos) is under the needle and becomes the active one.
@@ -69,21 +69,12 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
 
   function measure() {
     const cardW = items[0].offsetWidth;
-    const corner = cornerMode.matches;
-    root.classList.toggle("is-corner", corner);
-    if (corner) {
-      // upright cards on a diagonal take up (w + h) / sqrt(2) along the arc
-      const cardH = cardW * 0.72;
-      radius = Math.min(root.clientWidth, root.clientHeight) * 0.8;
-      stepRad = (((cardW + cardH) / Math.SQRT2) * 1.22) / (radius - cardH / 2);
-      offset = -45;
-      visible = 2.2;
-    } else {
-      radius = Math.max(root.clientWidth * 1.05, 760);
-      stepRad = (cardW * 1.2) / radius;
-      offset = 0;
-      visible = 4.5;
-    }
+    const docked = dockMode.matches;
+    root.classList.toggle("is-docked", docked);
+    radius = Math.max(root.clientWidth * (docked ? 1.15 : 1.05), docked ? 620 : 760);
+    stepRad = (cardW * (docked ? 1.45 : 1.2)) / radius;
+    offset = 0;
+    visible = docked ? 3.2 : 4.5;
     root.style.setProperty("--R", `${radius}px`);
     root.style.setProperty("--gap-angle", `${((cardW * 0.62) / radius) * (180 / Math.PI)}deg`);
     root.style.setProperty("--step", `${(stepRad * 180) / Math.PI}deg`);
@@ -155,8 +146,7 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
     if (!drag) return;
     const dx = e.clientX - drag.x;
     const dy = e.clientY - drag.y;
-    // in the corner the cards travel up-and-right, so a diagonal drag follows them
-    const along = cornerMode.matches ? (dx - dy) / Math.SQRT2 : dx;
+    const along = dx;
     if (!drag.moved) {
       if (Math.hypot(dx, dy) < 6) return;
       drag.moved = true;
@@ -224,7 +214,7 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
 
   root.style.setProperty("--interval", `${INTERVAL}ms`);
   new ResizeObserver(measure).observe(root);
-  cornerMode.addEventListener("change", measure);
+  dockMode.addEventListener("change", measure);
   measure();
   restartTimer();
 
