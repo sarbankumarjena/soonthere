@@ -1,7 +1,44 @@
-import { events, categories } from "../data/events.js";
-import { getRegistrations } from "./storage.js";
+import { events as lineup, categories } from "../data/events.js";
+import { getRegistrations, read, write } from "./storage.js";
 
-export { events, categories };
+// admins can change the lineup; their version is saved on top of the built-in one
+const EVENTS_KEY = "soonthere:events";
+const copy = (list) => JSON.parse(JSON.stringify(list));
+const saved = read(EVENTS_KEY, null);
+
+export const events = Array.isArray(saved) ? saved : copy(lineup);
+export { categories };
+
+// the photos that ship with the site, for admins picking a cover
+export const photos = [...new Set(lineup.map((e) => e.image))];
+
+export function saveEvents() {
+  return write(EVENTS_KEY, events);
+}
+
+export function upsertEvent(event) {
+  const index = events.findIndex((e) => e.id === event.id);
+  if (index === -1) events.push(event);
+  else events[index] = event;
+  return saveEvents();
+}
+
+export function deleteEvent(id) {
+  const index = events.findIndex((e) => e.id === id);
+  if (index !== -1) events.splice(index, 1);
+  return saveEvents();
+}
+
+export function resetEvents() {
+  events.splice(0, events.length, ...copy(lineup));
+  try {
+    localStorage.removeItem(EVENTS_KEY);
+  } catch {
+    // nothing saved, nothing to remove
+  }
+}
+
+export const isEdited = () => read(EVENTS_KEY, null) !== null;
 
 export const MAX_PASSES = 5;
 
@@ -86,6 +123,7 @@ export function findClashes(event, bookings = getRegistrations()) {
 }
 
 export function imageSrc(event, size = 960) {
+  if (event.imageData) return event.imageData;
   return `assets/images/events/${event.image}-${size}.webp`;
 }
 

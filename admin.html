@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | SoonThere</title>
+  <meta name="description" content="Manage the SoonThere lineup, check tickets in and see who's coming.">
+  <meta name="theme-color" content="#f2ece1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Admin | SoonThere">
+  <meta property="og:description" content="Manage the SoonThere lineup, check tickets in and see who's coming.">
+  <meta property="og:image" content="https://soonthere.vercel.app/assets/images/og-cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400..700&display=swap">
+  <script>
+    (function () {
+      var t;
+      try { t = JSON.parse(localStorage.getItem("soonthere:theme")); } catch (e) {}
+      document.documentElement.dataset.theme = t || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script type="module" src="js/pages/admin.js"></script>
+  <meta name="robots" content="noindex">
+</head>
+<body class="page-admin">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="index.html" aria-label="SoonThere home"><span class="logo__word" aria-hidden="true">Soon<span class="logo__ticket">There</span></span><svg class="logo__orbit" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="20" rx="49.5" ry="19.5"/></svg><svg class="logo__plane" viewBox="0 0 20 20" aria-hidden="true"><path class="logo__wing" d="M1 7.5 19 1 13 18 9.5 11Z"/><path class="logo__fold" d="M9.5 11 19 1"/></svg></a>
+      <nav class="nav" aria-label="Main">
+        <div class="nav-links" id="nav-links">
+          <a href="index.html#lineup">Events</a>
+          <a href="index.html#how">How it works</a>
+          <a href="tickets.html">My tickets <span class="ticket-count"></span></a>
+          <a href="admin.html" data-admin-link aria-current="page" hidden>Admin</a>
+          <a href="account.html" class="nav-account" data-account-link>Sign in</a>
+        </div>
+        <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__knob"></span></span>
+        </button>
+        <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path class="bar bar-1" d="M4 8h16"/><path class="bar bar-2" d="M4 16h16"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="admin-page">
+    <div class="container" id="admin-root"></div>
+
+    <dialog class="event-dialog" id="event-dialog" aria-labelledby="event-dialog-title">
+      <form class="event-form" id="event-form" method="dialog" novalidate>
+        <header class="event-form__head">
+          <h2 id="event-dialog-title">New event</h2>
+          <button class="icon-btn" type="button" data-close aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </header>
+        <div class="event-form__body" id="event-form-body"></div>
+        <footer class="event-form__foot">
+          <p class="account__error" id="event-form-error" role="alert"></p>
+          <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn-accent" type="submit" id="event-save">Save event</button>
+        </footer>
+      </form>
+    </dialog>
+  </main>
+
+  <footer class="site-footer" data-stretch-area>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a class="logo" href="index.html" aria-label="SoonThere home"><span class="logo__word" aria-hidden="true">Soon<span class="logo__ticket">There</span></span><svg class="logo__orbit" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"><ellipse cx="50" cy="20" rx="49.5" ry="19.5"/></svg><svg class="logo__plane" viewBox="0 0 20 20" aria-hidden="true"><path class="logo__wing" d="M1 7.5 19 1 13 18 9.5 11Z"/><path class="logo__fold" d="M9.5 11 19 1"/></svg></a>
+          <p class="footer-tagline">Find it. Book it. Be SoonThere.</p>
+        </div>
+        <div>
+          <h3>Explore</h3>
+          <ul role="list">
+            <li><a href="index.html#lineup">All events</a></li>
+            <li><a href="index.html#featured">Headliners</a></li>
+            <li><a href="index.html#how">How it works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Your stuff</h3>
+          <ul role="list">
+            <li><a href="tickets.html">My tickets</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="account.html">Account</a></li>
+            <li><a href="admin.html">Admin</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Project</h3>
+          <ul role="list">
+            <li><a href="https://github.com/sarbankumarjena/soonthere">Source on GitHub</a></li>
+            <li><a href="https://stocksnap.io">Photos from StockSnap</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-big" data-stretch data-accent-from="4" data-min="55" data-max="150">SoonThere.</p>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> SoonThere. Built by Sarban Kumar Jena.</span>
+        <span>Demo project. Events are made up and no real tickets are sold.</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

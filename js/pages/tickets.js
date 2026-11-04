@@ -3,7 +3,8 @@ import { $, $$, html, prefersReducedMotion } from "../lib/dom.js";
 import { icons } from "../lib/icons.js";
 import { dateParts, formatDate, formatShortDate, formatTime, pad, pluralise, relativeTime } from "../lib/format.js";
 import { events, findClashes, getEvent, imageSrc, isPast, upcoming } from "../lib/catalog.js";
-import { clearRegistrations, getRegistrations, removeRegistration } from "../lib/storage.js";
+import { removeRegistration, removeRegistrationsWhere } from "../lib/storage.js";
+import { currentUser, myBookings } from "../lib/auth.js";
 import { downloadIcs } from "../lib/calendar.js";
 import { passTicket } from "../components/pass.js";
 
@@ -16,7 +17,7 @@ const dayKey = (date, timeZone) =>
   new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(date));
 
 function bookings() {
-  return getRegistrations()
+  return myBookings()
     .map((b) => ({ ...b, event: getEvent(b.eventId) }))
     .filter((b) => b.event)
     .sort((a, b) => new Date(a.event.start) - new Date(b.event.start));
@@ -30,6 +31,10 @@ function renderSummary(list, ahead) {
   $("#summary").textContent = list.length
     ? `${pluralise(list.length, "booking")} and ${pluralise(passes, "pass", "passes")} in total.${next ? ` Next up is ${next.event.title}, ${relativeTime(next.event.start)}.` : ""}`
     : "Nothing booked yet. Once you register for something it shows up here.";
+  const user = currentUser();
+  $("#who").innerHTML = user
+    ? html`Signed in as <b>${user.name}</b>. These are the bookings made on your account or with ${user.email}.`
+    : html`You're browsing as a guest, so these are the bookings made on this device without an account. <a href="account.html?next=tickets.html">Sign in</a> to keep them together.`;
 }
 
 /* ---------- season heatmap ---------- */
@@ -379,7 +384,8 @@ root.addEventListener("click", (e) => {
   if (e.target.closest("[data-clear]")) {
     const button = e.target.closest("[data-clear]");
     if (button.dataset.armed) {
-      clearRegistrations();
+      const ids = new Set(bookings().map((b) => b.id));
+      removeRegistrationsWhere((r) => ids.has(r.id));
       toast("All bookings cleared.");
       return;
     }
@@ -394,5 +400,6 @@ root.addEventListener("click", (e) => {
 });
 
 document.addEventListener("registrations:change", render);
+document.addEventListener("auth:change", render);
 initDialog();
 render();

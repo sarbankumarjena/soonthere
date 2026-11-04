@@ -1,5 +1,6 @@
 import { $, $$, canHover, prefersReducedMotion } from "./lib/dom.js";
-import { getRegistrations, getTheme, setTheme } from "./lib/storage.js";
+import { getTheme, setTheme } from "./lib/storage.js";
+import { currentUser, ensureDemoAdmin, myBookings } from "./lib/auth.js";
 
 document.documentElement.classList.add("js");
 
@@ -86,7 +87,7 @@ function initHeader() {
 }
 
 function updateTicketCount(animate = false) {
-  const count = getRegistrations().length;
+  const count = myBookings().length;
   $$(".ticket-count").forEach((badge) => {
     badge.textContent = count || "";
     badge.dataset.count = count;
@@ -252,6 +253,25 @@ export function initMagnetic(root = document) {
   });
 }
 
+function updateAccount() {
+  const user = currentUser();
+  $$("[data-account-link]").forEach((link) => {
+    link.replaceChildren();
+    if (user) {
+      const avatar = document.createElement("span");
+      avatar.className = "avatar";
+      avatar.setAttribute("aria-hidden", "true");
+      avatar.textContent = user.name.charAt(0).toUpperCase();
+      link.append(avatar, user.name.split(" ")[0]);
+      link.setAttribute("aria-label", `Your account, ${user.name}`);
+    } else {
+      link.textContent = "Sign in";
+      link.removeAttribute("aria-label");
+    }
+  });
+  $$("[data-admin-link]").forEach((link) => (link.hidden = user?.role !== "admin"));
+}
+
 function initYear() {
   $$("[data-year]").forEach((el) => (el.textContent = new Date().getFullYear()));
 }
@@ -282,5 +302,11 @@ initStretchType();
 initMagnetic();
 initYear();
 updateTicketCount();
+updateAccount();
 observeReveals();
+ensureDemoAdmin().catch(() => {});
+document.addEventListener("auth:change", () => {
+  updateAccount();
+  updateTicketCount();
+});
 document.addEventListener("registrations:change", () => updateTicketCount(true));

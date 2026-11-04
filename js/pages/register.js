@@ -4,6 +4,7 @@ import { icons } from "../lib/icons.js";
 import { dateParts, formatDate, pluralise } from "../lib/format.js";
 import { MAX_PASSES, findClashes, getEvent, getStatus, isBookable, seatsLeft, upcoming } from "../lib/catalog.js";
 import { addRegistration, getRegistrations } from "../lib/storage.js";
+import { currentUser } from "../lib/auth.js";
 import { checkEmail, checkName, checkPasses, checkPhone, cleanPhone } from "../lib/validate.js";
 import { downloadIcs } from "../lib/calendar.js";
 import { passTicket } from "../components/pass.js";
@@ -232,6 +233,7 @@ async function submit(e) {
     phone: cleanPhone(fields.phone.value.trim()),
     passes: Number(fields.passes.value),
     note: fields.note.value.trim(),
+    userId: currentUser()?.id ?? null,
     createdAt: new Date().toISOString(),
   };
 
@@ -285,7 +287,18 @@ function initFields() {
   form.addEventListener("submit", submit);
 }
 
+// signed-in visitors get their details filled in
+function prefill() {
+  const user = currentUser();
+  if (!user) return;
+  if (!fields.name.value) fields.name.value = user.name;
+  if (!fields.email.value) fields.email.value = user.email;
+  $("#signed-in").hidden = false;
+  $("#signed-in").innerHTML = html`${icons.check}<span>Booking as <b>${user.name}</b>. The pass is saved to your account.</span>`;
+}
+
 fillEvents();
+prefill();
 syncEvent();
 renderPreview();
 initFields();

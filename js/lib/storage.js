@@ -3,7 +3,7 @@ const KEYS = {
   theme: "soonthere:theme",
 };
 
-function read(key, fallback) {
+export function read(key, fallback) {
   try {
     const value = localStorage.getItem(key);
     return value === null ? fallback : JSON.parse(value);
@@ -12,7 +12,7 @@ function read(key, fallback) {
   }
 }
 
-function write(key, value) {
+export function write(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
     return true;
@@ -34,13 +34,24 @@ export function addRegistration(registration) {
   return ok;
 }
 
+export function updateRegistration(id, changes) {
+  const list = getRegistrations().map((r) => (r.id === id ? { ...r, ...changes } : r));
+  write(KEYS.registrations, list);
+  notify();
+}
+
+export function removeRegistrationsFor(eventId) {
+  write(KEYS.registrations, getRegistrations().filter((r) => r.eventId !== eventId));
+  notify();
+}
+
 export function removeRegistration(id) {
   write(KEYS.registrations, getRegistrations().filter((r) => r.id !== id));
   notify();
 }
 
-export function clearRegistrations() {
-  write(KEYS.registrations, []);
+export function removeRegistrationsWhere(test) {
+  write(KEYS.registrations, getRegistrations().filter((r) => !test(r)));
   notify();
 }
 

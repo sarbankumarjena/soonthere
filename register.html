@@ -39,6 +39,8 @@
           <a href="index.html#lineup">Events</a>
           <a href="index.html#how">How it works</a>
           <a href="tickets.html">My tickets <span class="ticket-count"></span></a>
+          <a href="admin.html" data-admin-link hidden>Admin</a>
+          <a href="account.html" class="nav-account" data-account-link>Sign in</a>
         </div>
         <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
           <span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__knob"></span></span>
@@ -62,6 +64,7 @@
             <p class="eyebrow"><span>Registration</span><span>About a minute</span></p>
             <h1>Save your spot.</h1>
             <p>Fill this in and your pass is ready straight away. It's kept on this device under My tickets.</p>
+            <p class="register__signed-in" id="signed-in" hidden></p>
           </header>
 
           <form id="register-form" novalidate>
@@ -162,6 +165,8 @@
           <ul role="list">
             <li><a href="tickets.html">My tickets</a></li>
             <li><a href="register.html">Register</a></li>
+            <li><a href="account.html">Account</a></li>
+            <li><a href="admin.html">Admin</a></li>
           </ul>
         </div>
         <div>

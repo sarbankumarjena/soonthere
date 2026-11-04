@@ -221,6 +221,23 @@ body.menu-open .site-header::before {
   background: var(--accent);
 }
 
+.nav-account {
+  gap: 0.5rem;
+}
+
+.nav-account .avatar {
+  width: 1.65rem;
+  height: 1.65rem;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 .ticket-count {
   min-width: 1.45rem;
   height: 1.45rem;
@@ -444,6 +461,14 @@ body.menu-open .site-header::before {
 
   .nav-links.is-open a:nth-child(3) {
     transition-delay: 0.12s;
+  }
+
+  .nav-links.is-open a:nth-child(4) {
+    transition-delay: 0.18s;
+  }
+
+  .nav-links.is-open a:nth-child(5) {
+    transition-delay: 0.24s;
   }
 
   .nav-links a[aria-current="page"]::after {
