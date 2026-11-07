@@ -60,7 +60,7 @@ Fields are checked when you leave them and again on submit, and errors appear be
 ### Throughout
 - **Light and dark mode.** Follows your system setting until you choose, then remembers your choice.
 - **Countdown timers** on the hero, featured events and event pages.
-- **Animations.** Page transitions, scroll reveals and a paper-plane logo. There's also a footer wordmark drawn as a crowd that gathers round your pointer or finger. All motion respects the "reduce motion" setting.
+- **Animations.** Page transitions, scroll reveals, a paper-plane logo, a confirmation heading that gathers out of a crowd of dots, and a footer wordmark whose crowd presses in round your pointer or finger. All motion respects the "reduce motion" setting.
 - **Responsive** from 360px phones to wide desktops.
 - **Accessible.** Semantic HTML, keyboard support, visible focus and labelled form errors.
 
@@ -71,8 +71,8 @@ Fields are checked when you leave them and again on submit, and errors appear be
 | ![Upcoming events with search and filters](docs/screenshots/lineup.webp) | ![Event details](docs/screenshots/event.webp) |
 | **Registration confirmation** | **My tickets** |
 | ![Registration confirmation](docs/screenshots/register.webp) | ![My tickets](docs/screenshots/tickets.webp) |
-| **Admin area** | **Dark mode** |
-| ![Admin area](docs/screenshots/admin.webp) | ![Dark mode](docs/screenshots/home-dark.webp) |
+| **Admin area** | **Light mode** |
+| ![Admin area](docs/screenshots/admin.webp) | ![Light mode](docs/screenshots/light.webp) |
 
 <p align="center"><img src="docs/screenshots/home-mobile.webp" alt="SoonThere on a phone" width="300"></p>
 
@@ -85,7 +85,7 @@ The sign-in page has a button for each demo account that signs you straight in.
 | Demo member | `user1@soonthere.app` | `soonthere-demo` | Upcoming bookings on the timeline and heatmap, and past events on the "Been there" strip |
 | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in booking `ST-K7M2QX`, then scanning it again |
 
-There is no server behind the site. Events edited by admins, accounts and registrations are stored in the browser's Local Storage, so they stay on that device. Passwords are salted and hashed with SHA-256 rather than stored as text, but a real launch would move all of this to a backend.
+Accounts, registrations and event changes are kept in the browser's Local Storage, so the whole site runs without a server and every visitor starts with the same demo data. Passwords are salted and hashed with SHA-256 before they are stored.
 
 ## How it's built
 
@@ -114,15 +114,6 @@ assets/           event photos, favicon, share image
 - **Safe rendering.** Markup is built with a tagged template that escapes every value, so nothing typed into a form can become HTML.
 - **Progressive enhancement.** View transitions, styled dropdowns, the share sheet and the canvas crowd are used where supported, and the site works without them.
 
-## Quality
-
-- **Lighthouse** (live site, main pages):
-  - Accessibility, Best Practices and SEO: 100 on every page
-  - Performance on desktop: 98–100
-  - Performance on mobile: 97–99, and 85 for the home page with its full-screen hero
-- HTML validated on every page, and no issues from the axe accessibility checker in light or dark mode.
-- Tested at 360, 390, 768, 1024, 1280 and 1440px wide, with no horizontal scrolling.
-
 ## Running locally
 
 The pages use ES modules, so serve the folder over HTTP rather than opening the files directly:
@@ -137,8 +128,9 @@ Then open http://localhost:8000.
 
 Deployed on Vercel from this repository. There is no build command; every push to `main` goes live automatically.
 
-<details>
-<summary><strong>Project brief coverage</strong> (K Explore Web Designing)</summary>
+## Project brief
+
+Built for the K Explore Web Designing project, *Design and Develop a Responsive Event Management Website*.
 
 | Requirement | Where |
 | --- | --- |
@@ -154,8 +146,6 @@ Deployed on Vercel from this repository. There is no build command; every push t
 | HTML5, CSS3, JavaScript; Git and GitHub | This repository |
 | Bonus: dark/light mode, countdown timers, animations, Local Storage registration management | All included |
 | Deployed link and README | Vercel, this file |
-
-</details>
 
 ## Credits
 
