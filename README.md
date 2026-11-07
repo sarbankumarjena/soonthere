@@ -12,22 +12,39 @@ It is built with HTML5, CSS3 and plain JavaScript, with no framework and no buil
 
 ## Features
 
-### Discover events
-- **Hero dial.** Upcoming events sit on the rim of a wheel that turns on its own. Drag it, swipe it, or use the arrow buttons and keys. The selected event is shown in full with a live countdown, and its photo fills the stage.
-- **Featured events.** Three highlighted events as large poster cards.
-- **Upcoming events.** Every event as a card with its name, date, venue, image and a short description.
-  - Search by name, venue, city, organiser or tag, accents ignored.
-  - Filter by category, with live counts.
-  - Sort by date, popularity or price.
-  - Show past events, which appear under their own "Already happened" divider.
-  - Filters are kept in the URL, so a filtered view can be shared.
-- **Search from any page.** The header search suggests events as you type and hands the search over to the lineup.
+### Hero dial
+Upcoming events sit on the rim of a wheel that turns on its own. Drag it, swipe it, or use the arrow buttons and keys. The selected event is shown in full with a live countdown, and its photo fills the stage.
+
+![The hero dial being dragged and turned, then switched to light mode](docs/clips/dial.webp)
+
+### Featured events
+Three highlighted events as large poster cards with live countdowns.
+
+![Featured events](docs/screenshots/featured.webp)
+
+### Upcoming events
+Every event as a card with its name, date, venue, image and a short description.
+
+- Search by name, venue, city, organiser or tag, with accents ignored.
+- Filter by category, with live counts.
+- Sort by date, popularity or price.
+- Show past events, which appear under their own "Already happened" divider.
+- Filters are kept in the URL, so a filtered view can be shared.
+
+![Upcoming events with search, category filters and event cards](docs/screenshots/lineup.webp)
+
+### Search from any page
+The search box in the header suggests events as you type. Press Enter to see every match in the event list.
+
+![Header search suggesting events, then showing the matches in the event list](docs/clips/search.webp)
 
 ### Event details
 - Date, time and venue in the venue's own time zone, with your local time alongside when it differs.
 - Price, spots left, a live countdown, the description, highlights, the schedule and a map link.
 - **Register**, **Add to calendar** (an `.ics` file) and **Share**.
 - Sold-out, started and finished events say so instead of offering registration.
+
+![Event details page](docs/screenshots/event.webp)
 
 ### Registration
 The form collects the participant's **name, email, phone number and the selected event**, plus the number of passes and an optional note. Everything is validated in JavaScript before it is saved:
@@ -40,13 +57,19 @@ The form collects the participant's **name, email, phone number and the selected
 | Event | Must exist and still be open |
 | Passes | 1 to 5, and never more than the spots left |
 
-Fields are checked when you leave them and again on submit, and errors appear beside each field and are announced to screen readers. A pass preview fills in as you type, and the form warns about clashes with your other bookings. A successful registration ends with a confirmation message, **"You're in! See you SoonThere."**, along with a booking number and the pass.
+Fields are checked when you leave them and again on submit, and errors appear beside each field and are announced to screen readers. A pass preview fills in as you type, and the form warns about clashes with your other bookings. A successful registration ends with the confirmation message **"You're in! See you SoonThere."**, a booking number and the pass.
+
+![Filling in the registration form, then the confirmation](docs/clips/register.webp)
 
 ### My tickets
 - A timeline of upcoming bookings, with a 24-hour clock wheel and a calendar wheel that turn to the selected pass.
 - A season heatmap of the days you're going out.
 - Past events on a "Been there" film strip.
 - Open any pass to see it in full, add it to your calendar or cancel it. Cancelled spots go back on sale straight away.
+
+![The clock and calendar wheels turning as each pass is selected](docs/clips/tickets.webp)
+
+![The season heatmap and the "Been there" strip](docs/screenshots/tickets.webp)
 
 ### Accounts and admin
 - **Accounts are optional.** Guests can register straight away. Signed-in members get their details filled in and their bookings kept together.
@@ -57,24 +80,26 @@ Fields are checked when you leave them and again on submit, and errors appear be
   - search and cancel bookings, and export them as CSV
   - manage members and admin access
 
-### Throughout
-- **Light and dark mode.** Follows your system setting until you choose, then remembers your choice.
-- **Countdown timers** on the hero, featured events and event pages.
-- **Animations.** Page transitions, scroll reveals, a paper-plane logo, a confirmation heading that gathers out of a crowd of dots, and a footer wordmark whose crowd presses in round your pointer or finger. All motion respects the "reduce motion" setting.
-- **Responsive** from 360px phones to wide desktops.
-- **Accessible.** Semantic HTML, keyboard support, visible focus and labelled form errors.
+![Admin area](docs/screenshots/admin.webp)
 
-## Screenshots
+### Light and dark mode
+Follows your system setting until you choose, then remembers your choice. The switch in the header turns from a sun into a moon.
 
-| Upcoming events | Event details |
-| --- | --- |
-| ![Upcoming events with search and filters](docs/screenshots/lineup.webp) | ![Event details](docs/screenshots/event.webp) |
-| **Registration confirmation** | **My tickets** |
-| ![Registration confirmation](docs/screenshots/register.webp) | ![My tickets](docs/screenshots/tickets.webp) |
-| **Admin area** | **Light mode** |
-| ![Admin area](docs/screenshots/admin.webp) | ![Light mode](docs/screenshots/light.webp) |
+![Upcoming events in light mode](docs/screenshots/light.webp)
 
-<p align="center"><img src="docs/screenshots/home-mobile.webp" alt="SoonThere on a phone" width="300"></p>
+### Animations
+Page transitions, scroll reveals, countdown timers, a paper-plane logo, a confirmation heading that gathers out of a crowd of dots, and a footer wordmark whose crowd presses in round your pointer or finger. All motion respects the "reduce motion" setting.
+
+![The footer wordmark's crowd gathering round the pointer](docs/clips/crowd.webp)
+
+### Responsive and accessible
+Works from 360px phones to wide desktops. On phones the event cards become compact rows and featured events become a row you swipe through. Semantic HTML, keyboard support, visible focus and labelled form errors throughout.
+
+<p align="center">
+  <img src="docs/screenshots/home-mobile.webp" alt="The home page on a phone" width="280">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/lineup-mobile.webp" alt="Upcoming events on a phone" width="280">
+</p>
 
 ## Try it
 
