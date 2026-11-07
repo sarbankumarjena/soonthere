@@ -2332,7 +2332,9 @@
   -webkit-text-fill-color: transparent;
 }
 
-.confirm__title.is-assembling .confirm__line > span {
+/* the dots are the entrance, so the heading's own rise never plays after them */
+.confirm__title.is-assembling .confirm__line > span,
+.confirm__title.is-assembled .confirm__line > span {
   animation: none;
 }
 

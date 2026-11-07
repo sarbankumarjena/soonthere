@@ -103,6 +103,7 @@ export function assembleText(el, { duration = 1100, spread = Math.min(420, windo
       });
       if (!done) return requestAnimationFrame(draw);
       // hand over to the real text
+      el.classList.add("is-assembled");
       el.classList.remove("is-assembling");
       canvas.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: "ease-out" }).finished.then(() => canvas.remove());
       resolve();
