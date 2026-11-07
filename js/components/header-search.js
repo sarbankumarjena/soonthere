@@ -5,7 +5,13 @@ import { matches, searchText } from "../lib/search.js";
 
 const LIMIT = 5;
 const eventUrl = (event) => `event.html?id=${encodeURIComponent(event.id)}`;
-const lineupUrl = (q) => `index.html${q ? `?q=${encodeURIComponent(q)}` : ""}#lineup`;
+const lineupUrl = (q, past) => {
+  const params = new URLSearchParams();
+  if (q) params.set("q", q);
+  if (past) params.set("past", "1");
+  const query = params.toString();
+  return `index.html${query ? `?${query}` : ""}#lineup`;
+};
 
 // Search in the header. Suggestions drop down as you type. On the home page it steps
 // aside while the lineup's own search box is on screen and comes back once that box
@@ -26,6 +32,7 @@ export function initHeaderSearch() {
     if (!index.has(event.id)) index.set(event.id, searchText(event));
     return index.get(event.id);
   };
+  const anyPast = (q) => Boolean(q) && events.some((e) => isPast(e) && matches(textFor(e), q));
 
   const option = (event, i) => html`
     <a class="header-search__option" id="hs-option-${i}" role="option" aria-selected="false" href="${eventUrl(event)}" data-category="${event.category}">
@@ -48,7 +55,7 @@ export function initHeaderSearch() {
       results.innerHTML = list.length
         ? html`
             ${list.slice(0, LIMIT).map(option)}
-            <a class="header-search__all" id="hs-option-${Math.min(list.length, LIMIT)}" role="option" aria-selected="false" href="${lineupUrl(q)}" data-all>
+            <a class="header-search__all" id="hs-option-${Math.min(list.length, LIMIT)}" role="option" aria-selected="false" href="${lineupUrl(q, anyPast(q))}" data-all>
               ${list.length > LIMIT ? `See all ${list.length} results` : "Show these in the lineup"}
             </a>`
         : html`<p class="header-search__empty">Nothing matches “${q}”. Try a city, a venue or a kind of night out.</p>`;
@@ -104,6 +111,11 @@ export function initHeaderSearch() {
 
   // on the home page, hand the query to the lineup's search and scroll down to it
   function showInLineup(q) {
+    const past = $("#show-past");
+    if (past && anyPast(q) && !past.checked) {
+      past.checked = true;
+      past.dispatchEvent(new Event("change", { bubbles: true }));
+    }
     pageInput.value = q;
     pageInput.dispatchEvent(new Event("input", { bubbles: true }));
     collapse();
@@ -140,7 +152,7 @@ export function initHeaderSearch() {
     e.preventDefault();
     const q = input.value.trim();
     if (pageInput) showInLineup(q);
-    else window.location.href = lineupUrl(q);
+    else window.location.href = lineupUrl(q, anyPast(q));
   });
 
   results.addEventListener("click", (e) => {

@@ -1106,6 +1106,38 @@
   font-size: var(--step--1);
 }
 
+.results-meta button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent-text);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+/* past events get their own run of the grid */
+.card-grid__divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  margin-top: var(--space-l);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+.card-grid__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
 .ticket-card {
   view-transition-class: card;
 }

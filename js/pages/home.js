@@ -50,8 +50,10 @@ function visibleEvents() {
 function filtered() {
   const list = visibleEvents().filter((e) => state.cat === "all" || e.category === state.cat);
   const sorted = list.sort(sorters[state.sort] ?? byStart);
-  // past events always go to the end
-  return [...sorted.filter((e) => !isPast(e)), ...sorted.filter((e) => isPast(e))];
+  // past events always go to the end, most recent first when sorted by date
+  const past = sorted.filter((e) => isPast(e));
+  if (state.sort === "soonest") past.reverse();
+  return [...sorted.filter((e) => !isPast(e)), ...past];
 }
 
 function renderChips() {
@@ -80,14 +82,27 @@ function renderResults() {
         <button class="btn btn-ghost btn-small" type="button" data-clear>Clear filters</button>
       </div>`;
   } else {
-    grid.innerHTML = list.map((e) => eventCard(e)).join("");
+    // past events sit under their own divider, so the upcoming ones always read as upcoming
+    const ahead = list.filter((e) => !isPast(e));
+    const gone = list.filter((e) => isPast(e));
+    grid.innerHTML = [
+      ...ahead.map((e) => eventCard(e)),
+      gone.length ? html`<p class="card-grid__divider">Already happened</p>` : "",
+      ...gone.map((e) => eventCard(e)),
+    ].join("");
     initTilt(grid);
   }
+  $("#lineup-label").textContent = state.past ? "Upcoming and past events" : "Upcoming events";
 
   const parts = [pluralise(list.length, "event")];
   if (category) parts.push(`in ${category.label}`);
   if (state.q) parts.push(`matching “${state.q}”`);
-  resultsMeta.textContent = `Showing ${parts.join(" ")}`;
+
+  // a search can also match events that have already happened; say so rather than hide them
+  const hiddenPast = state.past || !state.q
+    ? 0
+    : events.filter((e) => isPast(e) && matchesSearch(e) && (state.cat === "all" || e.category === state.cat)).length;
+  resultsMeta.innerHTML = html`Showing ${parts.join(" ")}.${hiddenPast > 0 && html` ${hiddenPast === 1 ? "1 past event matches" : `${hiddenPast} past events match`} too. <button type="button" data-show-past>Show ${hiddenPast === 1 ? "it" : "them"}</button>`}`;
 }
 
 function render({ animate = true } = {}) {
@@ -164,6 +179,12 @@ function initFilters() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     searchInput.blur();
+  });
+  resultsMeta.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-show-past]")) return;
+    state.past = true;
+    pastToggle.checked = true;
+    update();
   });
   grid.addEventListener("click", (e) => {
     if (!e.target.closest("[data-clear]")) return;
