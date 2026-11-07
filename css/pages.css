@@ -2192,6 +2192,10 @@
   animation: hand-over 0.9s var(--ease-out) 0.15s both;
 }
 
+.confirm__pass .pass__stamp {
+  animation-delay: 0.8s;
+}
+
 @keyframes hand-over {
   from {
     opacity: 0;
@@ -2251,6 +2255,14 @@
 }
 
 @media (max-width: 640px) {
+  .confirm__actions {
+    margin-top: var(--space-l);
+  }
+
+  .confirm__actions .btn {
+    flex: 1 1 100%;
+  }
+
   .field-row {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -3005,115 +3017,6 @@
 
 .film__empty p:last-child {
   max-width: 42ch;
-}
-
-/* paper plane delivery on the confirmation screen */
-.delivery {
-  position: fixed;
-  inset: 0;
-  z-index: 70;
-  pointer-events: none;
-}
-
-.delivery__sky {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.delivery__reveal {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 8;
-  stroke-dasharray: 1 1;
-  stroke-dashoffset: 1;
-}
-
-.delivery__trail {
-  fill: none;
-  stroke: var(--ink-3);
-  stroke-width: 2;
-  stroke-dasharray: 3 9;
-  stroke-linecap: round;
-}
-
-.delivery__plane {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 46px;
-  height: 46px;
-  overflow: visible;
-  offset-rotate: auto 45deg;
-  filter: drop-shadow(0 8px 6px rgb(0 0 0 / 0.25));
-}
-
-.delivery__wing {
-  fill: var(--accent);
-}
-
-.delivery__fold {
-  fill: none;
-  stroke: var(--paper);
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-.confirm__pass.is-waiting {
-  visibility: hidden;
-  animation: none;
-}
-
-/* folded diamond, then a crease, then flat */
-.confirm__pass.is-unfolding {
-  animation: unfold 0.9s var(--ease-out) both;
-}
-
-@keyframes unfold {
-  0% {
-    opacity: 0;
-    clip-path: polygon(50% 38%, 62% 50%, 50% 62%, 38% 50%);
-    transform: scale(0.55) rotate(-18deg);
-  }
-  35% {
-    opacity: 1;
-    clip-path: polygon(14% 0, 100% 22%, 86% 100%, 0 78%);
-    transform: scale(0.85) rotate(-8deg) rotateY(28deg);
-  }
-  70% {
-    clip-path: polygon(0 0, 100% 4%, 100% 100%, 0 96%);
-    transform: scale(1.02) rotate(-3deg) rotateY(-6deg);
-  }
-  100% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transform: none;
-  }
-}
-
-/* hold the stamp until the pass has opened out */
-.confirm:not(.is-delivered) .pass__stamp {
-  animation-play-state: paused;
-  opacity: 0;
-}
-
-@media (max-width: 900px) {
-  @keyframes unfold {
-    0% {
-      opacity: 0;
-      clip-path: polygon(50% 38%, 62% 50%, 50% 62%, 38% 50%);
-      transform: scale(0.55) rotate(-18deg);
-    }
-    35% {
-      opacity: 1;
-      clip-path: polygon(14% 0, 100% 22%, 86% 100%, 0 78%);
-      transform: scale(0.85) rotate(-8deg);
-    }
-    100% {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-      transform: none;
-    }
-  }
 }
 
 .tickets-head__who,

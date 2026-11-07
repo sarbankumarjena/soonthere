@@ -47,7 +47,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
   - **Errors:** each one appears next to its field and is linked to it for screen readers with `aria-describedby` and `aria-invalid`.
 - **Clash warning.** If the new booking overlaps one you already have, or is in another city only a few hours away, the form warns you but still lets you book.
 - **Live pass preview.** A ticket next to the form fills in as you type.
-- **Confirmation.** On success the pass is saved and the form is replaced by a confirmation: **"You're in! See you SoonThere."** The pass is delivered by paper plane: it flies in along a dashed path, unfolds into the ticket, and a "You're in" stamp lands on it. It shows a booking number such as `ST-K7M2QX` and offers an "Add to calendar" button.
+- **Confirmation.** On success the pass is saved and the form is replaced by a confirmation: **"You're in! See you SoonThere."** The pass slides in, a "You're in" stamp lands on it and a little confetti falls. It shows a booking number such as `ST-K7M2QX` and offers an "Add to calendar" button.
 - **Accounts are optional.** Guests can book straight away. Signed-in visitors get their name and email filled in, and the pass is saved to their account.
 
 ![Registration confirmation](docs/screenshots/register.webp)
