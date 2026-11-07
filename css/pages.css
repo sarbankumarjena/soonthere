@@ -651,6 +651,28 @@
   .spotlight__foot .countdown--compact b {
     font-size: 1.3rem;
   }
+
+  .dial {
+    --card-w: 112px;
+    --top: 2.2rem;
+    height: calc(var(--top) + var(--card-h) + 5.6rem);
+  }
+
+  .dial__date,
+  .dial__time {
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+
+  .dial__item:not(.is-active) .dial__date,
+  .dial__item:not(.is-active) .dial__time {
+    opacity: 0.6;
+  }
+
+  .dial__btn {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
 }
 
 /* ---------- home: tapes ---------- */
@@ -2983,6 +3005,41 @@
 
   .stub {
     flex-basis: 72vw;
+  }
+}
+
+@media (max-width: 560px) {
+  .side-dial {
+    --D: 11rem;
+    --band: 1.5rem;
+  }
+
+  .side-dial__num {
+    font-size: 0.56rem;
+  }
+
+  .side-dial__k {
+    font-size: 0.58rem;
+  }
+
+  .side-dial__big {
+    font-size: 1.2rem;
+  }
+
+  .side-dial--date .side-dial__big {
+    font-size: 1.9rem;
+  }
+
+  .side-dial__small {
+    font-size: 0.64rem;
+  }
+
+  .side-dial--time .side-dial__hub {
+    padding-left: calc(var(--D) / 2 - var(--band) + 0.35rem);
+  }
+
+  .line {
+    gap: var(--space-m);
   }
 }
 

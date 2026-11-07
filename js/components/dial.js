@@ -6,6 +6,8 @@ const INTERVAL = 7000;
 
 // wide screens dock a smaller dial in the stage's bottom-right, beside the copy
 const dockMode = window.matchMedia("(min-width: 1100px)");
+// phones get smaller cards, spaced a little wider so the neighbours don't crowd the middle
+const phone = window.matchMedia("(max-width: 560px)");
 
 // Event cards sit on the rim of a large wheel. `pos` is a float index; the card
 // at round(pos) is under the needle and becomes the active one.
@@ -72,9 +74,9 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
     const docked = dockMode.matches;
     root.classList.toggle("is-docked", docked);
     radius = Math.max(root.clientWidth * (docked ? 1.15 : 1.05), docked ? 620 : 760);
-    stepRad = (cardW * (docked ? 1.45 : 1.2)) / radius;
+    stepRad = (cardW * (docked ? 1.45 : phone.matches ? 1.4 : 1.2)) / radius;
     offset = 0;
-    visible = docked ? 3.2 : 4.5;
+    visible = docked ? 3.2 : phone.matches ? 3.2 : 4.5;
     root.style.setProperty("--R", `${radius}px`);
     root.style.setProperty("--gap-angle", `${((cardW * 0.62) / radius) * (180 / Math.PI)}deg`);
     root.style.setProperty("--step", `${(stepRad * 180) / Math.PI}deg`);
@@ -121,15 +123,18 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
     restartTimer();
   }
 
-  // pausing: hover, keyboard focus, dragging or a hidden tab
+  // pausing: a mouse resting on one of the cards, keyboard focus, dragging or a hidden tab.
+  // Hovering the rest of the hero leaves it turning.
   const reasons = new Set();
   const pause = (reason, on) => {
     on ? reasons.add(reason) : reasons.delete(reason);
     root.classList.toggle("is-paused", reasons.size > 0);
   };
-  pauseArea.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && pause("hover", true));
-  pauseArea.addEventListener("pointerleave", () => pause("hover", false));
-  pauseArea.addEventListener("focusin", () => pause("focus", true));
+  root.addEventListener("pointerover", (e) => {
+    if (e.pointerType === "mouse") pause("hover", Boolean(e.target.closest(".dial__card")));
+  });
+  root.addEventListener("pointerleave", () => pause("hover", false));
+  pauseArea.addEventListener("focusin", (e) => pause("focus", e.target.matches(":focus-visible")));
   pauseArea.addEventListener("focusout", (e) => !pauseArea.contains(e.relatedTarget) && pause("focus", false));
   document.addEventListener("visibilitychange", () => pause("hidden", document.hidden));
   progress.addEventListener("animationend", () => step(1));
