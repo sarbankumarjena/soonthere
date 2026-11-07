@@ -135,7 +135,7 @@ function showConfirmation(booking, event) {
   confirm.innerHTML = html`
     <div class="confirm__copy">
       <p class="eyebrow"><span>${booking.id}</span><span>Confirmed</span></p>
-      <h1 class="confirm__title" id="confirm-title"><span>You're in!</span> <span>See you SoonThere.</span></h1>
+      <h1 class="confirm__title" id="confirm-title"><span class="confirm__line"><span>You're in!</span></span> <span class="confirm__line"><span>See you SoonThere.</span></span></h1>
       <p class="confirm__text">${first}, your ${pluralise(booking.passes, "pass", "passes")} for <b>${event.title}</b> ${booking.passes > 1 ? "are" : "is"} saved under My tickets. Show ${booking.passes > 1 ? "them" : "it"} at the door on ${formatDate(event)}.</p>
       <p class="confirm__small">In a real launch this would also land in <b>${booking.email}</b>.</p>
       <div class="confirm__actions">

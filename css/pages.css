@@ -2309,14 +2309,53 @@
   line-height: 1;
 }
 
-.confirm__title span {
+/* each line of the heading rises from behind its own edge, so it never crosses other text */
+.confirm__line {
   display: block;
-  animation: rise 0.9s var(--ease-out) both;
+  overflow: clip;
+  padding-bottom: 0.08em;
 }
 
-.confirm__title span + span {
+.confirm__line > span {
+  display: block;
+  animation: rise 0.8s var(--ease-out) both;
+}
+
+.confirm__line + .confirm__line > span {
   color: var(--accent);
-  animation-delay: 0.12s;
+  animation-delay: 0.1s;
+}
+
+/* then the rest settles in, one piece after another */
+.confirm__copy > :not(.confirm__title) {
+  animation: settle 0.6s var(--ease-out) both;
+}
+
+.confirm__copy > .eyebrow {
+  animation-delay: 0s;
+}
+
+.confirm__copy > .confirm__text {
+  animation-delay: 0.35s;
+}
+
+.confirm__copy > .confirm__small {
+  animation-delay: 0.42s;
+}
+
+.confirm__copy > .confirm__actions {
+  animation-delay: 0.5s;
+}
+
+.confirm__copy > .confirm__more {
+  animation-delay: 0.58s;
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    translate: 0 0.6rem;
+  }
 }
 
 .confirm__text {
