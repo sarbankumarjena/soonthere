@@ -4,10 +4,7 @@
   initial-value: 75;
 }
 
-@view-transition {
-  navigation: auto;
-}
-
+/* cross-page transitions are switched on by a small inline style in each page's head */
 ::view-transition-group(*) {
   animation-duration: 0.45s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
