@@ -85,7 +85,8 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 - **Logo.** "There" is printed on a torn ticket stub, and a paper plane's dashed flight path loops round the name: it slips behind the word, loops back over the top and sweeps out underneath, with the plane at the end. The path is drawn to fit the word, and the plane flies it on load and on hover.
 - **Search from any page.** A search box in the header suggests matching events as you type (or the next few events before you type), and the arrow keys move through them. Enter shows every match in the lineup. On phones and tablets it's a button that opens the field over the header. On the home page it steps aside while the lineup's own search box is on screen, and comes back with whatever you typed once you scroll past it.
 - **Countdown timers.** Shown on the hero, the headliners and the event pages.
-- **Animation.** Scroll reveals, marquee tapes, a 3D tilt on cards, magnetic buttons and page transitions. All motion is turned off for people who set "reduce motion" in their system settings.
+- **The crowd in the footer.** The big SoonThere at the bottom of every page is drawn as a crowd of dots on a canvas. Walk the pointer through it and the people nearby turn and press in towards you, leaving a little space around you and parting as you move, then drift back to their places once you have gone by. The real text stays underneath for screen readers, and the effect is off when "reduce motion" is set.
+- **Animation.** Scroll reveals, marquee tapes, a 3D tilt on cards, buttons that lean gently towards the pointer and fill from the side it enters, and page transitions. All motion is turned off for people who set "reduce motion" in their system settings.
 - **Responsive layout.** Built mobile first and tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide.
 - **A custom 404 page.** "Wrong venue."
 
@@ -113,8 +114,8 @@ css/
 js/
   app.js          shared on every page: theme, header, reveals, tilt, toasts
   data/events.js  the events themselves
-  lib/            dom helpers, date and price formatting, storage, catalogue, accounts, validation, .ics export
-  components/     event cards, countdown, hero dial, pass
+  lib/            dom helpers, date and price formatting, storage, catalogue, search, accounts, validation, .ics export
+  components/     event cards, countdown, hero dial, pass, header search, footer crowd
   pages/          one module per page
 assets/           favicon, share image, event photos
 ```
@@ -160,4 +161,6 @@ The site is deployed on Vercel straight from this repository. There's no build c
 - **Fonts:** from Google Fonts: Bricolage Grotesque, Schibsted Grotesk, DM Mono and Anybody.
 - **Events:** all made up. No real tickets are sold and nothing is charged or emailed.
 
-Built by Sarban Kumar Jena.
+## Copyright
+
+© 2026 Sarban Kumar Jena. All rights reserved. Instructors and evaluators are welcome to view, run and assess the project for grading; see [LICENSE](LICENSE) for the details and for the terms of the photos and fonts it uses.
