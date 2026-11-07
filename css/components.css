@@ -14,6 +14,8 @@
 .btn {
   --btn-bg: var(--ink);
   --btn-fg: var(--paper);
+  --btn-fill: var(--accent);
+  --btn-fill-fg: var(--on-accent);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -31,26 +33,38 @@
   border-radius: 999px;
   overflow: hidden;
   isolation: isolate;
-  transition: transform 0.25s var(--ease-out), translate 0.3s var(--ease-out), color 0.25s ease;
+  transition: transform 0.25s var(--ease-out), translate 0.3s var(--ease-out), color 0.3s ease, border-color 0.3s ease, box-shadow 0.4s ease;
 }
 
+/* on hover the fill spreads out in a circle from wherever the pointer came in,
+   and draws back towards wherever it leaves (--x and --y are set in app.js) */
 .btn::before {
   content: "";
   position: absolute;
-  inset: 0;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
   z-index: -1;
-  background: var(--accent);
-  border-radius: inherit;
-  transform: translateY(101%);
-  transition: transform 0.4s var(--ease-out);
+  width: calc(220% + 3rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--btn-fill);
+  translate: -50% -50%;
+  scale: 0;
+  transition: scale 0.55s var(--ease-out);
+  pointer-events: none;
 }
 
-.btn:hover::before {
-  transform: none;
-}
+/* touch screens keep :hover after a tap, so the fill is only for real pointers */
+@media (hover: hover) {
+  .btn:hover::before {
+    scale: 1;
+  }
 
-.btn:hover {
-  color: var(--on-accent);
+  .btn:hover {
+    color: var(--btn-fill-fg);
+    border-color: var(--btn-fill);
+    box-shadow: 0 10px 22px -14px var(--btn-fill);
+  }
 }
 
 .btn:active {
@@ -71,28 +85,16 @@
 .btn-accent {
   --btn-bg: var(--accent);
   --btn-fg: var(--on-accent);
-}
-
-.btn-accent::before {
-  background: var(--ink);
-}
-
-.btn-accent:hover {
-  color: var(--paper);
+  --btn-fill: var(--accent-deep);
+  --btn-fill-fg: var(--on-accent-deep);
 }
 
 .btn-ghost {
   --btn-bg: transparent;
   --btn-fg: var(--ink);
+  --btn-fill: var(--ink);
+  --btn-fill-fg: var(--paper);
   border-color: var(--line-strong);
-}
-
-.btn-ghost::before {
-  background: var(--ink);
-}
-
-.btn-ghost:hover {
-  color: var(--paper);
 }
 
 .btn-small {

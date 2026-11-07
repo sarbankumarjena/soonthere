@@ -10,6 +10,8 @@
   --accent: #e5431a;
   --accent-text: #b4300c;
   --on-accent: #171513;
+  --accent-deep: #c23812;
+  --on-accent-deep: #fff7ee;
   --success: #1f7a4d;
   --danger: #b42318;
   --grain-opacity: 0.09;
@@ -69,6 +71,8 @@
   --accent: #ff5a2c;
   --accent-text: #ff7d57;
   --on-accent: #13110f;
+  --accent-deep: #ff7a4f;
+  --on-accent-deep: #13110f;
   --success: #4cc38a;
   --danger: #ff6b5e;
   --grain-opacity: 0.06;
