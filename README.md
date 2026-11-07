@@ -10,10 +10,12 @@ SoonThere lists gigs, talks, tastings, workshops and late nights in cities aroun
 
 It is built with HTML5, CSS3 and plain JavaScript, with no framework and no build step, and works on phones, tablets and desktops.
 
+**Contents:** [Features](#features) | [Try it](#try-it) | [Tech stack](#tech-stack) | [How it's built](#how-its-built) | [Running locally](#running-locally) | [Deployment](#deployment) | [Project brief](#project-brief) | [Credits](#credits)
+
 ## Features
 
 ### Hero dial
-Upcoming events sit on the rim of a wheel that turns on its own. Drag it, swipe it, or use the arrow buttons and keys. The selected event is shown in full with a live countdown, and its photo fills the stage.
+The hero section introduces SoonThere with a headline and links to browse events or see your tickets. Beside it, upcoming events sit on the rim of a wheel that turns on its own. Drag it, swipe it, or use the arrow buttons and keys. The selected event is shown in full with a live countdown, and its photo fills the stage.
 
 ![The hero dial being dragged and turned, then switched to light mode](docs/clips/dial.webp)
 
@@ -111,6 +113,17 @@ The sign-in page has a button for each demo account that signs you straight in.
 | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in booking `ST-K7M2QX`, then scanning it again |
 
 Accounts, registrations and event changes are kept in the browser's Local Storage, so the whole site runs without a server and every visitor starts with the same demo data. Passwords are salted and hashed with SHA-256 before they are stored.
+
+## Tech stack
+
+| | |
+| --- | --- |
+| Markup | HTML5, with semantic landmarks and a native `<dialog>` for passes |
+| Styling | CSS3: custom properties for the light and dark themes, grid, flexbox and view transitions |
+| Scripting | Plain JavaScript (ES modules), with no framework or libraries |
+| Data | A built-in event list, with registrations, accounts and edits kept in Local Storage |
+| Fonts | Google Fonts |
+| Hosting | Vercel, deployed from GitHub |
 
 ## How it's built
 
