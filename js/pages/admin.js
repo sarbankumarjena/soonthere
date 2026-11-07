@@ -21,6 +21,14 @@ let lastScan = null;
 /* ---------- helpers ---------- */
 
 const enrolled = (e) => e.capacity - seatsLeft(e);
+
+// "at 9:41 PM" for today's check-ins, "on 1 Nov, 9:41 PM" for anything older
+function checkedInLabel(iso) {
+  const at = new Date(iso);
+  const time = at.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  if (at.toDateString() === new Date().toDateString()) return `at ${time}`;
+  return `on ${at.toLocaleDateString([], { day: "numeric", month: "short" })}, ${time}`;
+}
 const bookingsFor = (id) => getRegistrations().filter((r) => r.eventId === id);
 const passesOf = (list) => list.reduce((sum, r) => sum + r.passes, 0);
 const timeZones = [...new Set([...events.map((e) => e.timeZone), "UTC", "Europe/Madrid", "Asia/Tokyo", "Asia/Singapore", "Asia/Dubai", "America/Los_Angeles", "America/Chicago", "America/Toronto"])].sort();
@@ -113,8 +121,8 @@ function eventsTab() {
             <span class="chip" data-category="${e.category}">${getCategory(e.category)?.label}</span>
             <div class="admin-row__fill">
               <span class="seats__bar" aria-hidden="true"><span style="--fill:${fill}%"></span></span>
-              <span>${enrolled(e).toLocaleString()} / ${e.capacity.toLocaleString()} enrolled</span>
-              <small>${pluralise(passesOf(local), "pass", "passes")} booked here</small>
+              <span>${enrolled(e).toLocaleString()} / ${e.capacity.toLocaleString()} booked</span>
+              <small>${pluralise(passesOf(local), "pass", "passes")} booked on this site</small>
             </div>
             <span class="admin-status is-${status}">${statusLabel[status]}</span>
             <div class="admin-row__actions">
@@ -131,7 +139,8 @@ function eventsTab() {
 /* ---------- check-in ---------- */
 
 function checkinTab() {
-  const options = [...events].sort(byStart);
+  const sorted = [...events].sort(byStart);
+  const options = [...sorted.filter((e) => !isPast(e)), ...sorted.filter((e) => isPast(e)).reverse()];
   const list = getRegistrations().filter((r) => !checkinEvent || r.eventId === checkinEvent);
   const event = getEvent(checkinEvent);
   return html`
@@ -174,7 +183,7 @@ function attendees(list, { cancel = false } = {}) {
               <p class="admin-row__meta">${r.email} <span>${r.phone}</span></p>
             </div>
             <p class="admin-row__meta">${e?.title ?? "Removed event"}<span>${r.userId ? "Member" : "Guest"}</span></p>
-            <span class="admin-status ${r.checkedInAt ? "is-open" : ""}">${r.checkedInAt ? `In at ${new Date(r.checkedInAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}` : "Not in yet"}</span>
+            <span class="admin-status ${r.checkedInAt ? "is-open" : ""}">${r.checkedInAt ? `In ${checkedInLabel(r.checkedInAt)}` : "Not in yet"}</span>
             <div class="admin-row__actions">
               <button class="btn btn-small btn-ghost" type="button" data-toggle-in="${r.id}">${r.checkedInAt ? "Undo" : "Check in"}</button>
               ${cancel && html`<button class="btn btn-small btn-danger" type="button" data-cancel="${r.id}">Cancel</button>`}
@@ -194,7 +203,7 @@ function scan(code) {
   if (!booking) return say("bad", "Not found", `There's no booking ${id || "with that number"} on this site.`);
   const event = getEvent(booking.eventId);
   if (checkinEvent && booking.eventId !== checkinEvent) return say("warn", "Wrong event", `${booking.id} is for ${event?.title ?? "another event"}.`);
-  if (booking.checkedInAt) return say("warn", "Already used", `${booking.name} was checked in at ${new Date(booking.checkedInAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}.`);
+  if (booking.checkedInAt) return say("warn", "Already used", `${booking.name} was checked in ${checkedInLabel(booking.checkedInAt)}.`);
   lastScan = { kind: "ok", title: "Admitted", text: `${booking.name}, ${pluralise(booking.passes, "pass", "passes")} for ${event?.title ?? "this event"}.` };
   updateRegistration(booking.id, { checkedInAt: new Date().toISOString() });
 }
@@ -223,7 +232,7 @@ function membersTab() {
           <span class="profile__avatar" aria-hidden="true">${u.name.charAt(0).toUpperCase()}</span>
           <div class="admin-row__main">
             <p class="admin-row__title">${u.name} ${u.id === me.id && html`<small>you</small>`}</p>
-            <p class="admin-row__meta">${u.email}<span>Joined ${new Date(u.createdAt).toLocaleDateString()}</span></p>
+            <p class="admin-row__meta">${u.email}<span>Joined ${new Date(u.createdAt).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}</span></p>
           </div>
           <p class="admin-row__meta">${pluralise(regs.filter((r) => r.userId === u.id || r.email === u.email).length, "booking")}</p>
           <span class="chip">${u.role === "admin" ? "Admin" : "Member"}</span>

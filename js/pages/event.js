@@ -3,7 +3,7 @@ import { $, html, getParam } from "../lib/dom.js";
 import { icons } from "../lib/icons.js";
 import { formatDate, formatPrice, formatShortDate, formatTime, formatTimeRange, pluralise, relativeTime } from "../lib/format.js";
 import { canRegister, getCategory, getEvent, getStatus, hasStarted, mapsUrl, related, seatsLeft } from "../lib/catalog.js";
-import { getRegistrations } from "../lib/storage.js";
+import { myBookings } from "../lib/auth.js";
 import { downloadIcs, eventLink } from "../lib/calendar.js";
 import { eventCard, statusStamp } from "../components/card.js";
 import { mountCountdown } from "../components/countdown.js";
@@ -32,8 +32,9 @@ function bookingState(e) {
   return { open: canRegister(e), title: "", note: "" };
 }
 
+// only the visitor's own passes: their account's, or this device's guest bookings
 function mine(e) {
-  return getRegistrations()
+  return myBookings()
     .filter((r) => r.eventId === e.id)
     .reduce((sum, r) => sum + r.passes, 0);
 }
@@ -78,7 +79,7 @@ function ticketPanel(e) {
         ${passes > 0 && html`
           <p class="ticket-panel__mine">${icons.check} You've got ${pluralise(passes, "pass", "passes")} for this. <a href="tickets.html">See my tickets</a></p>`}
         <div class="ticket-panel__actions">
-          <button class="btn btn-small btn-ghost" type="button" data-action="calendar">${icons.download} Add to calendar</button>
+          ${getStatus(e) !== "ended" && html`<button class="btn btn-small btn-ghost" type="button" data-action="calendar">${icons.download} Add to calendar</button>`}
           <button class="btn btn-small btn-ghost" type="button" data-action="share">${icons.arrowUpRight} Share</button>
         </div>
       </div>
@@ -232,4 +233,5 @@ if (!event) {
   initActions(event);
   renderRelated(event);
   document.addEventListener("registrations:change", render);
+  document.addEventListener("auth:change", render);
 }
