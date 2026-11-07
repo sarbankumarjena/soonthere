@@ -1,187 +1,168 @@
 # SoonThere
 
-**A responsive event management website. Discover what's happening next. See you SoonThere.**
+**An event management website for discovering events, registering for them and managing every booking in one place.**
 
-SoonThere is an event management website built for the K Explore Web Designing task. Visitors can explore upcoming and featured events, search for an event or filter by category, open any event for its full details, and register for it through a form that is validated in JavaScript and ends with a confirmation message. Registrations are kept in Local Storage and can be viewed and cancelled under My tickets, and organisers get an admin area for managing the events and checking people in. It's built with plain HTML5, CSS3 and JavaScript, with no frameworks and no build step, and works on phones, tablets and desktops.
+Live site: **https://soonthere.vercel.app**
 
-**Live site:** https://soonthere.vercel.app
+![SoonThere home page](docs/screenshots/home.webp)
 
-## How it meets the brief
+SoonThere lists gigs, talks, tastings, workshops and late nights in cities around the world. Visitors browse upcoming and featured events, search and filter them by category, open any event for its full details and register in about a minute. Registrations are saved in the browser's Local Storage, where they can be reviewed and cancelled, and organisers get an admin area to manage events and check people in at the door.
 
-| The brief asks for | Where it is |
-| --- | --- |
-| A hero section introducing the platform | Top of the home page: headline, introduction, buttons to browse events or see your tickets, and a dial of upcoming events |
-| A section showcasing upcoming and featured events | Home page: **Featured events** (the three headliners), then **Upcoming events** (every event, with past ones under their own divider when shown) |
-| An event card with name, date, venue, image and a short description | Every event card in the lineup, on desktop and phone |
-| Browse, search and filter events by category | Upcoming events section: search box, category filters, sorting, a past events switch. There's also a search box in the header on every page |
-| Detailed information about a selected event, with a registration option | `event.html`: date and time, venue, price, spots left, countdown, description, schedule, map link, and a Register button |
-| A registration form for name, email, phone number and the selected event | `register.html`, with the event already selected when you come from its page |
-| JavaScript form validation before submitting | Every field is checked as you go and again on submit (details below) |
-| A confirmation message after a successful submission | "You're in! See you SoonThere." with the booking number and your pass |
-| Responsive on phones, tablets and desktops | Tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide |
-| Good UI/UX, consistent styling, smooth transitions, interactive elements | One design system across every page, page transitions, the hero dial, hover and focus states |
-| HTML5, CSS3 and JavaScript | No framework, no build step |
-| Bonus: dark/light mode | Day and night switch in the header |
-| Bonus: event countdown timers | Hero, featured events and every event page |
-| Bonus: animations | See [Everywhere](#everywhere) |
-| Bonus: Local Storage registration management | My tickets: every registration, with cancelling; the admin area: check-in, cancelling and CSV export |
-| Git and GitHub, a deployed link and a README | This repository, deployed on Vercel at the link above |
+It is built with HTML5, CSS3 and plain JavaScript, with no framework and no build step, and works on phones, tablets and desktops.
 
-![Home page with the event dial](docs/screenshots/home.webp)
+## Features
 
----
+### Discover events
+- **Hero dial.** Upcoming events sit on the rim of a wheel that turns on its own. Drag it, swipe it, or use the arrow buttons and keys. The selected event is shown in full with a live countdown, and its photo fills the stage.
+- **Featured events.** Three highlighted events as large poster cards.
+- **Upcoming events.** Every event as a card with its name, date, venue, image and a short description.
+  - Search by name, venue, city, organiser or tag, accents ignored.
+  - Filter by category, with live counts.
+  - Sort by date, popularity or price.
+  - Show past events, which appear under their own "Already happened" divider.
+  - Filters are kept in the URL, so a filtered view can be shared.
+- **Search from any page.** The header search suggests events as you type and hands the search over to the lineup.
 
-## What it does
-
-### Home
-- **Hero dial.** Upcoming events sit on the rim of a large wheel. On wide screens the words and the selected event sit on the left, the event's photo fills the stage, and a smaller dial docks in the bottom-right corner. On phones and tablets the dial runs full width under the headline. The event under the pointer is shown in full (title, date, venue, price, a live countdown) and its photo fills the background. The dial turns on its own every few seconds, and you can also drag it, swipe it on a trackpad, use the arrow buttons or the arrow keys. It pauses while the pointer rests on one of its cards or while you're using the keyboard, and keeps turning when you're just moving around the rest of the hero.
-- **Headliners.** Three featured events as large poster cards with live countdowns. On phones they become a row you swipe through.
-- **The lineup.** Every upcoming event as a ticket-style card with its name, date, venue, image and a short description. On phones each card turns into a compact ticket row, with the description cut to two lines, so several fit on screen at once.
-  - **Search.** Matches names, venues, cities, organisers and tags, and ignores accents, so "alcantara" finds "Alcântara".
-  - **Category filters.** Each one shows a live count of matching events.
-  - **Sorting.** By date, popularity or price. Prices are in local currencies, so they're roughly converted before comparing.
-  - **Past events.** A switch shows events that have already happened, under their own "Already happened" divider so the upcoming ones still read as upcoming. If a search also matches past events while the switch is off, a note says how many and offers to show them.
-  - **Shareable filters.** Search and filter settings are kept in the URL, so a filtered view can be shared or bookmarked. Press `/` to jump to the search box.
-
-![The lineup with search and category filters](docs/screenshots/lineup.webp)
-
-### Event page
-- **Cover photo.** It starts tinted in the event's category colour and fades up to full colour. In browsers that support cross-page view transitions, the card you clicked morphs into this cover.
-- **Ticket panel.** Price, date and venue, plus a live countdown and a bar showing how many spots are left. Times are shown in the venue's local time, with a note of what that is in your own time zone when it's different.
-- **Details.** A description, highlights, a timeline of the day, the venue with a link to maps, and tags.
-- **Calendar and sharing.** "Add to calendar" downloads an `.ics` file. "Share" uses the phone's share sheet where there is one and copies the link everywhere else.
-- **Booking states.** Sold-out, already-started and finished events say so instead of offering a Register button.
-- **More like this.** Related events at the bottom of the page.
-- **Phones.** A small booking bar slides up once the main Register button has scrolled out of view.
-
-![Event details page](docs/screenshots/event.webp)
+### Event details
+- Date, time and venue in the venue's own time zone, with your local time alongside when it differs.
+- Price, spots left, a live countdown, the description, highlights, the schedule and a map link.
+- **Register**, **Add to calendar** (an `.ics` file) and **Share**.
+- Sold-out, started and finished events say so instead of offering registration.
 
 ### Registration
-- **Fields.** Name, email, phone and the event (pre-selected when you arrive from an event page). There's also a number of passes, an optional note and a tick box for the house rules.
-- **Validation.** Every field is checked in JavaScript before anything is saved:
-  - **When it runs:** a field is checked when you leave it, then on every keystroke once it has shown an error. The whole form is checked again on submit, and the first problem gets focus.
-  - **Name:** 2 to 60 characters, using letters (including accented ones), spaces, hyphens and apostrophes.
-  - **Email:** a practical format check, plus a check that this email hasn't already booked this event.
-  - **Phone:** international numbers with 7 to 15 digits and an optional `+`. Spaces, dashes, dots and brackets are allowed.
-  - **Passes:** 1 to 5, and never more than the spots left.
-  - **Event:** must exist and still be open. Sold-out events can't be booked.
-  - **Errors:** each one appears next to its field and is linked to it for screen readers with `aria-describedby` and `aria-invalid`.
-- **Clash warning.** If the new booking overlaps one you already have, or is in another city only a few hours away, the form warns you but still lets you book.
-- **Live pass preview.** A ticket next to the form fills in as you type.
-- **Confirmation.** On success the pass is saved and the form is replaced by a confirmation: **"You're in! See you SoonThere."** The pass slides in, a "You're in" stamp lands on it and a little confetti falls. It shows a booking number such as `ST-K7M2QX` and offers an "Add to calendar" button.
-- **Accounts are optional.** Guests can book straight away. Signed-in visitors get their name and email filled in, and the pass is saved to their account.
+The form collects the participant's **name, email, phone number and the selected event**, plus the number of passes and an optional note. Everything is validated in JavaScript before it is saved:
 
-![Registration confirmation](docs/screenshots/register.webp)
+| Field | Rule |
+| --- | --- |
+| Name | 2 to 60 characters; letters (including accented ones), spaces, hyphens and apostrophes |
+| Email | A valid address that hasn't already registered for this event |
+| Phone | 7 to 15 digits, an optional `+`, and spaces, dashes or brackets |
+| Event | Must exist and still be open |
+| Passes | 1 to 5, and never more than the spots left |
+
+Fields are checked when you leave them and again on submit, and errors appear beside each field and are announced to screen readers. A pass preview fills in as you type, and the form warns about clashes with your other bookings. A successful registration ends with a confirmation message, **"You're in! See you SoonThere."**, along with a booking number and the pass.
 
 ### My tickets
-- **Coming up.** A sideways timeline of your bookings, with a date rail above the passes and a time rail below. Two half-wheels peek out at either end. The left one is a 24-hour bezel shaded from night to day that turns to the focused pass's start time. The right one carries the days of that month, with a dot on every day you're booked, and turns to its date. On narrower screens the wheels sit above the passes, with the name of the pass they're showing and the arrows between them.
-- **Season at a glance.** A heatmap of the whole season. Days you're going are highlighted, other days with events are shaded, and clicking a highlighted day jumps to that booking.
-- **Been there.** Past bookings on a strip of film. When there aren't any yet, it says so.
-- **Pass details.** Open any pass to see it in full, add it to your calendar or cancel it. Cancelling asks for confirmation, and the spots go back on sale straight away. A "clear everything" option is there too.
-
-![My tickets](docs/screenshots/tickets.webp)
+- A timeline of upcoming bookings, with a 24-hour clock wheel and a calendar wheel that turn to the selected pass.
+- A season heatmap of the days you're going out.
+- Past events on a "Been there" film strip.
+- Open any pass to see it in full, add it to your calendar or cancel it. Cancelled spots go back on sale straight away.
 
 ### Accounts and admin
-- **Sign in or create an account** on `account.html`. Passwords need at least 8 characters with a letter and a number.
-- **Members** see the bookings made on their account, or with their email, under My tickets. Signed out, My tickets shows guest bookings made on this device.
-- **Admins** get an Admin link in the header, which opens `admin.html`:
-  - **Overview:** events coming up, passes booked, passes checked in and accounts.
-  - **Events:** add, edit and remove events, with every field the event page uses, including the venue's time zone and a cover photo (pick one of the site's or upload your own). Each event shows how many of its spots are taken. "Restore the original lineup" undoes every change.
-  - **Check-in:** type a booking number to admit someone. It catches unknown numbers, passes that were already used and passes for a different event. Attendee lists can be filtered by event, and check-ins can be undone.
-  - **Bookings:** every booking, searchable, with cancelling and a CSV export.
-  - **Members:** every account, with the option to make someone an admin.
-![Admin area](docs/screenshots/admin.webp)
+- **Accounts are optional.** Guests can register straight away. Signed-in members get their details filled in and their bookings kept together.
+- **The admin area:**
+  - an overview of events, bookings and check-ins
+  - add, edit and remove events, including their time zone and cover photo
+  - check in by booking number, catching unknown or already-used passes
+  - search and cancel bookings, and export them as CSV
+  - manage members and admin access
 
-- **Demo accounts.** The sign-in page has a button for each one that signs you straight in.
+### Throughout
+- **Light and dark mode.** Follows your system setting until you choose, then remembers your choice.
+- **Countdown timers** on the hero, featured events and event pages.
+- **Animations.** Page transitions, scroll reveals and a paper-plane logo. There's also a footer wordmark drawn as a crowd that gathers round your pointer or finger. All motion respects the "reduce motion" setting.
+- **Responsive** from 360px phones to wide desktops.
+- **Accessible.** Semantic HTML, keyboard support, visible focus and labelled form errors.
 
-  | Account | Email | Password | What you'll see |
-  | --- | --- | --- | --- |
-  | Demo user | `user1@soonthere.app` | `soonthere-demo` | Five upcoming bookings on the timeline, dials and heatmap, and four past nights out on the "Been there" reel |
-  | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in the demo user's booking `ST-K7M2QX`, then scanning it again |
+## Screenshots
 
-> There's no server behind the site, so accounts, bookings and lineup changes are stored in the browser (localStorage). They don't sync between devices, and this isn't real security: anyone with the browser's developer tools could change the data. Passwords are salted and hashed with SHA-256 using the Web Crypto API rather than stored as text, but a real launch would move all of this to a backend.
-
-### Everywhere
-- **Light and dark themes.** The site follows your system setting until you pick one, then remembers your choice. The switch is a little sky: the sun slides across, turns into a moon and the stars come out, and the new theme spreads out in a circle from it.
-- **Logo.** "There" is printed on a torn ticket stub, and a paper plane's dashed flight path loops round the name: it slips behind the word, loops back over the top and sweeps out underneath, with the plane at the end. The path is drawn to fit the word, and the plane flies it on load and on hover.
-- **Search from any page.** A search box in the header suggests matching events as you type (or the next few events before you type), and the arrow keys move through them. Enter shows every match in the lineup. On phones and tablets it's a button that opens the field over the header. On the home page it steps aside while the lineup's own search box is on screen, and comes back with whatever you typed once you scroll past it.
-- **Countdown timers.** Shown on the hero, the headliners and the event pages.
-- **The crowd in the footer.** The big SoonThere at the bottom of every page is drawn as a crowd of dots on a canvas. Walk the pointer through it and the people nearby turn and press in towards you, leaving a little space around you and parting as you move, then drift back to their places once you have gone by. The real text stays underneath for screen readers, and the effect is off when "reduce motion" is set.
-- **Animation.** Scroll reveals, marquee tapes, a 3D tilt on cards, buttons that lean gently towards the pointer and fill from the side it enters, and page transitions. All motion is turned off for people who set "reduce motion" in their system settings.
-- **Responsive layout.** Built mobile first and tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide.
-- **A custom 404 page.** "Wrong venue."
-
-| Dark mode | On a phone |
+| Upcoming events | Event details |
 | --- | --- |
-| ![Dark mode](docs/screenshots/home-dark.webp) | ![Mobile](docs/screenshots/home-mobile.webp) |
+| ![Upcoming events with search and filters](docs/screenshots/lineup.webp) | ![Event details](docs/screenshots/event.webp) |
+| **Registration confirmation** | **My tickets** |
+| ![Registration confirmation](docs/screenshots/register.webp) | ![My tickets](docs/screenshots/tickets.webp) |
+| **Admin area** | **Dark mode** |
+| ![Admin area](docs/screenshots/admin.webp) | ![Dark mode](docs/screenshots/home-dark.webp) |
 
----
+<p align="center"><img src="docs/screenshots/home-mobile.webp" alt="SoonThere on a phone" width="300"></p>
+
+## Try it
+
+The sign-in page has a button for each demo account that signs you straight in.
+
+| Account | Email | Password | What you'll see |
+| --- | --- | --- | --- |
+| Demo member | `user1@soonthere.app` | `soonthere-demo` | Upcoming bookings on the timeline and heatmap, and past events on the "Been there" strip |
+| Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in booking `ST-K7M2QX`, then scanning it again |
+
+There is no server behind the site. Events edited by admins, accounts and registrations are stored in the browser's Local Storage, so they stay on that device. Passwords are salted and hashed with SHA-256 rather than stored as text, but a real launch would move all of this to a backend.
 
 ## How it's built
 
 ```
-index.html        home: hero dial, headliners, lineup, how it works
-event.html        one event, picked with ?id=
-register.html     registration form and confirmation, event picked with ?event=
+index.html        home: hero, featured events, upcoming events, how it works
+event.html        event details (?id=)
+register.html     registration form and confirmation (?event=)
 tickets.html      My tickets
-account.html      sign in, create an account, profile
-admin.html        admin area: events, check-in, bookings, members
+account.html      sign in and create an account
+admin.html        admin area
 404.html          not found
-css/
-  base.css        design tokens, light and dark themes, reset, type
-  layout.css      header, mobile menu, footer
-  components.css  buttons, chips, ticket cards, form fields, countdown, toasts
-  pages.css       page-specific styles
+css/              design tokens and themes, layout, components, page styles
 js/
-  app.js          shared on every page: theme, header, reveals, tilt, toasts
-  data/events.js  the events themselves
-  lib/            dom helpers, date and price formatting, storage, catalogue, search, accounts, validation, .ics export
-  components/     event cards, countdown, hero dial, pass, header search, footer crowd
+  app.js          shared on every page: theme, header, search, animations
+  data/           the events
+  lib/            storage, catalogue, search, accounts, validation, formatting
+  components/     event cards, countdowns, hero dial, pass, header search, footer crowd
   pages/          one module per page
-assets/           favicon, share image, event photos
+assets/           event photos, favicon, share image
 ```
 
-### Notes on the implementation
+- **No framework, no build step.** Each page loads one ES module that imports what it needs, so the site is plain static files.
+- **One source of truth.** Every page reads events through a small catalogue module. When an admin edits the events, the edited list is saved in Local Storage and used everywhere.
+- **Local Storage.** Registrations, accounts, the session and the theme each have their own key. Every read and write is guarded, so browsers that block storage still work. Changes sync across open tabs.
+- **Time zones.** Times are stored in UTC with the venue's IANA time zone and formatted with the `Intl` APIs, so an 8 pm show in Lisbon reads 8 pm everywhere. Prices use each event's local currency.
+- **Safe rendering.** Markup is built with a tagged template that escapes every value, so nothing typed into a form can become HTML.
+- **Progressive enhancement.** View transitions, styled dropdowns, the share sheet and the canvas crowd are used where supported, and the site works without them.
 
-- **No build step.** Every page loads a single ES module (`js/pages/*.js`), which imports what it needs. The site is static files, so it deploys anywhere.
-- **One source of truth.** The built-in lineup lives in `js/data/events.js`. When an admin changes it, the edited list is saved under `soonthere:events` and used instead, so every page sees the same events. Cards, filters, the dial, event pages and the registration form all read from it through small helpers in `js/lib/catalog.js`, such as `upcoming()`, `getStatus()`, `seatsLeft()` and `findClashes()`.
-- **Safe templating.** Markup is built with a small `html` tagged template (in `js/lib/dom.js`) that escapes every interpolated value, so nothing typed into the form can end up as HTML.
-- **Time zones.** Start and end times are stored in UTC along with the venue's IANA time zone. Every date and time on the site is formatted with `Intl.DateTimeFormat` in the venue's zone, so an 8 pm gig in Lisbon says 8 pm wherever you are. Prices use `Intl.NumberFormat` in the event's own currency, and phrases like "in 17 days" come from `Intl.RelativeTimeFormat`.
-- **localStorage.** Bookings are saved under `soonthere:registrations` as a list of `{ id, eventId, name, email, phone, passes, note, createdAt }`, the theme under `soonthere:theme`, accounts under `soonthere:users` and the signed-in session under `soonthere:session`. Reads and writes are wrapped in `try`/`catch`, so private browsing modes that block storage don't break the site. A custom `registrations:change` event, plus the browser's `storage` event, keeps the ticket count and seat numbers in sync across open tabs. Seats left are worked out as capacity, minus the event's existing bookings, minus your own passes.
-- **The dial.** Each card is rotated around a point far below the stage, so the cards sit on the rim of a big wheel. A `requestAnimationFrame` loop eases the dial towards its target position. The rings of tick marks are plain CSS (`repeating-conic-gradient` with a radial mask), and they fade out around the centre card so its date and time stay readable.
-- **Times entered by admins.** An event's doors time is typed in the venue's local time and converted to UTC by working out that zone's offset with `Intl.DateTimeFormat`, so daylight saving is handled.
-- **Progressive enhancement.** View transitions, the share sheet and the clipboard are used where the browser supports them, and everything still works without them.
-- **Accessibility.**
-  - Semantic landmarks and a skip link.
-  - Visible focus styles.
-  - Labelled form fields with linked error messages.
-  - Keyboard support for the dial and the timeline.
-  - A native `<dialog>` for passes.
-  - Alt text on event photos.
-  - Respect for `prefers-reduced-motion`.
+## Quality
 
-## Running it locally
+- **Lighthouse** (live site, main pages):
+  - Accessibility, Best Practices and SEO: 100 on every page
+  - Performance on desktop: 98–100
+  - Performance on mobile: 97–99, and 85 for the home page with its full-screen hero
+- HTML validated on every page, and no issues from the axe accessibility checker in light or dark mode.
+- Tested at 360, 390, 768, 1024, 1280 and 1440px wide, with no horizontal scrolling.
 
-The pages use ES modules, so they need to be served over HTTP rather than opened as files. From the project folder, run either:
+## Running locally
+
+The pages use ES modules, so serve the folder over HTTP rather than opening the files directly:
 
 ```bash
 python3 -m http.server 8000
-# or
-npx serve .
 ```
 
 Then open http://localhost:8000.
 
 ## Deployment
 
-The site is deployed on Vercel straight from this repository. There's no build command; Vercel serves the files as they are and uses `404.html` for missing pages. Every push to `main` goes live automatically.
+Deployed on Vercel from this repository. There is no build command; every push to `main` goes live automatically.
+
+<details>
+<summary><strong>Project brief coverage</strong> (K Explore Web Designing)</summary>
+
+| Requirement | Where |
+| --- | --- |
+| Hero section introducing the platform | Home page, top |
+| Upcoming and featured events | Home page: Featured events, then Upcoming events |
+| Event cards with name, date, venue, image and short description | Upcoming events and related events |
+| Browse, search and filter by category | Upcoming events section and the header search |
+| Event details with a registration option | `event.html` |
+| Registration form with name, email, phone and selected event | `register.html` |
+| JavaScript form validation | `js/lib/validate.js`, `js/pages/register.js` |
+| Confirmation message on success | After registering |
+| Responsive on mobile, tablet and desktop | Every page |
+| HTML5, CSS3, JavaScript; Git and GitHub | This repository |
+| Bonus: dark/light mode, countdown timers, animations, Local Storage registration management | All included |
+| Deployed link and README | Vercel, this file |
+
+</details>
 
 ## Credits
 
-- **Photos:** from [StockSnap](https://stocksnap.io) under the CC0 licence. The photographers are Søren Astrup Jørgensen, Nainoa Shizuru, Jens Thekkeveettil, Daria Nepriakhina, Startup Stock Photos, Toa Heftiba, Burst, Ryan McGuire, Freestocks.org, Matthew Kane, Skitter Photo, Austin Neill, Anthony Delanoix, Matt Bango, Barn Images and Tohm Brigitte.
-- **Fonts:** from Google Fonts: Bricolage Grotesque, Schibsted Grotesk, DM Mono and Anybody.
-- **Events:** all made up. No real tickets are sold and nothing is charged or emailed.
+- **Photos** from [StockSnap](https://stocksnap.io) (CC0) by Søren Astrup Jørgensen, Nainoa Shizuru, Jens Thekkeveettil, Daria Nepriakhina, Startup Stock Photos, Toa Heftiba, Burst, Ryan McGuire, Freestocks.org, Matthew Kane, Skitter Photo, Austin Neill, Anthony Delanoix, Matt Bango, Barn Images and Tohm Brigitte.
+- **Fonts** from Google Fonts: Bricolage Grotesque, Schibsted Grotesk, DM Mono and Anybody.
+- **Events** are fictional. No real tickets are sold and nothing is charged.
 
 ## Copyright
 
-© 2026 Sarban Kumar Jena. All rights reserved. Instructors and evaluators are welcome to view, run and assess the project for grading; see [LICENSE](LICENSE) for the details and for the terms of the photos and fonts it uses.
+© 2026 Sarban Kumar Jena. All rights reserved. See [LICENSE](LICENSE).
