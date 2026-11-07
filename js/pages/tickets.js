@@ -153,6 +153,15 @@ function timeline(ahead) {
           </div>
           <span class="side-dial__mark"></span>
         </div>
+        <div class="line__deck">
+          <p class="line__count" id="line-count"></p>
+          <p class="line__now" id="line-now"></p>
+          <p class="line__when" id="line-when"></p>
+          <div class="line__deck-nav">
+            <button class="dial__btn" type="button" data-line="-1" aria-label="Earlier booking">${icons.arrowLeft}</button>
+            <button class="dial__btn" type="button" data-line="1" aria-label="Later booking">${icons.arrow}</button>
+          </div>
+        </div>
         <div class="line__track-wrap">
           <ol class="line__track" id="line-track" role="list">${ahead.map((b) => stub(b, findClashes(b.event, all)))}</ol>
         </div>
@@ -270,6 +279,16 @@ function focusStub(item) {
   focused = item;
   setTime(booking.event);
   setDate(booking.event);
+
+  // on narrower screens a little panel between the wheels says which pass they're showing
+  const items = $$(".stub", item.parentElement);
+  $("#line-count").textContent = `${pad(items.indexOf(item) + 1)} / ${pad(items.length)}`;
+  $("#line-now").textContent = booking.event.title;
+  $("#line-when").textContent = `${booking.event.city}, ${relativeTime(booking.event.start)}`;
+  $$("[data-line]", root).forEach((btn) => {
+    const edge = btn.dataset.line === "-1" ? items[0] : items.at(-1);
+    btn.disabled = item === edge;
+  });
 }
 
 function initTimeline() {
