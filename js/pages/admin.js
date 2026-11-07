@@ -310,7 +310,7 @@ function openEventForm(id = null) {
         ${formField("organiser", "Organiser", text("organiser", e.organiser))}
       </div>
       ${formField("summary", "Short description", area("summary", e.summary, 2), "One or two lines. Shown on the event cards.")}
-      <label class="check"><input type="checkbox" name="featured" ${e.featured ? "checked" : ""}><span class="check__box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span>Feature it in Headliners</span></label>
+      <label class="check"><input type="checkbox" name="featured" ${e.featured ? "checked" : ""}><span class="check__box" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span>Show it under Featured events on the home page</span></label>
     </fieldset>
     <fieldset class="form-section"><legend><span>02</span> When and where</legend>
       <div class="field-row field-row--3">
