@@ -39,7 +39,7 @@ function initTheme() {
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
         { duration: 650, easing: "cubic-bezier(0.22, 1, 0.36, 1)", pseudoElement: "::view-transition-new(root)" },
       );
-    });
+    }).catch(() => {});
     transition.finished.finally(() => root.classList.remove("theme-switching"));
   });
 

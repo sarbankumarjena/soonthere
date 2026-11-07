@@ -44,7 +44,7 @@ export function initHeaderSearch() {
     if (q) {
       const found = events.filter((e) => matches(textFor(e), q));
       // upcoming first, then anything that has already happened
-      list = [...found.filter((e) => !isPast(e)).sort(byStart), ...found.filter(isPast).sort(byStart).reverse()];
+      list = [...found.filter((e) => !isPast(e)).sort(byStart), ...found.filter((e) => isPast(e)).sort(byStart).reverse()];
       results.innerHTML = list.length
         ? html`
             ${list.slice(0, LIMIT).map(option)}

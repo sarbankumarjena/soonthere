@@ -51,7 +51,7 @@ function filtered() {
   const list = visibleEvents().filter((e) => state.cat === "all" || e.category === state.cat);
   const sorted = list.sort(sorters[state.sort] ?? byStart);
   // past events always go to the end
-  return [...sorted.filter((e) => !isPast(e)), ...sorted.filter(isPast)];
+  return [...sorted.filter((e) => !isPast(e)), ...sorted.filter((e) => isPast(e))];
 }
 
 function renderChips() {
@@ -100,6 +100,8 @@ function render({ animate = true } = {}) {
       update();
       $$(".ticket-card", grid).forEach((card) => (card.style.viewTransitionName = `card-${card.dataset.id}`));
     });
+    // a transition can be skipped, e.g. when the tab is hidden; the update has still happened
+    transition.ready.catch(() => {});
     transition.finished.finally(() => {
       grid.classList.remove("is-transitioning");
       $$(".ticket-card", grid).forEach((card) => (card.style.viewTransitionName = ""));
