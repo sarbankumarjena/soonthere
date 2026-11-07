@@ -1,10 +1,31 @@
 # SoonThere
 
-**Discover what's happening next. See you SoonThere.**
+**A responsive event management website. Discover what's happening next. See you SoonThere.**
 
-SoonThere is an event discovery and booking site. You can browse gigs, talks, tastings and late nights in cities around the world, look up the details of any event, register for passes, and keep track of everything you've booked. It's built with plain HTML, CSS and JavaScript, with no frameworks and no build step.
+SoonThere is an event management website built for the K Explore Web Designing task. Visitors can explore upcoming and featured events, search for an event or filter by category, open any event for its full details, and register for it through a form that is validated in JavaScript and ends with a confirmation message. Registrations are kept in Local Storage and can be viewed and cancelled under My tickets, and organisers get an admin area for managing the events and checking people in. It's built with plain HTML5, CSS3 and JavaScript, with no frameworks and no build step, and works on phones, tablets and desktops.
 
 **Live site:** https://soonthere.vercel.app
+
+## How it meets the brief
+
+| The brief asks for | Where it is |
+| --- | --- |
+| A hero section introducing the platform | Top of the home page: headline, introduction, buttons to browse events or see your tickets, and a dial of upcoming events |
+| A section showcasing upcoming and featured events | Home page: **Featured events** (the three headliners), then **Upcoming events** (every event, with past ones under their own divider when shown) |
+| An event card with name, date, venue, image and a short description | Every event card in the lineup, on desktop and phone |
+| Browse, search and filter events by category | Upcoming events section: search box, category filters, sorting, a past events switch. There's also a search box in the header on every page |
+| Detailed information about a selected event, with a registration option | `event.html`: date and time, venue, price, spots left, countdown, description, schedule, map link, and a Register button |
+| A registration form for name, email, phone number and the selected event | `register.html`, with the event already selected when you come from its page |
+| JavaScript form validation before submitting | Every field is checked as you go and again on submit (details below) |
+| A confirmation message after a successful submission | "You're in! See you SoonThere." with the booking number and your pass |
+| Responsive on phones, tablets and desktops | Tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide |
+| Good UI/UX, consistent styling, smooth transitions, interactive elements | One design system across every page, page transitions, the hero dial, hover and focus states |
+| HTML5, CSS3 and JavaScript | No framework, no build step |
+| Bonus: dark/light mode | Day and night switch in the header |
+| Bonus: event countdown timers | Hero, featured events and every event page |
+| Bonus: animations | See [Everywhere](#everywhere) |
+| Bonus: Local Storage registration management | My tickets: every registration, with cancelling; the admin area: check-in, cancelling and CSV export |
+| Git and GitHub, a deployed link and a README | This repository, deployed on Vercel at the link above |
 
 ![Home page with the event dial](docs/screenshots/home.webp)
 
@@ -19,7 +40,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
   - **Search.** Matches names, venues, cities, organisers and tags, and ignores accents, so "alcantara" finds "Alcântara".
   - **Category filters.** Each one shows a live count of matching events.
   - **Sorting.** By date, popularity or price. Prices are in local currencies, so they're roughly converted before comparing.
-  - **Past events.** A switch shows events that have already happened.
+  - **Past events.** A switch shows events that have already happened, under their own "Already happened" divider so the upcoming ones still read as upcoming. If a search also matches past events while the switch is off, a note says how many and offers to show them.
   - **Shareable filters.** Search and filter settings are kept in the URL, so a filtered view can be shared or bookmarked. Press `/` to jump to the search box.
 
 ![The lineup with search and category filters](docs/screenshots/lineup.webp)
