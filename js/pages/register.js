@@ -8,6 +8,7 @@ import { currentUser } from "../lib/auth.js";
 import { checkEmail, checkName, checkPasses, checkPhone, cleanPhone } from "../lib/validate.js";
 import { downloadIcs } from "../lib/calendar.js";
 import { passTicket } from "../components/pass.js";
+import { assembleText } from "../components/assemble.js";
 
 const form = $("#register-form");
 const fields = {
@@ -123,19 +124,13 @@ function bookingId() {
   return `ST-${[...bytes].map((b) => alphabet[b % alphabet.length]).join("")}`;
 }
 
-function confetti() {
-  if (prefersReducedMotion()) return "";
-  const colours = ["var(--cat-music)", "var(--cat-tech)", "var(--cat-food)", "var(--cat-arts)", "var(--cat-comedy)", "var(--cat-wellness)"];
-  return html`<div class="confetti" aria-hidden="true">${Array.from({ length: 28 }, (_, i) => html`<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.12}s;--r:${(i * 53) % 360}deg;--c:${colours[i % colours.length]}"></i>`)}</div>`;
-}
-
 function showConfirmation(booking, event) {
   const first = booking.name.split(" ")[0];
   const confirm = $("#confirm");
   confirm.innerHTML = html`
     <div class="confirm__copy">
       <p class="eyebrow"><span>${booking.id}</span><span>Confirmed</span></p>
-      <h1 class="confirm__title" id="confirm-title"><span class="confirm__line"><span>You're in!</span></span> <span class="confirm__line"><span>See you SoonThere.</span></span></h1>
+      <h1 class="confirm__title" id="confirm-title"><span class="confirm__line"><span data-assemble>You're in!</span></span> <span class="confirm__line"><span data-assemble>See you SoonThere.</span></span></h1>
       <p class="confirm__text">${first}, your ${pluralise(booking.passes, "pass", "passes")} for <b>${event.title}</b> ${booking.passes > 1 ? "are" : "is"} saved under My tickets. Show ${booking.passes > 1 ? "them" : "it"} at the door on ${formatDate(event)}.</p>
       <p class="confirm__small">In a real launch this would also land in <b>${booking.email}</b>.</p>
       <div class="confirm__actions">
@@ -158,11 +153,7 @@ function showConfirmation(booking, event) {
   window.scrollTo({ top: 0, behavior: "instant" });
   confirm.focus({ preventScroll: true });
 
-  // confetti once the stamp has landed on the pass
-  setTimeout(() => {
-    confirm.insertAdjacentHTML("afterbegin", confetti());
-    setTimeout(() => $(".confetti", confirm)?.remove(), 4000);
-  }, 1100);
+  assembleText($(".confirm__title", confirm));
 }
 
 async function submit(e) {
