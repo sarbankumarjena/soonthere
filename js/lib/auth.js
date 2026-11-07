@@ -107,18 +107,29 @@ export async function ensureDemoAccounts() {
   const member = await demoUser(users, DEMO_MEMBER, "Demo User", "member");
   if (users.length !== before) saveUsers(users);
 
-  // the demo user's history is added once per browser, so cancelled bookings stay cancelled
-  if (read(DEMO_SEEDED, false)) return;
-  write(DEMO_SEEDED, true);
+  // the demo user's history is added once per browser, so cancelled bookings stay cancelled.
+  // Each batch is numbered, so a browser that already has the first one only gets what's new.
+  const seeded = Number(read(DEMO_SEEDED, 0));
+  if (seeded >= 2) return;
+  write(DEMO_SEEDED, 2);
   const base = { userId: member.id, name: member.name, email: member.email, phone: "+351912345678", note: "" };
-  addRegistrations([
-    { ...base, id: "ST-K7M2QX", eventId: "neon-tide", passes: 2, createdAt: daysAgo(9) },
-    { ...base, id: "ST-P4WZ8D", eventId: "night-bites", passes: 3, note: "Bringing my parents, one of them uses a cane.", createdAt: daysAgo(6) },
-    { ...base, id: "ST-H9C3RT", eventId: "frontend-forward", passes: 1, createdAt: daysAgo(14) },
-    { ...base, id: "ST-Y6N5LB", eventId: "open-field", passes: 2, createdAt: daysAgo(3) },
-    { ...base, id: "ST-R3VT7M", eventId: "sunrise-flow", passes: 1, createdAt: daysAgo(1) },
-    { ...base, id: "ST-E2V8JA", eventId: "confetti-club", passes: 2, createdAt: daysAgo(40), checkedInAt: "2026-10-18T03:12:00Z" },
-  ].filter((r) => !getRegistrations().some((x) => x.id === r.id)));
+  const batches = [
+    [
+      { ...base, id: "ST-K7M2QX", eventId: "neon-tide", passes: 2, createdAt: daysAgo(9) },
+      { ...base, id: "ST-P4WZ8D", eventId: "night-bites", passes: 3, note: "Bringing my parents, one of them uses a cane.", createdAt: daysAgo(6) },
+      { ...base, id: "ST-H9C3RT", eventId: "frontend-forward", passes: 1, createdAt: daysAgo(14) },
+      { ...base, id: "ST-Y6N5LB", eventId: "open-field", passes: 2, createdAt: daysAgo(3) },
+      { ...base, id: "ST-R3VT7M", eventId: "sunrise-flow", passes: 1, createdAt: daysAgo(1) },
+      { ...base, id: "ST-E2V8JA", eventId: "confetti-club", passes: 2, createdAt: "2026-09-28T17:04:00Z", checkedInAt: "2026-10-18T03:12:00Z" },
+    ],
+    [
+      { ...base, id: "ST-L8W3PS", eventId: "low-light", passes: 2, createdAt: "2026-10-24T09:31:00Z", checkedInAt: "2026-11-01T19:41:00Z" },
+      { ...base, id: "ST-C5K9TN", eventId: "slow-clay", passes: 1, createdAt: "2026-09-19T12:15:00Z", checkedInAt: "2026-10-10T00:56:00Z" },
+      { ...base, id: "ST-F2Q7GM", eventId: "first-pour", passes: 1, createdAt: "2026-09-08T07:48:00Z", checkedInAt: "2026-09-25T22:58:00Z" },
+    ],
+  ];
+  const have = new Set(getRegistrations().map((r) => r.id));
+  addRegistrations(batches.slice(seeded).flat().filter((r) => !have.has(r.id)));
 }
 
 window.addEventListener("storage", (e) => {

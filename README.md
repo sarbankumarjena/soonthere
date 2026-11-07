@@ -2,7 +2,7 @@
 
 **Discover what's happening next. See you SoonThere.**
 
-SoonThere is an event discovery and booking site. You can browse gigs, talks, tastings and late nights in a dozen cities, look up the details of any event, register for passes, and keep track of everything you've booked. It's built with plain HTML, CSS and JavaScript, with no frameworks and no build step.
+SoonThere is an event discovery and booking site. You can browse gigs, talks, tastings and late nights in cities around the world, look up the details of any event, register for passes, and keep track of everything you've booked. It's built with plain HTML, CSS and JavaScript, with no frameworks and no build step.
 
 **Live site:** https://soonthere.vercel.app
 
@@ -75,7 +75,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 
   | Account | Email | Password | What you'll see |
   | --- | --- | --- | --- |
-  | Demo user | `user1@soonthere.app` | `soonthere-demo` | Five upcoming bookings on the timeline, dials and heatmap, and one past event on the "Been there" reel |
+  | Demo user | `user1@soonthere.app` | `soonthere-demo` | Five upcoming bookings on the timeline, dials and heatmap, and four past nights out on the "Been there" reel |
   | Admin | `admin@soonthere.app` | `soonthere-admin` | The admin area. Try checking in the demo user's booking `ST-K7M2QX`, then scanning it again |
 
 > There's no server behind the site, so accounts, bookings and lineup changes are stored in the browser (localStorage). They don't sync between devices, and this isn't real security: anyone with the browser's developer tools could change the data. Passwords are salted and hashed with SHA-256 using the Web Crypto API rather than stored as text, but a real launch would move all of this to a backend.
@@ -156,7 +156,7 @@ The site is deployed on Vercel straight from this repository. There's no build c
 
 ## Credits
 
-- **Photos:** from [StockSnap](https://stocksnap.io) under the CC0 licence. The photographers are Søren Astrup Jørgensen, Nainoa Shizuru, Jens Thekkeveettil, Daria Nepriakhina, Startup Stock Photos, Toa Heftiba, Burst, Ryan McGuire, Freestocks.org, Matthew Kane, Skitter Photo, Austin Neill and Anthony Delanoix.
+- **Photos:** from [StockSnap](https://stocksnap.io) under the CC0 licence. The photographers are Søren Astrup Jørgensen, Nainoa Shizuru, Jens Thekkeveettil, Daria Nepriakhina, Startup Stock Photos, Toa Heftiba, Burst, Ryan McGuire, Freestocks.org, Matthew Kane, Skitter Photo, Austin Neill, Anthony Delanoix, Matt Bango, Barn Images and Tohm Brigitte.
 - **Fonts:** from Google Fonts: Bricolage Grotesque, Schibsted Grotesk, DM Mono and Anybody.
 - **Events:** all made up. No real tickets are sold and nothing is charged or emailed.
 
