@@ -917,6 +917,11 @@ body.menu-open {
   line-height: 1.35;
 }
 
+.footer-tagline span {
+  display: block;
+  opacity: 0.6;
+}
+
 .footer-big {
   display: block;
   margin-top: var(--space-2xl);
@@ -943,6 +948,11 @@ body.menu-open {
 .footer-big.has-crowd,
 .footer-big.has-crowd .is-accent {
   -webkit-text-fill-color: transparent;
+}
+
+/* sideways drags on the name move through the crowd; vertical ones still scroll */
+.footer-big.has-crowd {
+  touch-action: pan-y;
 }
 
 .footer-big .crowd {

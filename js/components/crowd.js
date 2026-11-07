@@ -24,7 +24,7 @@ export function mountCrowd(el) {
   let pad = 0;
   let reach = 120;
   let colours = { ink: "#000", accent: "#f00" };
-  const pointer = { x: 0, y: 0, active: false };
+  const pointer = { x: 0, y: 0, active: false, finger: false };
   let frame = null;
   let visible = false;
 
@@ -125,7 +125,9 @@ export function mountCrowd(el) {
   function step() {
     frame = null;
     let moving = false;
-    const space = reach * 0.3;
+    // a fingertip covers more than a cursor, so the crowd leaves it more room
+    const near = pointer.finger ? Math.max(reach * 1.25, 100) : reach;
+    const space = pointer.finger ? Math.max(near * 0.34, 32) : reach * 0.3;
     for (const d of dots) {
       let ax = (d.hx - d.x) * HOME_PULL;
       let ay = (d.hy - d.y) * HOME_PULL;
@@ -133,9 +135,9 @@ export function mountCrowd(el) {
         const dx = pointer.x - d.x;
         const dy = pointer.y - d.y;
         const dist = Math.hypot(dx, dy) || 1;
-        if (dist < reach) {
+        if (dist < near) {
           // lean in towards the pointer, but never closer than `space`
-          const falloff = 1 - dist / reach;
+          const falloff = 1 - dist / near;
           const pull = (dist - space) * falloff * falloff * 0.09 * d.keen;
           ax += (dx / dist) * pull;
           ay += (dy / dist) * pull;
@@ -155,17 +157,48 @@ export function mountCrowd(el) {
     if (!frame && visible) frame = requestAnimationFrame(step);
   };
 
-  area.addEventListener("pointermove", (e) => {
+  const place = (e) => {
     const box = canvas.getBoundingClientRect();
     pointer.x = e.clientX - box.left;
     pointer.y = e.clientY - box.top;
+    pointer.finger = e.pointerType !== "mouse";
+  };
+
+  // mouse: the crowd reacts whenever the cursor passes near
+  area.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse" && !touching) return;
+    place(e);
     pointer.active = pointer.y > -reach && pointer.y < height + reach;
     wake();
   });
-  area.addEventListener("pointerleave", () => {
+  area.addEventListener("pointerleave", (e) => {
+    if (e.pointerType !== "mouse") return;
     pointer.active = false;
     wake();
   });
+
+  // touch: put a finger on the name and the crowd gathers round it; slide sideways and they
+  // follow (sliding up or down still scrolls the page). Lift off and they linger a moment.
+  let touching = false;
+  let release;
+  el.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse") return;
+    touching = true;
+    clearTimeout(release);
+    place(e);
+    pointer.active = true;
+    wake();
+  });
+  const lift = () => {
+    if (!touching) return;
+    touching = false;
+    release = setTimeout(() => {
+      pointer.active = false;
+      wake();
+    }, 500);
+  };
+  window.addEventListener("pointerup", lift);
+  window.addEventListener("pointercancel", lift);
 
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
