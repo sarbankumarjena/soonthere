@@ -90,7 +90,7 @@ Follows your system setting until you choose, then remembers your choice. The sw
 ![Upcoming events in light mode](docs/screenshots/light.webp)
 
 ### Animations
-Page transitions, scroll reveals, countdown timers, a paper-plane logo, a confirmation heading that gathers out of a crowd of dots, and a footer wordmark whose crowd presses in round your pointer or finger. All motion respects the "reduce motion" setting.
+Page transitions, scroll reveals, countdown timers, a paper-plane logo, a confirmation heading that gathers out of a crowd of dots, and a footer wordmark whose crowd presses in round your pointer or finger. Visitors who turn on "Reduce motion" in their device's accessibility settings get the same site without the animations.
 
 ![The footer wordmark's crowd gathering round the pointer](docs/clips/crowd.webp)
 
