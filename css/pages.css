@@ -817,7 +817,7 @@
   color: inherit;
 }
 
-/* phones and small tablets: headliners become a row you swipe through, next card peeking in */
+/* phones and small tablets: featured events become a row you swipe through, next card peeking in */
 @media (max-width: 860px) {
   .featured-grid {
     grid-template-columns: none;
@@ -967,6 +967,114 @@
   border-bottom: 2px solid currentColor;
   transform: translateY(-70%) rotate(45deg);
   pointer-events: none;
+  transition: transform 0.3s var(--ease-out);
+}
+
+/* where the browser supports a styleable <select>, its open list matches the site too;
+   elsewhere the browser's own list is used */
+@supports (appearance: base-select) {
+  .select-field select,
+  .select-field select::picker(select) {
+    appearance: base-select;
+  }
+
+  .select-field select {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .select-field select::picker-icon {
+    display: none;
+  }
+
+  .select-field:has(select:open)::after {
+    transform: translateY(-25%) rotate(225deg);
+  }
+
+  .select-field select::picker(select) {
+    min-width: anchor-size(width);
+    max-height: min(22rem, 60vh);
+    margin-block: 0.4rem;
+    padding: 0.35rem;
+    overflow-y: auto;
+    border: var(--border);
+    border-radius: var(--radius-l);
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 24px 50px -24px rgb(0 0 0 / 0.45);
+    opacity: 0;
+    translate: 0 -0.4rem;
+    transition: opacity 0.2s ease, translate 0.25s var(--ease-out), display 0.25s allow-discrete, overlay 0.25s allow-discrete;
+  }
+
+  .select-field select:open::picker(select) {
+    opacity: 1;
+    translate: none;
+  }
+
+  @starting-style {
+    .select-field select:open::picker(select) {
+      opacity: 0;
+      translate: 0 -0.4rem;
+    }
+  }
+
+  .select-field option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    background: transparent;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .select-field option:hover,
+  .select-field option:focus-visible {
+    background: color-mix(in srgb, var(--ink) 9%, transparent);
+    outline: none;
+  }
+
+  .select-field option:checked {
+    color: var(--accent-text);
+  }
+
+  .select-field option::checkmark {
+    order: 1;
+    margin-left: auto;
+    content: "";
+    width: 0.4rem;
+    height: 0.75rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    rotate: 45deg;
+    translate: 0 -0.1rem;
+  }
+
+  .select-field option:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .select-field optgroup {
+    padding-top: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+  }
+
+  .select-field optgroup option {
+    font-family: var(--font-body);
+    font-size: var(--step-0);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
 }
 
 .chip-group {
