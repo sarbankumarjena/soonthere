@@ -10,7 +10,7 @@ SoonThere lists gigs, talks, tastings, workshops and late nights in cities aroun
 
 It is built with HTML5, CSS3 and plain JavaScript, with no framework and no build step, and works on phones, tablets and desktops.
 
-**Contents:** [Features](#features) | [Try it](#try-it) | [Tech stack](#tech-stack) | [How it's built](#how-its-built) | [Running locally](#running-locally) | [Deployment](#deployment) | [Project brief](#project-brief) | [Credits](#credits)
+**Contents:** [Features](#features) | [Try it](#try-it) | [Tech stack](#tech-stack) | [How it's built](#how-its-built) | [Running locally](#running-locally) | [Deployment](#deployment) | [Problem statement](#problem-statement) | [Credits](#credits)
 
 ## Features
 
@@ -166,9 +166,9 @@ Then open http://localhost:8000.
 
 Deployed on Vercel from this repository. There is no build command; every push to `main` goes live automatically.
 
-## Project brief
+## Problem statement
 
-Built for the K Explore Web Designing project, *Design and Develop a Responsive Event Management Website*.
+Built for the K Explore Web Designing assignment, *Design and Develop a Responsive Event Management Website*. Each requirement in the problem statement and where it is on the site:
 
 | Requirement | Where |
 | --- | --- |
