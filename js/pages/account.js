@@ -50,11 +50,11 @@ function renderForms() {
         <p><b>Just looking around?</b> Try one of the demo accounts.</p>
         <div class="account__demo-row">
           <div><p>Demo user, a member with bookings</p><p class="mono">${DEMO_MEMBER.email}<br>${DEMO_MEMBER.password}</p></div>
-          <button class="btn btn-small btn-ghost" type="button" data-demo="member">Use demo user</button>
+          <button class="btn btn-small btn-ghost" type="button" data-demo="member">Sign in as demo user</button>
         </div>
         <div class="account__demo-row">
           <div><p>The organiser, with admin access</p><p class="mono">${DEMO_ADMIN.email}<br>${DEMO_ADMIN.password}</p></div>
-          <button class="btn btn-small btn-ghost" type="button" data-demo="admin">Use admin</button>
+          <button class="btn btn-small btn-ghost" type="button" data-demo="admin">Sign in as admin</button>
         </div>
       </div>`}
     <p class="account__note">Demo only: accounts are stored in this browser, not on a server, so they don't follow you to other devices.</p>`;
@@ -137,7 +137,7 @@ panel.addEventListener("click", (e) => {
     const account = demo.dataset.demo === "admin" ? DEMO_ADMIN : DEMO_MEMBER;
     $("#email").value = account.email;
     $("#password").value = account.password;
-    $('#account-form button[type="submit"]').focus();
+    $("#account-form").requestSubmit();
   }
   if (e.target.closest("[data-signout]")) {
     signOut();

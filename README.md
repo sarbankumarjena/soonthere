@@ -71,7 +71,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
   - **Members:** every account, with the option to make someone an admin.
 ![Admin area](docs/screenshots/admin.webp)
 
-- **Demo accounts.** The sign-in page can fill either one in for you.
+- **Demo accounts.** The sign-in page has a button for each one that signs you straight in.
 
   | Account | Email | Password | What you'll see |
   | --- | --- | --- | --- |
