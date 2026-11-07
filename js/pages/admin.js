@@ -88,7 +88,10 @@ function overview() {
 /* ---------- events ---------- */
 
 function eventsTab() {
-  const list = [...events].sort(byStart).filter((e) => !query || `${e.title} ${e.city} ${e.venue}`.toLowerCase().includes(query));
+  // what's coming up first, then what has already happened, most recent first
+  const sorted = [...events].sort(byStart);
+  const list = [...sorted.filter((e) => !isPast(e)), ...sorted.filter((e) => isPast(e)).reverse()]
+    .filter((e) => !query || `${e.title} ${e.city} ${e.venue}`.toLowerCase().includes(query));
   return html`
     <div class="admin-toolbar">
       <label class="admin-search">${icons.search}<span class="visually-hidden">Search events</span><input type="search" placeholder="Search events" value="${query}" data-search></label>
