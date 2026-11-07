@@ -859,6 +859,18 @@ body.menu-open {
   }
 }
 
+/* pages drawn by script keep room for their content, so the footer doesn't
+   show up first and then get pushed down */
+#tickets-root:empty,
+#event-root:empty,
+#admin-root:empty {
+  min-height: 100svh;
+}
+
+#account-panel:empty {
+  min-height: 34rem;
+}
+
 /* footer */
 
 .site-footer {

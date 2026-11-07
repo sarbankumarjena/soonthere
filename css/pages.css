@@ -364,6 +364,11 @@
   pointer-events: none;
 }
 
+/* hidden until the script has sized the wheel, so they don't jump into place */
+.dial:not(.is-measured) .dial__rings {
+  visibility: hidden;
+}
+
 /* the rings fade out around the centre card so its date and time read cleanly;
    the mask stays put while the rings turn, so each card gets its ticks back as it moves on */
 .dial__rings {
@@ -542,7 +547,8 @@
       linear-gradient(180deg, color-mix(in srgb, var(--paper) 50%, transparent), transparent 25%);
   }
 
-  .dial.is-docked {
+  /* matches the dockMode query in dial.js, so it sits in place from the first paint */
+  .dial {
     --card-w: clamp(120px, 9vw, 150px);
     --top: 3.4rem;
     position: absolute;

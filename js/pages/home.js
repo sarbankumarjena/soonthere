@@ -246,7 +246,7 @@ function initStage() {
     const incoming = layers[1 - front];
     const outgoing = layers[front];
     const token = (latest = {});
-    incoming.src = imageSrc(event, 960);
+    incoming.src = imageSrc(event, window.innerWidth < 700 ? 480 : 960);
     incoming
       .decode()
       .catch(() => {})

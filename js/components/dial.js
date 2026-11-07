@@ -83,6 +83,7 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
     root.style.setProperty("--step", `${(stepRad * 180) / Math.PI}deg`);
     root.style.setProperty("--tick-w", `${(1.2 / radius) * (180 / Math.PI)}deg`);
     draw();
+    root.classList.add("is-measured");
   }
 
   function animate() {
