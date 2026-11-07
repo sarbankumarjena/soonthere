@@ -193,7 +193,7 @@ body.menu-open .site-header::before {
 }
 
 .nav-links a:hover {
-  background: var(--paper-2);
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
 }
 
 .nav-links a[aria-current="page"]::after {
@@ -263,7 +263,7 @@ body.menu-open .site-header::before {
 }
 
 .icon-btn:hover {
-  background: var(--paper-2);
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
 }
 
 .icon-btn:active {
@@ -591,7 +591,7 @@ body.menu-open {
 
 .header-search__option[aria-selected="true"],
 .header-search__all[aria-selected="true"] {
-  background: var(--paper-2);
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
 }
 
 .header-search__option img {
@@ -873,7 +873,7 @@ body.menu-open {
   text-decoration: none;
 }
 
-.site-footer a:hover {
+.site-footer a:not(.logo):hover {
   text-decoration: underline;
 }
 
@@ -919,11 +919,25 @@ body.menu-open {
 }
 
 .footer-big {
-  --base-w: 92;
+  position: relative;
+  font-variation-settings: "wdth" 92;
 }
 
 .footer-big .is-accent {
   color: var(--accent);
+}
+
+/* once the dots are drawn, the real text stays for screen readers but isn't painted */
+.footer-big.has-crowd,
+.footer-big.has-crowd .is-accent {
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-big .crowd {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
 }
 
 .footer-bottom {

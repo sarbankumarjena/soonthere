@@ -2,6 +2,7 @@ import { $, $$, canHover, prefersReducedMotion } from "./lib/dom.js";
 import { getTheme, setTheme } from "./lib/storage.js";
 import { currentUser, ensureDemoAccounts, myBookings } from "./lib/auth.js";
 import { initHeaderSearch } from "./components/header-search.js";
+import { mountCrowd } from "./components/crowd.js";
 
 document.documentElement.classList.add("js");
 
@@ -153,79 +154,6 @@ export function initTilt(root = document) {
   });
 }
 
-function splitLetters(el) {
-  const accentFrom = Number(el.dataset.accentFrom ?? -1);
-  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
-    acceptNode: (node) =>
-      node.parentElement.closest(".visually-hidden") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
-  });
-  const nodes = [];
-  while (walker.nextNode()) nodes.push(walker.currentNode);
-
-  let index = 0;
-  nodes.forEach((node) => {
-    const frag = document.createDocumentFragment();
-    // keep each word in a wrapper so lines only break between words
-    node.textContent.split(/(\s+)/).forEach((chunk) => {
-      if (!chunk) return;
-      if (/^\s+$/.test(chunk)) {
-        frag.append(chunk);
-        return;
-      }
-      const word = document.createElement("span");
-      word.className = "word";
-      [...chunk].forEach((ch) => {
-        const span = document.createElement("span");
-        span.className = "letter";
-        if (accentFrom >= 0 && index >= accentFrom) span.classList.add("is-accent");
-        span.textContent = ch;
-        word.append(span);
-        index++;
-      });
-      frag.append(word);
-    });
-    node.replaceWith(frag);
-  });
-}
-
-// letters get wider the closer the pointer is to them
-function initStretchType() {
-  $$("[data-stretch]").forEach((el) => {
-    if (!$(".visually-hidden", el)) {
-      const label = el.textContent.trim();
-      el.innerHTML = `<span class="visually-hidden"></span><span aria-hidden="true">${el.innerHTML}</span>`;
-      el.firstElementChild.textContent = label;
-    }
-    splitLetters(el);
-
-    if (!canHover() || prefersReducedMotion()) return;
-
-    const letters = $$(".letter", el);
-    const min = Number(el.dataset.min ?? 60);
-    const max = Number(el.dataset.max ?? 140);
-    const reach = Number(el.dataset.reach ?? 320);
-    const area = el.closest("[data-stretch-area]") ?? el;
-    let frame;
-
-    area.addEventListener("pointermove", (e) => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        letters.forEach((letter) => {
-          const rect = letter.getBoundingClientRect();
-          const dx = e.clientX - (rect.left + rect.width / 2);
-          const dy = (e.clientY - (rect.top + rect.height / 2)) * 1.6;
-          const t = Math.max(0, 1 - Math.hypot(dx, dy) / reach);
-          letter.style.setProperty("--w", Math.round(min + (max - min) * t * t));
-        });
-      });
-    });
-    area.addEventListener("pointerleave", () => {
-      cancelAnimationFrame(frame);
-      letters.forEach((letter) => letter.style.removeProperty("--w"));
-    });
-  });
-}
-
 // The logo's flight path is drawn to fit the name: it starts on the left, slips behind the
 // word (hidden where it passes behind the letters), loops back over the top, comes down the
 // left side and sweeps out underneath, with the plane at the end of it.
@@ -355,8 +283,8 @@ export function initMagnetic(root = document) {
   $$("[data-magnetic]", root).forEach((el) => {
     el.addEventListener("pointermove", (e) => {
       const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
-      const y = (e.clientY - rect.top - rect.height / 2) * 0.35;
+      const x = (e.clientX - rect.left - rect.width / 2) * 0.12;
+      const y = (e.clientY - rect.top - rect.height / 2) * 0.16;
       el.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
     });
     el.addEventListener("pointerleave", () => (el.style.translate = ""));
@@ -420,7 +348,8 @@ initTheme();
 initLogo();
 initHeader();
 initHeaderSearch();
-initStretchType();
+const wordmark = $(".footer-big");
+if (wordmark) mountCrowd(wordmark);
 initMagnetic();
 initButtonFill();
 initYear();
