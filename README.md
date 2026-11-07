@@ -15,7 +15,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 ### Home
 - **Hero dial.** Upcoming events sit on the rim of a large wheel. On wide screens the words and the selected event sit on the left, the event's photo fills the stage, and a smaller dial docks in the bottom-right corner. On phones and tablets the dial runs full width under the headline. The event under the pointer is shown in full (title, date, venue, price, a live countdown) and its photo fills the background. The dial turns on its own every few seconds, and you can also drag it, swipe it on a trackpad, use the arrow buttons or the arrow keys. It pauses while the pointer rests on one of its cards or while you're using the keyboard, and keeps turning when you're just moving around the rest of the hero.
 - **Headliners.** Three featured events as large poster cards with live countdowns. On phones they become a row you swipe through.
-- **The lineup.** Every upcoming event as a ticket-style card with its name, date, venue, image and a short description. On phones each card turns into a compact ticket row, so several fit on screen at once.
+- **The lineup.** Every upcoming event as a ticket-style card with its name, date, venue, image and a short description. On phones each card turns into a compact ticket row, with the description cut to two lines, so several fit on screen at once.
   - **Search.** Matches names, venues, cities, organisers and tags, and ignores accents, so "alcantara" finds "Alcântara".
   - **Category filters.** Each one shows a live count of matching events.
   - **Sorting.** By date, popularity or price. Prices are in local currencies, so they're roughly converted before comparing.

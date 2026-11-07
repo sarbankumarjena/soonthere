@@ -883,7 +883,7 @@ body.menu-open {
   gap: var(--space-xl);
 }
 
-.footer-grid h3 {
+.footer-grid h2 {
   margin-bottom: var(--space-s);
   font-family: var(--font-mono);
   font-size: var(--step--1);

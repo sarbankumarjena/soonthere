@@ -2975,15 +2975,9 @@
 .btn-danger {
   --btn-bg: transparent;
   --btn-fg: var(--danger);
+  --btn-fill: var(--danger);
+  --btn-fill-fg: var(--paper);
   border-color: var(--danger);
-}
-
-.btn-danger::before {
-  background: var(--danger);
-}
-
-.btn-danger:hover {
-  color: var(--paper);
 }
 
 @media (max-width: 860px) {
@@ -3965,9 +3959,18 @@
     font-size: var(--step-0);
   }
 
-  .card-grid .ticket-card__summary,
   .card-grid .ticket-card__cta {
     display: none;
+  }
+
+  /* the short description stays, cut to two lines */
+  .card-grid .ticket-card__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .card-grid .ticket-card__venue {

@@ -95,7 +95,7 @@ function updateTicketCount(animate = false) {
   $$(".ticket-count").forEach((badge) => {
     badge.textContent = count || "";
     badge.dataset.count = count;
-    badge.closest("a")?.setAttribute("aria-label", count ? `My tickets (${count})` : "My tickets");
+    badge.closest("a")?.setAttribute("aria-label", count ? `My tickets ${count} booked` : "My tickets");
     if (animate) {
       badge.classList.remove("bump");
       void badge.offsetWidth;
@@ -337,6 +337,19 @@ function initLogo() {
   });
 }
 
+// buttons fill from the side the pointer comes in on, and empty towards where it leaves
+function initButtonFill() {
+  const place = (e) => {
+    const btn = e.target.closest?.(".btn");
+    if (!btn || btn.contains(e.relatedTarget)) return;
+    const rect = btn.getBoundingClientRect();
+    btn.style.setProperty("--x", `${(e.clientX - rect.left).toFixed(0)}px`);
+    btn.style.setProperty("--y", `${(e.clientY - rect.top).toFixed(0)}px`);
+  };
+  document.addEventListener("pointerover", place);
+  document.addEventListener("pointerout", place);
+}
+
 export function initMagnetic(root = document) {
   if (!canHover() || prefersReducedMotion()) return;
   $$("[data-magnetic]", root).forEach((el) => {
@@ -362,8 +375,10 @@ function updateAccount() {
       const name = document.createElement("span");
       name.className = "nav-account__name";
       name.textContent = user.name.split(" ")[0];
-      link.append(avatar, name);
-      link.setAttribute("aria-label", `Your account, ${user.name}`);
+      const hint = document.createElement("span");
+      hint.className = "visually-hidden";
+      hint.textContent = ", your account";
+      link.append(avatar, name, hint);
     } else {
       link.textContent = "Sign in";
       link.removeAttribute("aria-label");
@@ -395,12 +410,19 @@ export function toast(message, { duration = 3200 } = {}) {
   }, duration);
 }
 
+// a page transition can be cut short by a quick second click; that's harmless, so it isn't reported
+window.addEventListener("pageswap", (e) => {
+  e.viewTransition?.ready.catch(() => {});
+  e.viewTransition?.finished.catch(() => {});
+});
+
 initTheme();
 initLogo();
 initHeader();
 initHeaderSearch();
 initStretchType();
 initMagnetic();
+initButtonFill();
 initYear();
 updateTicketCount();
 updateAccount();

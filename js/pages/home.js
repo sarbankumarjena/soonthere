@@ -235,7 +235,9 @@ function initStage() {
     return;
   }
 
-  const layers = $$(".stage__backdrop img", stage);
+  // two photo layers to crossfade between
+  const layers = [0, 1].map(() => $("#stage-backdrop").appendChild(Object.assign(document.createElement("img"), { alt: "" })));
+  layers[0].classList.add("is-on");
   let front = 0;
   let latest;
 

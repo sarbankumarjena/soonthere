@@ -23,7 +23,8 @@ export function mountDial(root, list, { onChange, onOpen, pauseArea = root } = {
       const { day, month, weekday } = dateParts(event);
       return html`
         <li class="dial__item" data-category="${event.category}">
-          <button class="dial__card" type="button" data-index="${i}" aria-label="${event.title}, ${weekday} ${day} ${month}, ${event.city}">
+          <button class="dial__card" type="button" data-index="${i}">
+            <span class="visually-hidden">${event.title}, </span>
             <span class="dial__date">${weekday} ${day} ${month}</span>
             <span class="print"><img src="${imageSrc(event, 480)}" alt="" width="480" height="320" draggable="false"></span>
             <span class="dial__time"><b>${formatTime(event.start, event.timeZone)}</b> ${event.city}</span>

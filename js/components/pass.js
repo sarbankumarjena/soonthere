@@ -26,7 +26,7 @@ export function passTicket({ event, name = "", passes = 1, bookingId = "", stamp
       </div>
       <div class="pass__main">
         <p class="pass__kicker">Admit ${passes}</p>
-        <h3 class="pass__title">${event?.title ?? "Your next night out"}</h3>
+        <p class="pass__title">${event?.title ?? "Your next night out"}</p>
         <dl class="pass__grid">
           <div><dt>Date</dt><dd>${event ? formatShortDate(event) : "Soon"}</dd></div>
           <div><dt>Doors</dt><dd>${event ? formatTime(event.start, event.timeZone) : "--:--"}</dd></div>

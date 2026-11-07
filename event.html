@@ -36,7 +36,7 @@
   <header class="site-header">
     <div class="container">
       <a class="logo" href="index.html" aria-label="SoonThere home"><span class="logo__word" aria-hidden="true">Soon<span class="logo__ticket">There</span></span><svg class="logo__trail" aria-hidden="true"></svg><svg class="logo__plane" viewBox="0 0 20 20" aria-hidden="true"><path class="logo__wing" d="M1 7.5 19 1 13 18 9.5 11Z"/><path class="logo__fold" d="M9.5 11 19 1"/></svg></a>
-      <form class="header-search" action="index.html" role="search">
+      <form class="header-search" action="index.html" role="search" aria-label="Search the site">
         <label class="visually-hidden" for="header-q">Search events</label>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
         <input type="search" id="header-q" name="q" placeholder="Search events" autocomplete="off" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="header-results">
@@ -70,9 +70,7 @@
     <div class="container">
       <a class="link-arrow back-link" href="index.html#lineup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg> All events</a>
 
-      <figure class="event-cover print" id="event-cover">
-        <img id="cover-img" alt="" width="960" height="640" fetchpriority="high">
-      </figure>
+      <figure class="event-cover print" id="event-cover"></figure>
       <script>
         // set the cover before first paint so the page transition has something to morph into
         (function () {
@@ -81,7 +79,13 @@
           try { saved = JSON.parse(localStorage.getItem("soonthere:events")); } catch (e) {}
           var match = Array.isArray(saved) && saved.filter(function (e) { return e.id === id; })[0];
           var src = match ? match.imageData || "assets/images/events/" + match.image + "-960.webp" : /^[a-z0-9-]+$/.test(id) && !saved ? "assets/images/events/" + id + "-960.webp" : "";
-          if (src) document.getElementById("cover-img").src = src;
+          var img = document.createElement("img");
+          img.alt = "";
+          img.width = 960;
+          img.height = 640;
+          img.setAttribute("fetchpriority", "high");
+          if (src) img.src = src;
+          document.getElementById("event-cover").append(img);
         })();
       </script>
 
@@ -112,7 +116,7 @@
           <p class="footer-tagline">Find it. Book it. Be SoonThere.</p>
         </div>
         <div>
-          <h3>Explore</h3>
+          <h2>Explore</h2>
           <ul role="list">
             <li><a href="index.html#lineup">All events</a></li>
             <li><a href="index.html#featured">Headliners</a></li>
@@ -120,7 +124,7 @@
           </ul>
         </div>
         <div>
-          <h3>Your stuff</h3>
+          <h2>Your stuff</h2>
           <ul role="list">
             <li><a href="tickets.html">My tickets</a></li>
             <li><a href="register.html">Register</a></li>
@@ -129,7 +133,7 @@
           </ul>
         </div>
         <div>
-          <h3>Project</h3>
+          <h2>Project</h2>
           <ul role="list">
             <li><a href="https://github.com/sarbankumarjena/soonthere">Source on GitHub</a></li>
             <li><a href="https://stocksnap.io">Photos from StockSnap</a></li>

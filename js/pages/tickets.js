@@ -105,7 +105,7 @@ function stub(b, clashes) {
   return html`
     <li class="stub" data-id="${b.id}" data-category="${event.category}">
       <p class="stub__date">${weekday} ${day} ${month}</p>
-      <button class="stub__card" type="button" data-open="${b.id}" aria-label="Open pass for ${event.title}">
+      <button class="stub__card" type="button" data-open="${b.id}">
         <span class="stub__media print is-colour"><img src="${imageSrc(event, 480)}" alt="" width="480" height="320" loading="lazy"></span>
         <span class="stub__body">
           <span class="stub__title">${event.title}</span>
@@ -185,7 +185,7 @@ function filmRoll(past) {
     ? past.map(
         (b) => html`
           <li class="film__frame" data-category="${b.event.category}">
-            <button type="button" data-open="${b.id}" aria-label="Open pass for ${b.event.title}">
+            <button type="button" data-open="${b.id}">
               <span class="film__photo print"><img src="${imageSrc(b.event, 480)}" alt="" loading="lazy"></span>
               <span class="film__label">${b.event.title}<small>${formatShortDate(b.event)}</small></span>
             </button>
