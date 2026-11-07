@@ -17,6 +17,7 @@ import {
 } from "../lib/catalog.js";
 import { eventCard, featuredCard } from "../components/card.js";
 import { mountCountdown } from "../components/countdown.js";
+import { matches, searchText } from "../lib/search.js";
 import { mountDial } from "../components/dial.js";
 
 const grid = $("#event-grid");
@@ -29,19 +30,7 @@ const resultsMeta = $("#results-meta");
 
 const state = { q: "", cat: "all", sort: "soonest", past: false };
 
-// "Alcântara" should match "alcantara"
-const normalise = (text) =>
-  String(text)
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
-
-const searchIndex = new Map(
-  events.map((e) => [
-    e.id,
-    normalise([e.title, e.venue, e.area, e.city, e.country, e.organiser, getCategory(e.category)?.label, ...e.tags].join(" ")),
-  ]),
-);
+const searchIndex = new Map(events.map((e) => [e.id, searchText(e)]));
 
 const sorters = {
   soonest: byStart,
@@ -51,9 +40,7 @@ const sorters = {
 };
 
 function matchesSearch(event) {
-  const terms = normalise(state.q).split(/\s+/).filter(Boolean);
-  const haystack = searchIndex.get(event.id);
-  return terms.every((term) => haystack.includes(term));
+  return matches(searchIndex.get(event.id), state.q);
 }
 
 function visibleEvents() {

@@ -53,7 +53,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 ![Registration confirmation](docs/screenshots/register.webp)
 
 ### My tickets
-- **Coming up.** A sideways timeline of your bookings, with a date rail above the passes and a time rail below. Two half-wheels peek out at either end. The left one is a 24-hour bezel shaded from night to day that turns to the focused pass's start time. The right one carries the days of that month, with a dot on every day you're booked, and turns to its date.
+- **Coming up.** A sideways timeline of your bookings, with a date rail above the passes and a time rail below. Two half-wheels peek out at either end. The left one is a 24-hour bezel shaded from night to day that turns to the focused pass's start time. The right one carries the days of that month, with a dot on every day you're booked, and turns to its date. On narrower screens the wheels sit above the passes, with the name of the pass they're showing and the arrows between them.
 - **Season at a glance.** A heatmap of the whole season. Days you're going are highlighted, other days with events are shaded, and clicking a highlighted day jumps to that booking.
 - **Been there.** Past bookings on a strip of film. When there aren't any yet, it says so.
 - **Pass details.** Open any pass to see it in full, add it to your calendar or cancel it. Cancelling asks for confirmation, and the spots go back on sale straight away. A "clear everything" option is there too.
@@ -83,6 +83,7 @@ SoonThere is an event discovery and booking site. You can browse gigs, talks, ta
 ### Everywhere
 - **Light and dark themes.** The site follows your system setting until you pick one, then remembers your choice. The switch is a little sky: the sun slides across, turns into a moon and the stars come out, and the new theme spreads out in a circle from it.
 - **Logo.** "There" is printed on a torn ticket stub, and a paper plane's dashed flight path loops round the name: it slips behind the word, loops back over the top and sweeps out underneath, with the plane at the end. The path is drawn to fit the word, and the plane flies it on load and on hover.
+- **Search from any page.** A search box in the header suggests matching events as you type (or the next few events before you type), and the arrow keys move through them. Enter shows every match in the lineup. On phones and tablets it's a button that opens the field over the header. On the home page it steps aside while the lineup's own search box is on screen, and comes back with whatever you typed once you scroll past it.
 - **Countdown timers.** Shown on the hero, the headliners and the event pages.
 - **Animation.** Scroll reveals, marquee tapes, a 3D tilt on cards, magnetic buttons and page transitions. All motion is turned off for people who set "reduce motion" in their system settings.
 - **Responsive layout.** Built mobile first and tested at 360, 390, 768, 1024, 1280 and 1440 pixels wide.

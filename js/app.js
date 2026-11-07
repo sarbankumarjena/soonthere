@@ -1,6 +1,7 @@
 import { $, $$, canHover, prefersReducedMotion } from "./lib/dom.js";
 import { getTheme, setTheme } from "./lib/storage.js";
 import { currentUser, ensureDemoAccounts, myBookings } from "./lib/auth.js";
+import { initHeaderSearch } from "./components/header-search.js";
 
 document.documentElement.classList.add("js");
 
@@ -69,7 +70,10 @@ function initHeader() {
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     links.classList.toggle("is-open", open);
     document.body.classList.toggle("menu-open", open);
+    if (open) document.dispatchEvent(new CustomEvent("menu:open"));
   };
+
+  document.addEventListener("search:open", () => setOpen(false));
 
   toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
   links.addEventListener("click", (e) => {
@@ -355,7 +359,10 @@ function updateAccount() {
       avatar.className = "avatar";
       avatar.setAttribute("aria-hidden", "true");
       avatar.textContent = user.name.charAt(0).toUpperCase();
-      link.append(avatar, user.name.split(" ")[0]);
+      const name = document.createElement("span");
+      name.className = "nav-account__name";
+      name.textContent = user.name.split(" ")[0];
+      link.append(avatar, name);
       link.setAttribute("aria-label", `Your account, ${user.name}`);
     } else {
       link.textContent = "Sign in";
@@ -391,6 +398,7 @@ export function toast(message, { duration = 3200 } = {}) {
 initTheme();
 initLogo();
 initHeader();
+initHeaderSearch();
 initStretchType();
 initMagnetic();
 initYear();
